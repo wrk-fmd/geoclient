@@ -4,21 +4,8 @@
  * This software may be modified and distributed under the terms of the MIT license. See the LICENSE file for details.
  */
 
-// external_config is global geobroker.config
-(function (external_config) {
-
-    // configure / defaults
-    let config = $.merge({
-        scopeRefreshInterval: 2000, // milliseconds
-
-        initLatitude: 48.2089816,
-        initLongitude: 16.3710193,
-        initZoom: 14,
-
-        apiPublic: '/api/v1/public',
-    }, external_config);
-
-    // read unitId and token from the query parameters
+function getMyScopeUrl(config) {
+// read unitId and token from the query parameters
     let myId;
     let myToken;
     /* temporary let params */
@@ -27,9 +14,35 @@
         myId = params.get('id');
         myToken = params.get('token');
     }
-    let myScopeURL = config.apiPublic
-        + '/scope/' + encodeURIComponent(myId)
-        + '?' + $.param({token: myToken});
+    let myScopeURL;
+
+    if (myId && myToken) {
+        myScopeURL = config.apiPublic
+            + '/scope/' + encodeURIComponent(myId)
+            + '?' + $.param({token: myToken});
+    }
+    return myScopeURL;
+}
+
+// external_config is global geobroker.config
+(function (external_config) {
+
+    console.debug("Starting up client with external configuration:", external_config);
+
+    // configure / defaults
+    let default_config = {
+        scopeRefreshInterval: 2000, // milliseconds
+
+        initLatitude: 48.2089816,
+        initLongitude: 16.3710193,
+        initZoom: 14,
+
+        apiPublic: '/api/v1/public',
+    };
+
+    let config = $.extend({}, default_config, external_config);
+
+    let myScopeURL = getMyScopeUrl(config);
 
     // map and base tiles
     let map = L.map('map', {
@@ -126,6 +139,10 @@
         });
     };
 
-    let scopeRefreshId = myId ? setInterval(scopeRefresh, config.scopeRefreshInterval) : null;
+    if (myScopeURL) {
+        let scopeRefreshId = setInterval(scopeRefresh, config.scopeRefreshInterval);
+    } else {
+        console.warn("Unit id or token parameter missing!")
+    }
 
 })(typeof geobroker === 'object' ? geobroker.config : {});
