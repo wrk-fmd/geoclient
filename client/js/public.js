@@ -57,24 +57,24 @@ function getMyScopeUrl(config) {
         attribution: 'Grundkarte: <a href="http://basemap.at" target="_blank">basemap.at</a>, <a href="http://creativecommons.org/licenses/by/3.0/at/deed.de" target="_blank">CC-BY 3.0</a>',
     }).addTo(map);
 
-    // self
-    let self = {};
-    self.marker = undefined;
-    self.layer = L.layerGroup().addTo(map);
-    self.popup = function (radius) {
+    // Own Position
+    let ownPosition = {};
+    ownPosition.marker = undefined;
+    ownPosition.layer = L.layerGroup().addTo(map);
+    ownPosition.popup = function (radius) {
         return 'Ihr seid hier im Umkreis von ' + radius.toFixed(0) + 'm';
     };
 
     // locate self
     map.on('locationfound', function (e) {
         let radius = e.accuracy / 2;
-        if (self.marker === undefined) {
-            self.marker = L.marker(e.latlng)
-                .addTo(self.layer)
-                .bindPopup(self.popup(radius));
+        if (ownPosition.marker === undefined) {
+            ownPosition.marker = L.marker(e.latlng)
+                .addTo(ownPosition.layer)
+                .bindPopup(ownPosition.popup(radius));
         } else {
-            self.marker.setLatLng(e.latlng)
-                .setPopupContent(self.popup(radius));
+            ownPosition.marker.setLatLng(e.latlng)
+                .setPopupContent(ownPosition.popup(radius));
         }
 
         // TODO send to geobroker
@@ -93,7 +93,7 @@ function getMyScopeUrl(config) {
 
     // controls
     L.control.layers(null, {
-        "Eigene Position": self.layer,
+        "Eigene Position": ownPosition.layer,
         "Einheiten": scope.layer,
     }).addTo(map);
 
