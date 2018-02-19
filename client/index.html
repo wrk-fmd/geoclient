@@ -7,34 +7,40 @@
 
 <html>
 <head>
-  <title>GeoBroker Live Map</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GeoBroker Live Map</title>
 
-  <link rel="stylesheet" href="libs/leaflet/v1.3.1/leaflet.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <style>
-      body {
-        padding: 0;
-        margin: 0;
-      }
-      html, body, #map {
-        height: 100%;
-        width: 100vw;
-      }
-  </style>
+    <link rel="stylesheet" href="libs/leaflet/v1.3.1/leaflet.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="msapplication-TileColor" content="#b70e0c">
+    <meta name="theme-color" content="#b70e0c">
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body, #map {
+            height: 100%;
+            width: 100vw;
+        }
+    </style>
 </head>
 <body>
-  <div id="map"></div>
+<div id="map"></div>
 
-  <script src="libs/jquery/jquery-3.3.1.min.js"></script>
-  <script src="libs/leaflet/v1.3.1/leaflet.js"></script>
+<script src="libs/jquery/jquery-3.3.1.min.js"></script>
+<script src="libs/leaflet/v1.3.1/leaflet.js"></script>
 
-  <!--
-    For the file structure of config.js, see config_template.js.
-    For property names and default values for config.js, see js/public.js.
-  -->
-  <script src="config.js"></script>
-  <script src="js/public.js"></script>
+<!--
+  For the file structure of config.js, see config_template.js.
+  For property names and default values for config.js, see js/public.js.
+-->
+<script src="config.js"></script>
+<script src="js/public.js"></script>
 </body>
 </html>
