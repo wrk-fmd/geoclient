@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018 Red Cross Vienna and contributors. All rights reserved.
+  ~
+  ~ This software may be modified and distributed under the terms of the MIT license. See the LICENSE file for details.
+  -->
+
+<html>
+<head>
+  <title>GeoBroker Live Map</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" href="libs/leaflet/v1.3.1/leaflet.css" />
+
+  <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      html, body, #map {
+        height: 100%;
+        width: 100vw;
+      }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="libs/jquery/jquery-3.3.1.min.js"></script>
+  <script src="libs/leaflet/v1.3.1/leaflet.js"></script>
+
+  <!--
+    For the file structure of config.js, see config_template.js.
+    For property names and default values for config.js, see js/public.js.
+  -->
+  <script src="config.js"></script>
+  <script src="js/public.js"></script>
+</body>
+</html>
