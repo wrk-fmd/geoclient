@@ -4,30 +4,33 @@
  * This software may be modified and distributed under the terms of the MIT license. See the LICENSE file for details.
  */
 
-function getMyScopeUrl(config) {
-// read unitId and token from the query parameters
-    let myId;
-    let myToken;
-    /* temporary let params */
-    {
-        let params = (new URL(location)).searchParams;
-        myId = params.get('id');
-        myToken = params.get('token');
-    }
-    let myScopeURL;
-
-    if (myId && myToken) {
-        myScopeURL = config.apiPublic
-            + '/scope/' + encodeURIComponent(myId)
-            + '?' + $.param({token: myToken});
-    }
-    return myScopeURL;
-}
-
 // external_config is global geobroker.config
 (function (external_config) {
 
-    console.debug("Starting up client with external configuration:", external_config);
+    // stub out console unless debug is requested
+    let output = {
+        log:   $.noop,
+        info:  $.noop,
+        warn:  $.noop,
+        error: $.noop,
+    };
+
+    // read from the query parameters
+    let myId;
+    let myToken;
+    let myScopeUrl;
+    let myPositionsUrl;
+    /* temporary let params */
+    {
+        let params = (new URL(location)).searchParams;
+        if (params.has('debug')) {
+            output = console;
+        };
+        myId = params.get('id');
+        myToken = params.get('token');
+    }
+
+    output.log("Starting up client with external configuration:", external_config);
 
     // configure / defaults
     let default_config = {
@@ -42,7 +45,15 @@ function getMyScopeUrl(config) {
 
     let config = $.extend({}, default_config, external_config);
 
-    let myScopeURL = getMyScopeUrl(config);
+    // calculate my URLs
+    if (myId && myToken) {
+        myScopeUrl = config.apiPublic
+            + '/scope/' + encodeURIComponent(myId)
+            + '?' + $.param({token: myToken});
+        myPositionsUrl = config.apiPublic
+            + '/positions/' + encodeURIComponent(myId)
+            + '?' + $.param({token: myToken});
+    }
 
     // map and base tiles
     let map = L.map('map', {
@@ -80,7 +91,7 @@ function getMyScopeUrl(config) {
         // TODO send to geobroker
     }).on('locationerror', function (e) {
         // TODO report on UI
-        console.log(e);
+        output.warn(e);
     }).locate({
         watch: true,
         enableHighAccuracy: true,
@@ -98,8 +109,9 @@ function getMyScopeUrl(config) {
     }).addTo(map);
 
     // scope update
+    let scopeRefreshId;
     let scopeRefresh = function () {
-        $.get(myScopeURL).done(function (data) {
+        $.get(myScopeUrl).done(function (data) {
             if (!data || !data.units) {
                 // TODO report on UI
                 return false;
@@ -135,14 +147,14 @@ function getMyScopeUrl(config) {
 
         }).fail(function (e) {
             // TODO report on UI
-            console.log(e);
+            output.warn(e);
         });
     };
 
-    if (myScopeURL) {
-        let scopeRefreshId = setInterval(scopeRefresh, config.scopeRefreshInterval);
+    if (myScopeUrl) {
+        scopeRefreshId = setInterval(scopeRefresh, config.scopeRefreshInterval);
     } else {
-        console.warn("Unit id or token parameter missing!")
+        output.warn("Unit id or token parameter missing!")
     }
 
 })(typeof geobroker === 'object' ? geobroker.config : {});
