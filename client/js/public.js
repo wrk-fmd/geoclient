@@ -59,6 +59,8 @@
     let map = L.map('map', {
         center: [config.initLatitude, config.initLongitude],
         zoom: config.initZoom,
+        zoomSnap: 0.25,
+        zoomDelta: 0.5,
     });
 
     L.tileLayer('https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg', {
