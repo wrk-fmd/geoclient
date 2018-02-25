@@ -73,7 +73,7 @@ function update(unitId, unit) {
 }
 
 function create(unitId, token, name) {
-    return update(unitId, {token: token, name: name});
+    return update(unitId, {id: unitId, token: token, name: name});
 }
 
 // update positions
