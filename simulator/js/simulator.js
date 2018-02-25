@@ -102,8 +102,8 @@ $.when(
     create(masterId, masterToken, masterName).done(function (master) {
         masterUnit = master;
     }),
-    // create sample units
-    sampleData.map(d => create(d.id, d.token, d.name).done(function (unit) {
+    // create sample units (in separate arguments to when())
+    ...sampleData.map(d => create(d.id, d.token, d.name).done(function (unit) {
         sampleUnits.push(unit);
     })),
 ).then(function () {
