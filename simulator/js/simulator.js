@@ -5,8 +5,14 @@
  */
 
 let apiBase = '/api/v1';
-let apiPrivate = apiBase + '/private';
-let apiPublic = apiBase + '/public';
+let apiPrivate =
+    (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiPrivate) ?
+    geobroker.config.apiPrivate :
+    (apiBase + '/private');
+let apiPublic =
+    (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiPublic) ?
+    geobroker.config.apiPublic :
+    (apiBase + '/public');
 
 let masterUnit = null;
 let masterId = 'master';
