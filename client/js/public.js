@@ -103,6 +103,12 @@
     scope.units = new Map(); // id => L.marker
 
     // controls
+    L.control.scale({
+        metric: true,
+        imperial: false,
+        // maxWidth: 100,
+        updateWhenIdle: true,
+    }).addTo(map);
     L.control.layers(null, {
         "Eigene Position": ownPosition.layer,
         "Einheiten": scope.layer,
