@@ -102,7 +102,7 @@
     // empty scope
     let scope = {};
     scope.layer = L.layerGroup().addTo(map);
-    scope.units = new Map(); // id => L.marker
+    scope.units = new Map(); // id => L.circleMarker
 
     // controls
     L.control.scale({
@@ -139,7 +139,12 @@
                             .setPopupContent(unit.name);
                     } else {
                         scope.units.set(unit.id,
-                            L.marker([pos.latitude, pos.longitude])
+                            L.circleMarker([pos.latitude, pos.longitude], {
+                                color: 'black',
+                                weight: 1,
+                                fillColor: 'white',
+                                fillOpacity: 1,
+                            })
                                 .addTo(scope.layer)
                                 .bindPopup(unit.name)
                         );
