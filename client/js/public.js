@@ -73,31 +73,70 @@
     // Own Position
     let ownPosition = {};
     ownPosition.marker = undefined;
+    ownPosition.event = undefined; // cache last position
     ownPosition.layer = L.layerGroup().addTo(map);
     ownPosition.popup = function (radius) {
-        return 'Ihr seid hier im Umkreis von ' + radius.toFixed(0) + 'm';
+        return 'Ihr seid hier im Umkreis von ' + radius.toFixed(0) + 'm.';
     };
+    ownPosition.follow = true;
+    ownPosition.doFollow = function () {
+        if (ownPosition.follow && ownPosition.event !== undefined) {
+            map.panTo(ownPosition.event.latlng, {animate: true});
+        };
+    };
+    ownPosition.startFollow = function () {
+        ownPosition.follow = true;
+        ownPosition.doFollow();
+        ownPosition.followButton.state('followMe');
+    };
+    ownPosition.stopFollow = function () {
+        ownPosition.follow = false;
+        ownPosition.followButton.state('dontFollowMe');
+    };
+    ownPosition.followButton = L.easyButton({
+        states: [{
+                stateName: 'followMe',
+                icon:      'fa-map-marker',
+                title:     'automatisches Verschieben ausschalten',
+                onClick:   ownPosition.stopFollow,
+            }, {
+                stateName: 'dontFollowMe',
+                icon:      'fa-crosshairs',
+                title:     'Karte mit eigener Position verschieben',
+                onClick:   ownPosition.startFollow,
+        }],
+    }).addTo(map);
 
     // locate self
-    map.on('locationfound', function (e) {
-        let radius = e.accuracy / 2;
-        if (ownPosition.marker === undefined) {
-            ownPosition.marker = L.marker(e.latlng)
-                .addTo(ownPosition.layer)
-                .bindPopup(ownPosition.popup(radius));
-        } else {
-            ownPosition.marker.setLatLng(e.latlng)
-                .setPopupContent(ownPosition.popup(radius));
-        }
+    map
+        .on('dragstart', ownPosition.stopFollow)
+        .on('locationfound', function (e) {
+            ownPosition.event = e;
 
-        // TODO send to geobroker
-    }).on('locationerror', function (e) {
-        // TODO report on UI
-        output.warn(e);
-    }).locate({
-        watch: true,
-        enableHighAccuracy: true,
-    });
+            // TODO send to geobroker
+
+            // update the marker
+            let radius = e.accuracy / 2;
+            if (ownPosition.marker === undefined) {
+                ownPosition.marker = L.marker(e.latlng)
+                    .addTo(ownPosition.layer)
+                    .bindPopup(ownPosition.popup(radius));
+            } else {
+                ownPosition.marker.setLatLng(e.latlng)
+                    .setPopupContent(ownPosition.popup(radius));
+            };
+
+            // follow the new position
+            ownPosition.doFollow();
+        })
+        .on('locationerror', function (e) {
+            // TODO report on UI
+            output.warn(e);
+        })
+        .locate({
+            watch: true,
+            enableHighAccuracy: true,
+        });
 
     // empty scope
     let scope = {};
@@ -123,7 +162,7 @@
             if (!data || !data.units) {
                 // TODO report on UI
                 return false;
-            }
+            };
 
             // keep a copy of the existing keys and remove updated ones
             let toBeRemoved = new Set(scope.units.keys());
@@ -148,8 +187,8 @@
                                 .addTo(scope.layer)
                                 .bindPopup(unit.name)
                         );
-                    }
-                }
+                    };
+                };
             });
 
             // clear deprecated markers
@@ -168,6 +207,6 @@
         scopeRefreshId = setInterval(scopeRefresh, config.scopeRefreshInterval);
     } else {
         output.warn("Unit id or token parameter missing!")
-    }
+    };
 
 })(typeof geobroker === 'object' ? geobroker.config : {});
