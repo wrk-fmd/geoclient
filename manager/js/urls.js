@@ -43,6 +43,10 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
         .text(url)
       )
       .append(qr)
+      .append($('<p></p>')
+        .text('Info/Warnung/Bedingungen: ... Datenschutz ... Verkehrssicherheit ... StVO ... kein Navi ... nicht darauf verlassen ...')
+      )
       .appendTo('body');
+    (new QRCode(qr.get(0))).makeCode(url);
   });
 });
