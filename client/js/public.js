@@ -113,7 +113,26 @@
         .on('locationfound', function (e) {
             ownPosition.event = e;
 
-            // TODO send to geobroker
+            // send to geobroker
+            if (myPositionsUrl !== undefined) {
+                $.ajax({
+                    method: 'POST',
+                    url: myPositionsUrl,
+                    contentType: 'application/json',
+                    processData: false,
+                    data: JSON.stringify({
+                        latitude: e.latlng.lat,
+                        longitude: e.latlng.lng,
+                        timestamp: (new Date(e.timestamp)).toISOString(),
+                        accuracy: e.accuracy,
+                        heading: e.heading,
+                        speed: e.speed,
+                    }),
+                }).fail(function (e) {
+                    // TODO report on UI
+                    output.warn(e);
+                });
+            };
 
             // update the marker
             let radius = e.accuracy / 2;
