@@ -38,11 +38,15 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
     });
     let qr = $('<div></div>').addClass('qr');
     template.clone()
+      .append(qr)
+      .append($('<h1></h1>')
+        .text(unit.name)
+      )
       .append($('<a></a>')
         .attr('href', url)
         .text(url)
       )
-      .append(qr)
+      .append($('<h2>Benutzungsbedingungen</h2>'))
       .append($('<p></p>')
         .text('Info/Warnung/Bedingungen: ... Datenschutz ... Verkehrssicherheit ... StVO ... kein Navi ... nicht darauf verlassen ...')
       )
