@@ -48,19 +48,16 @@ function unitModel (data) {
   };
 };
 
-$.get(apiPrivate + '/units').fail(log).done(function (data) {
-  let viewModel = ko.mapping.fromJS(data, {
-    'configuredUnits': {
-      create: function (options) {
-        return new unitModel(options.data);
-      },
-      key: function (data) {
-        return data.id;
-      },
-    },
-  });
-  viewModel.newUnitName = ko.observable();
-  viewModel.addUnit = function () {
+function incidentModel (data) {
+  var self = this;
+  ko.mapping.fromJS(data, {
+    copy: ['id'],
+  }, self);
+};
+
+let viewModel = {
+  newUnitName: ko.observable(),
+  addUnit: function () {
     viewModel.newUnitName().split('\n').forEach(function (name) {
       let unit = new unitModel({
         id: randomToken(),
@@ -72,18 +69,18 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
       viewModel.configuredUnits.push(unit);
       unit.post();
     });
-  };
-  viewModel.randomAll = function() {
+  },
+  randomAll: function() {
     viewModel.configuredUnits().forEach(function (unit) {
       unit.random();
     });
-  };
-  viewModel.postAll = function() {
+  },
+  postAll: function() {
     viewModel.configuredUnits().forEach(function (unit) {
       unit.post();
     });
-  };
-  viewModel.removeUnit = function(unit) {
+  },
+  removeUnit: function(unit) {
     viewModel.configuredUnits.remove(unit);
     $.ajax({
         method: 'DELETE',
@@ -92,6 +89,33 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
         contentType: 'text/plain',
         dataType: 'text',
     }).fail(log);
-  };
+  },
+};
+$.when(
+  $.get(apiPrivate + '/units').fail(log).done(function (data) {
+    ko.mapping.fromJS(data, {
+      'configuredUnits': {
+	create: function (options) {
+	  return new unitModel(options.data);
+	},
+	key: function (data) {
+	  return data.id;
+	},
+      },
+    }, viewModel);
+  }),
+  $.get(apiPrivate + '/incidents').fail(log).done(function (data) {
+    ko.mapping.fromJS(data, {
+      'configuredIncidents': {
+	create: function (options) {
+	  return new incidentModel(options.data);
+	},
+	key: function (data) {
+	  return data.id;
+	},
+      },
+    }, viewModel);
+  }),
+).then(function () {
   ko.applyBindings(viewModel);
 });
