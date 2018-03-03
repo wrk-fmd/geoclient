@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018 Red Cross Vienna and contributors. All rights reserved.
+  ~
+  ~ This software may be modified and distributed under the terms of the MIT license. See the LICENSE file for details.
+  -->
+
+<html>
+<head>
+  <title>GeoBroker manager - URLs</title>
+  <style>
+    .qr {
+      margin: 1cm;
+      display: block;
+      float: right;
+    }
+    @media print {
+      .noprint {
+        display: none;
+      }
+      .unit {
+        margin: 0 1.5cm; /* cannot insert vertical space after page-break*/
+        page-break-after: always;
+      }
+      .unit::before {
+        content: " ";
+        height: 1.5cm;
+        display: block;
+      }
+      @page {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <p class="noprint">
+    When printing, every unit's info comes on a separate page.
+    (This header is not printed.).
+  <p>
+  <p class="noprint">Manage units <a href="index.html">here</a>.<p>
+  <p class="noprint">Manage incidents <a href="incidents.html">here</a>.<p>
+
+  <script src="libs/jquery/jquery-3.3.1.min.js"></script>
+  <script src="libs/qrcodejs/qrcode.js"></script>
+
+  <script src="config.js"></script>
+  <script src="js/urls.js"></script>
+</body>
+</html>
