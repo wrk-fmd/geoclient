@@ -159,8 +159,10 @@
 
     // empty scope
     let scope = {};
-    scope.layer = L.layerGroup().addTo(map);
+    scope.unitLayer = L.layerGroup().addTo(map);
+    scope.incidentLayer = L.layerGroup().addTo(map);
     scope.units = new Map(); // id => L.circleMarker
+    scope.incidents = new Map(); // id => L.marker.svgMarker.rhombusMarker
 
     // controls
     L.control.scale({
@@ -171,21 +173,21 @@
     }).addTo(map);
     L.control.layers(null, {
         "Eigene Position": ownPosition.layer,
-        "Einheiten": scope.layer,
+        "Einheiten": scope.unitLayer,
+        "Vorf\u00e4lle": scope.incidentLayer,
     }).addTo(map);
 
     // scope update
     let scopeRefreshId;
     let scopeRefresh = function () {
         $.get(myScopeUrl).done(function (data) {
-            if (!data || !data.units) {
+            if (!data || !data.units || !data.incidents) {
                 // TODO report on UI
                 return false;
             };
 
             // keep a copy of the existing keys and remove updated ones
             let toBeRemoved = new Set(scope.units.keys());
-
             // update the markers
             data.units.forEach(function (unit) {
                 if (unit.currentPosition) {
@@ -200,20 +202,54 @@
                             L.circleMarker([pos.latitude, pos.longitude], {
                                 color: 'black',
                                 weight: 1,
-                                fillColor: 'white',
+                                fillColor: unit.id == myId ? 'yellow' : 'white',
                                 fillOpacity: 1,
                             })
-                                .addTo(scope.layer)
+                                .addTo(scope.unitLayer)
                                 .bindPopup(unit.name)
                         );
                     };
                 };
             });
-
             // clear deprecated markers
             toBeRemoved.forEach(function (id) {
                 scope.units.get(id).remove();
                 scope.units.delete(id);
+            });
+
+            // keep a copy of the existing keys and remove updated ones
+            toBeRemoved = new Set(scope.incidents.keys());
+            // update the markers
+            data.incidents.forEach(function (incident) {
+                if (incident.location) {
+                    toBeRemoved.delete(incident.id);
+                    let pos = incident.location;
+                    if (scope.incidents.has(incident.id)) {
+                        scope.incidents.get(incident.id)
+                            .setLatLng([pos.latitude, pos.longitude])
+                            .setPopupContent(incident.type + ': ' + incident.info);
+                    } else {
+                        scope.incidents.set(incident.id,
+                            L.marker.svgMarker.rhombusMarker([pos.latitude, pos.longitude], {
+                                iconOptions: {
+                                    circleRatio: 0,
+                                    color: 'black',
+                                    weight: 1,
+                                    fillColor: incident.blue ? 'blue' : incident.priority ? 'red' : 'gray',
+                                    fillOpacity: 1,
+                                    iconSize: [25,25],
+                                },
+                            })
+                                .addTo(scope.incidentLayer)
+                                .bindPopup(incident.type + ': ' + incident.info)
+                        );
+                    };
+                };
+            });
+            // clear deprecated markers
+            toBeRemoved.forEach(function (id) {
+                scope.incidents.get(id).remove();
+                scope.incidents.delete(id);
             });
 
         }).fail(function (e) {
