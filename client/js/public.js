@@ -77,10 +77,11 @@
     // Own Position
     let ownPosition = {};
     ownPosition.marker = undefined;
+    ownPosition.circle = undefined;
     ownPosition.event = undefined; // cache last position
     ownPosition.layer = L.layerGroup().addTo(map);
-    ownPosition.popup = function (radius) {
-        return 'Ihr seid hier im Umkreis von ' + radius.toFixed(0) + 'm.';
+    ownPosition.popup = function (accuracy) {
+        return 'Ihr seid hier im Umkreis von ' + accuracy.toFixed(0) + 'm.';
     };
     ownPosition.follow = true;
     ownPosition.doFollow = function () {
@@ -143,10 +144,16 @@
             if (ownPosition.marker === undefined) {
                 ownPosition.marker = L.marker(e.latlng)
                     .addTo(ownPosition.layer)
-                    .bindPopup(ownPosition.popup(radius));
+                    .bindPopup(ownPosition.popup(e.accuracy));
+                ownPosition.circle = L.circle(e.latlng, radius)
+                    .addTo(ownPosition.layer)
             } else {
-                ownPosition.marker.setLatLng(e.latlng)
-                    .setPopupContent(ownPosition.popup(radius));
+                ownPosition.marker
+                    .setLatLng(e.latlng)
+                    .setPopupContent(ownPosition.popup(e.accuracy));
+                ownPosition.circle
+                    .setLatLng(e.latlng)
+                    .setRadius(radius);
             };
 
             // follow the new position
