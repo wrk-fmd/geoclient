@@ -20,6 +20,7 @@
     let myToken;
     let myScopeUrl;
     let myPositionsUrl;
+    let myPoisUrl;
     /* temporary let params */
     {
         let params = (new URL(location)).searchParams;
@@ -52,6 +53,9 @@
             + '?' + $.param({token: myToken});
         myPositionsUrl = config.apiPublic
             + '/positions/' + encodeURIComponent(myId)
+            + '?' + $.param({token: myToken});
+        myPoisUrl = config.apiPublic
+            + '/poi/' + encodeURIComponent(myId)
             + '?' + $.param({token: myToken});
     }
 
@@ -171,7 +175,7 @@
         // maxWidth: 100,
         updateWhenIdle: true,
     }).addTo(map);
-    L.control.layers(null, {
+    let layersControl = L.control.layers(null, {
         "Eigene Position": ownPosition.layer,
         "Einheiten": scope.unitLayer,
         "Vorf\u00e4lle": scope.incidentLayer,
@@ -258,10 +262,53 @@
         });
     };
 
-    if (myScopeUrl) {
+    if (myScopeUrl !== undefined) {
         scopeRefreshId = setInterval(scopeRefresh, config.scopeRefreshInterval);
     } else {
         output.warn("Unit id or token parameter missing!")
+    };
+
+    // no else, no warning - assuming myPoisUrl undefined iff myScopeUrl undefined
+    if (myPoisUrl !== undefined) {
+        $.get(myPoisUrl).done(function (data) {
+            if (!data || !data.pointsOfInterest) {
+                // TODO report on UI
+                return false;
+            };
+
+            // create markers and layers
+            let pois = new Map(); // type => L.layerGroup
+            data.pointsOfInterest.forEach(function (poi) {
+                if (poi.location) {
+                    let type = poi.type;
+                    let layer;
+                    if (pois.has(type)) {
+                        layer = pois.get(type);
+                    } else {
+                        layer = L.layerGroup();
+                        layersControl.addOverlay(layer, type);
+                        pois.set(type, layer);
+                    };
+                    L.marker.svgMarker.rhombusMarker([poi.location.latitude, poi.location.longitude], {
+                        iconOptions: {
+                            circleRatio: 0,
+                            color: 'black',
+                            weight: 1,
+                            fillColor: 'yellow',
+                            fillOpacity: 0.5,
+                            iconSize: [25,25],
+                        },
+                    })
+                        .addTo(layer)
+                        .bindPopup(poi.info)
+                    ;
+                };
+            });
+
+        }).fail(function (e) {
+            // TODO report on UI
+            output.warn(e);
+        });
     };
 
 })(typeof geobroker === 'object' ? geobroker.config : {});
