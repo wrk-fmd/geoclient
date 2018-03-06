@@ -7,20 +7,21 @@
 
 <html>
 <head>
-  <title>GeoBroker manager - incidents</title>
+  <title>GeoBroker manager - POIs</title>
 </head>
 <body>
   <p>The main design goals for this module are simple code and less effort - data errors are <em>not</em> handled in general!</p>
 
   <p>Manage units <a href="index.html">here</a>.<p>
-  <p>Manage POIs <a href="pois.html">here</a>.<p>
+  <p>Manage incidents <a href="incidents.html">here</a>.<p>
   <p>Print unit URLs <a href="urls.html">here</a>.<p>
 
-  <h1>Incidents</h1>
-  <form data-bind="submit: addIncident">
+  <h1>POIs</h1>
+  <form data-bind="submit: addPoi">
+    <input data-bind="value: newPoiType" />
     <textarea
-      placeholder="one incident type per line"
-      data-bind="value: newIncidentType"
+      placeholder="one POI info per line"
+      data-bind="value: newPoiInfo"
     ></textarea><button type="submit">Add</button>
   </form>
   <table>
@@ -28,19 +29,15 @@
       <th>Id</th>
       <th>Type</th>
       <th>Info</th>
-      <th>Priority</th>
-      <th>Blue</th>
       <th>Latitude/Longitude</th>
       <th>Actions
         <a href="#" data-bind="click: postAll">Save all</a>
       </th>
     </tr></thead>
-    <tbody data-bind="foreach: configuredIncidents"><tr>
+    <tbody data-bind="foreach: pointsOfInterest"><tr>
       <td data-bind="text: id"></td>
       <td><input data-bind="value: type" /></td>
       <td><input data-bind="value: info" /></td>
-      <td><input data-bind='checked: priority' type='checkbox' /></td>
-      <td><input data-bind='checked: blue' type='checkbox' /></td>
       <td data-bind="with: location">
         <!-- TODO implement as map -->
         <input data-bind="value: latitude" />
@@ -58,6 +55,6 @@
   <script src="libs/knockout/v3.4.2/knockout.mapping-2.4.1.js"></script>
 
   <script src="config.js"></script>
-  <script src="js/incidents.js"></script>
+  <script src="js/pois.js"></script>
 </body>
 </html>
