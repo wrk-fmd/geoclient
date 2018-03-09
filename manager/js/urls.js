@@ -6,26 +6,26 @@
 
 let apiBase = '/api/v1';
 let apiPrivate =
-    (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiPrivate) ?
+  (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiPrivate) ?
     geobroker.config.apiPrivate :
     (apiBase + '/private');
 let apiPublic =
-    (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiPublic) ?
+  (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiPublic) ?
     geobroker.config.apiPublic :
     (apiBase + '/public');
 let apiClient =
-    (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiClient) ?
+  (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiClient) ?
     geobroker.config.apiClient :
     (window.location.protocol + '//' + window.location.host + '/');
 
 function log(text) {
-    if (text && text.responseJSON) {
-        text = text.responseJSON;
-    }
-    if (typeof text !== 'string') {
-        text = JSON.stringify(text, null, 2);
-    }
-    $('<p></p>').text(text).appendTo('body').get(0).scrollIntoView();
+  if (text && text.responseJSON) {
+    text = text.responseJSON;
+  }
+  if (typeof text !== 'string') {
+    text = JSON.stringify(text, null, 2);
+  }
+  $('<p></p>').text(text).appendTo('body').get(0).scrollIntoView();
 }
 
 
@@ -38,13 +38,17 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
     });
     let qr = $('<div></div>').addClass('qr');
     template.clone()
-      .append(qr)
       .append($('<h1></h1>')
         .text(unit.name)
       )
-      .append($('<a></a>')
-        .attr('href', url)
-        .text(url)
+      .append(qr)
+      .append($('<p></p>')
+        .addClass('link-paragraph')
+        .append($('<a></a>')
+          .addClass('line-wrap')
+          .attr('href', url)
+          .text(url)
+        )
       )
       .append($('<h2>Benutzungsbedingungen</h2>'))
       .append($('<p></p>')
