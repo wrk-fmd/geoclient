@@ -7,45 +7,61 @@
 
 <html>
 <head>
-  <title>GeoBroker manager - URLs</title>
-  <style>
-    .qr {
-      margin: 1cm;
-      display: block;
-      float: right;
-    }
-    @media print {
-      .noprint {
-        display: none;
-      }
-      .unit {
-        margin: 0 1.5cm; /* cannot insert vertical space after page-break*/
-        page-break-after: always;
-      }
-      .unit::before {
-        content: " ";
-        height: 1.5cm;
-        display: block;
-      }
-      @page {
-        margin: 0;
-      }
-    }
-  </style>
+    <title>GeoBroker manager - URLs</title>
+    <style>
+        .qr {
+            margin: 1cm;
+            display: block;
+        }
+
+        .link-paragraph {
+            width: 100%;
+        }
+
+        a {
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+        }
+
+        @media print {
+            .noprint {
+                display: none;
+            }
+
+            .unit {
+                margin: 0 1.5cm; /* cannot insert vertical space after page-break*/
+                page-break-after: always;
+            }
+
+            .unit::before {
+                content: " ";
+                height: 1.5cm;
+                display: block;
+            }
+
+            @page {
+                margin: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-  <p class="noprint">
+<p class="noprint">
     When printing, every unit's info comes on a separate page.
     (This header is not printed.).
-  <p>
-  <p class="noprint">Manage units <a href="index.html">here</a>.<p>
-  <p class="noprint">Manage incidents <a href="incidents.html">here</a>.<p>
-  <p class="noprint">Manage POIs <a href="pois.html">here</a>.<p>
+<p>
+<p class="noprint">Manage units <a href="index.html">here</a>.
+<p>
+<p class="noprint">Manage incidents <a href="incidents.html">here</a>.
+<p>
+<p class="noprint">Manage POIs <a href="pois.html">here</a>.
+<p>
 
-  <script src="libs/jquery/jquery-3.3.1.min.js"></script>
-  <script src="libs/qrcodejs/qrcode.js"></script>
+    <script src="libs/jquery/jquery-3.3.1.min.js"></script>
+    <script src="libs/qrcodejs/qrcode.js"></script>
 
-  <script src="config.js"></script>
-  <script src="js/urls.js"></script>
+    <script src="config.js"></script>
+    <script src="js/urls.js"></script>
 </body>
 </html>

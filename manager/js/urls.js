@@ -7,16 +7,16 @@
 let apiBase = '/api/v1';
 let apiPrivate =
     (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiPrivate) ?
-    geobroker.config.apiPrivate :
-    (apiBase + '/private');
+        geobroker.config.apiPrivate :
+        (apiBase + '/private');
 let apiPublic =
     (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiPublic) ?
-    geobroker.config.apiPublic :
-    (apiBase + '/public');
+        geobroker.config.apiPublic :
+        (apiBase + '/public');
 let apiClient =
     (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiClient) ?
-    geobroker.config.apiClient :
-    (window.location.protocol + '//' + window.location.host + '/');
+        geobroker.config.apiClient :
+        (window.location.protocol + '//' + window.location.host + '/');
 
 function log(text) {
     if (text && text.responseJSON) {
@@ -30,27 +30,30 @@ function log(text) {
 
 
 $.get(apiPrivate + '/units').fail(log).done(function (data) {
-  let template = $('<div></div>').addClass('unit');
-  data.configuredUnits.forEach(function (unit) {
-    let url = apiClient + '?' + $.param({
-      id: unit.id,
-      token: unit.token,
+    let template = $('<div></div>').addClass('unit');
+    data.configuredUnits.forEach(function (unit) {
+        let url = apiClient + '?' + $.param({
+            id: unit.id,
+            token: unit.token,
+        });
+        let qr = $('<div></div>').addClass('qr');
+        template.clone()
+            .append($('<h1></h1>')
+                .text(unit.name)
+            )
+            .append(qr)
+            .append($('<p></p>')
+                .addClass('link-paragraph')
+                .append($('<a></a>')
+                    .attr('href', url)
+                    .text(url)
+                )
+            )
+            .append($('<h2>Benutzungsbedingungen</h2>'))
+            .append($('<p></p>')
+                .text('Info/Warnung/Bedingungen: ... Datenschutz ... Verkehrssicherheit ... StVO ... kein Navi ... nicht darauf verlassen ...')
+            )
+            .appendTo('body');
+        (new QRCode(qr.get(0))).makeCode(url);
     });
-    let qr = $('<div></div>').addClass('qr');
-    template.clone()
-      .append(qr)
-      .append($('<h1></h1>')
-        .text(unit.name)
-      )
-      .append($('<a></a>')
-        .attr('href', url)
-        .text(url)
-      )
-      .append($('<h2>Benutzungsbedingungen</h2>'))
-      .append($('<p></p>')
-        .text('Info/Warnung/Bedingungen: ... Datenschutz ... Verkehrssicherheit ... StVO ... kein Navi ... nicht darauf verlassen ...')
-      )
-      .appendTo('body');
-    (new QRCode(qr.get(0))).makeCode(url);
-  });
 });
