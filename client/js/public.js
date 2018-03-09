@@ -145,7 +145,9 @@
                 ownPosition.marker = L.marker(e.latlng)
                     .addTo(ownPosition.layer)
                     .bindPopup(ownPosition.popup(e.accuracy));
-                ownPosition.circle = L.circle(e.latlng, radius)
+                ownPosition.circle = L.circle(e.latlng, {
+                    radius: radius,
+                })
                     .addTo(ownPosition.layer)
             } else {
                 ownPosition.marker
@@ -215,6 +217,7 @@
                                 weight: 1,
                                 fillColor: unit.id == myId ? 'yellow' : 'white',
                                 fillOpacity: 1,
+                                pane: 'markerPane',
                             })
                                 .addTo(scope.unitLayer)
                                 .bindPopup(unit.name)
@@ -250,6 +253,7 @@
                                     fillOpacity: 1,
                                     iconSize: [25,25],
                                 },
+                                pane: 'overlayPane',
                             })
                                 .addTo(scope.incidentLayer)
                                 .bindPopup(incident.type + ': ' + incident.info)
