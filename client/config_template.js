@@ -7,11 +7,15 @@
 let geobroker = {};
 
 geobroker.config = {
-    // scopeRefreshInterval: 2000, // given in milliseconds. Default 2000
+  // scopeRefreshInterval: 2000, // given in milliseconds. Default 2000
 
-    // initLatitude: 48.2089816,
-    // initLongitude: 16.3710193,
-    // initZoom: 14,
+  // initLatitude: 48.2089816,
+  // initLongitude: 16.3710193,
+  // initZoom: 14,
 
-    apiPublic: '/api/v1/public',
+  initLayers: function (map, layersControl) {
+    // optionally add data
+  },
+
+  apiPublic: '/api/v1/public',
 };
