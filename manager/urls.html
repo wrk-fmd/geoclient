@@ -12,21 +12,34 @@
     .qr {
       margin: 1cm;
       display: block;
-      float: right;
     }
+
+    .link-paragraph {
+      width: 100%;
+    }
+
+    .line-wrap {
+      white-space: pre-wrap; /* css-3 */
+      white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+      word-wrap: break-word; /* Internet Explorer 5.5+ */
+    }
+
     @media print {
       .noprint {
         display: none;
       }
+
       .unit {
         margin: 0 1.5cm; /* cannot insert vertical space after page-break*/
         page-break-after: always;
       }
+
       .unit::before {
         content: " ";
         height: 1.5cm;
         display: block;
       }
+
       @page {
         margin: 0;
       }
