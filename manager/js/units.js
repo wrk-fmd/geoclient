@@ -31,6 +31,8 @@ function randomToken () {
 
 function unitModel (data) {
   var self = this;
+  self.units = ko.observableArray();
+  self.incidents = ko.observableArray();
   ko.mapping.fromJS(data, {
     copy: ['id'],
   }, self);
