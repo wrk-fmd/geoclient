@@ -41,7 +41,7 @@
     initLongitude: 16.3710193,
     initZoom: 14,
 
-    initLayers: $.noop /*(map, layersControl)*/,
+    loadData: [],
 
     apiPublic: '/api/v1/public',
   };
@@ -281,6 +281,20 @@
     output.warn("Unit id or token parameter missing!")
   };
 
+  // manage POI layers
+  let pois = {};
+  pois.layers = new Map(); // name => L.layerGroup
+  pois.getLayer = function (name) {
+    if (pois.layers.has(name)) {
+      return pois.layers.get(name);
+    } else {
+      let layer = L.layerGroup();
+      layersControl.addOverlay(layer, name);
+      pois.layers.set(name, layer);
+      return layer;
+    };
+  };
+
   // no else, no warning - assuming myPoisUrl undefined iff myScopeUrl undefined
   if (myPoisUrl !== undefined) {
     $.get(myPoisUrl).done(function (data) {
@@ -288,20 +302,10 @@
         // TODO report on UI
         return false;
       };
-
       // create markers and layers
-      let pois = new Map(); // type => L.layerGroup
       data.pointsOfInterest.forEach(function (poi) {
         if (poi.location) {
-          let type = poi.type;
-          let layer;
-          if (pois.has(type)) {
-            layer = pois.get(type);
-          } else {
-            layer = L.layerGroup();
-            layersControl.addOverlay(layer, type);
-            pois.set(type, layer);
-          };
+          let layer = pois.getLayer(poi.type);
           L.marker.svgMarker.rhombusMarker([poi.location.latitude, poi.location.longitude], {
             iconOptions: {
               circleRatio: 0,
@@ -324,7 +328,41 @@
     });
   };
 
-  // inject data from the config
-  config.initLayers(map, layersControl);
+  config.loadData.forEach(function (set) {
+    let config = $.extend({
+      authenticate: false,
+      markerFactory: L.marker,
+      markerOptions: {/* must be extended per marker */},
+      layerName: 'Extra',
+      layerShow: false,
+      popupFunction: null,
+      popupOptions: {},
+      tooltipFunction: null,
+      tooltipOptions: {},
+    }, set);
+    if (!config.authenticate || myPoisUrl !== undefined) {
+      $.get(config.url, function (data) {
+        let layer = pois.getLayer(config.layerName);
+        data.forEach(function (p) {
+          let options = $.extend({
+            pane: 'overlayPane',
+            title: p.text,
+            alt: p.text,
+          }, config.markerOptions);
+          let m = config.markerFactory(p.coordinates, options)
+            .addTo(layer);
+          if (config.popupFunction) {
+            m.bindPopup(config.popupFunction, config.popupOptions);
+          };
+          if (config.tooltipFunction) {
+            m.bindTooltip(config.tooltipFunction, config.tooltipOptions);
+          };
+        });
+        if (config.layerShow) {
+          layer.addTo(map);
+        };
+      });
+    };
+  });
 
 })(typeof geobroker === 'object' ? geobroker.config : {});
