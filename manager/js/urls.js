@@ -38,10 +38,10 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
     });
     let qr = $('<div></div>').addClass('qr');
     template.clone()
+      .append(qr)
       .append($('<h1></h1>')
         .text(unit.name)
       )
-      .append(qr)
       .append($('<p></p>')
         .addClass('link-paragraph')
         .append($('<a></a>')
@@ -55,6 +55,11 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
         .text('Info/Warnung/Bedingungen: ... Datenschutz ... Verkehrssicherheit ... StVO ... kein Navi ... nicht darauf verlassen ...')
       )
       .appendTo('body');
-    (new QRCode(qr.get(0))).makeCode(url);
+    new QRCode(qr.get(0), {
+      width: 300,
+      height: 300,
+      correctLevel: QRCode.CorrectLevel.L,
+      text: url,
+    });
   });
 });
