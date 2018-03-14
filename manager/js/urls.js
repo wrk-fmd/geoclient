@@ -28,38 +28,53 @@ function log(text) {
   $('<p></p>').text(text).appendTo('body').get(0).scrollIntoView();
 }
 
+let template = $('<div></div>').addClass('unit');
+function addUnitToView(unit) {
+  let url = apiClient + '?' + $.param({
+    id: unit.id,
+    token: unit.token,
+  });
+  let qr = $('<div></div>').addClass('qr');
+  template.clone()
+    .append(qr)
+    .append($('<h1></h1>')
+      .text(unit.name)
+    )
+    .append($('<p></p>')
+      .addClass('link-paragraph')
+      .append($('<a></a>')
+        .addClass('line-wrap')
+        .attr('href', url)
+        .text(url)
+      )
+    )
+    .append($('<h2>Benutzungsbedingungen</h2>'))
+    .append($('<p></p>')
+      .text('Info/Warnung/Bedingungen: ... Datenschutz ... Verkehrssicherheit ... StVO ... kein Navi ... nicht darauf verlassen ...')
+    )
+    .appendTo('body');
+  new QRCode(qr.get(0), {
+    width: 300,
+    height: 300,
+    correctLevel: QRCode.CorrectLevel.L,
+    text: url,
+  });
+}
+
+let prefix = '';
+{
+  let params = (new URL(location)).searchParams;
+  if (params.has('prefix')) {
+    prefix = params.get('prefix');
+  }
+}
 
 $.get(apiPrivate + '/units').fail(log).done(function (data) {
-  let template = $('<div></div>').addClass('unit');
   data.configuredUnits.forEach(function (unit) {
-    let url = apiClient + '?' + $.param({
-      id: unit.id,
-      token: unit.token,
-    });
-    let qr = $('<div></div>').addClass('qr');
-    template.clone()
-      .append(qr)
-      .append($('<h1></h1>')
-        .text(unit.name)
-      )
-      .append($('<p></p>')
-        .addClass('link-paragraph')
-        .append($('<a></a>')
-          .addClass('line-wrap')
-          .attr('href', url)
-          .text(url)
-        )
-      )
-      .append($('<h2>Benutzungsbedingungen</h2>'))
-      .append($('<p></p>')
-        .text('Info/Warnung/Bedingungen: ... Datenschutz ... Verkehrssicherheit ... StVO ... kein Navi ... nicht darauf verlassen ...')
-      )
-      .appendTo('body');
-    new QRCode(qr.get(0), {
-      width: 300,
-      height: 300,
-      correctLevel: QRCode.CorrectLevel.L,
-      text: url,
-    });
+    if (unit.id.startsWith(prefix)) {
+      addUnitToView(unit);
+    } else {
+      console.info("Skipping unit with not-matching id.", unit)
+    }
   });
 });
