@@ -114,10 +114,45 @@
     }],
   }).addTo(map);
 
+  // status
+  let appStatus = {};
+  appStatus.reload = function() {
+    window.location.reload();
+  };
+  appStatus.locationButton = L.easyButton({
+    position: 'bottomleft',
+    states: [{
+        stateName: 'green',
+        icon:    'fa-globe green',
+        title:   'die eigene Position wurde gefunden',
+        onClick: $.noop,
+      }, {
+        stateName: 'red',
+        icon:    'fa-globe red',
+        title:   'klicken um die Seite neu zu laden',
+        onClick:  appStatus.reload,
+    }],
+  }).addTo(map);
+  appStatus.connectionButton = L.easyButton({
+    position: 'bottomleft',
+    states: [{
+        stateName: 'green',
+        icon:    'fa-plug green',
+        title:   'regelmäßige Kommunikation mit dem Server',
+        onClick: $.noop,
+      }, {
+        stateName: 'red',
+        icon:    'fa-plug red',
+        title:   'klicken um die Seite neu zu laden',
+        onClick:  appStatus.reload,
+    }],
+  }).addTo(map);
+
   // locate self
   map
     .on('dragstart', ownPosition.stopFollow)
     .on('locationfound', function (e) {
+      appStatus.locationButton.state('green');
       ownPosition.event = e;
 
       // send to geobroker
@@ -135,7 +170,10 @@
             heading: e.heading,
             speed: e.speed,
           }),
+        }).done(function (e) {
+          appStatus.connectionButton.state('green');
         }).fail(function (e) {
+          appStatus.connectionButton.state('red');
           // TODO report on UI
           output.warn(e);
         });
@@ -164,6 +202,7 @@
       ownPosition.doFollow();
     })
     .on('locationerror', function (e) {
+      appStatus.locationButton.state('red');
       // TODO report on UI
       output.warn(e);
     })
@@ -181,6 +220,7 @@
 
   // controls
   L.control.scale({
+    position: 'bottomright',
     metric: true,
     imperial: false,
     // maxWidth: 100,
@@ -269,7 +309,10 @@
         scope.incidents.delete(id);
       });
 
+    }).done(function (e) {
+      appStatus.connectionButton.state('green');
     }).fail(function (e) {
+      appStatus.connectionButton.state('red');
       // TODO report on UI
       output.warn(e);
     });
@@ -278,6 +321,7 @@
   if (myScopeUrl !== undefined) {
     scopeRefreshId = setInterval(scopeRefresh, config.scopeRefreshInterval);
   } else {
+    appStatus.connectionButton.state('red');
     output.warn("Unit id or token parameter missing!")
   };
 
@@ -322,7 +366,10 @@
         };
       });
 
+    }).done(function (e) {
+      appStatus.connectionButton.state('green');
     }).fail(function (e) {
+      appStatus.connectionButton.state('red');
       // TODO report on UI
       output.warn(e);
     });
