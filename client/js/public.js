@@ -279,26 +279,12 @@
       data.incidents.forEach(function (incident) {
         if (incident.location) {
           toBeRemoved.delete(incident.id);
-          let pos = incident.location;
           if (scope.incidents.has(incident.id)) {
-            scope.incidents.get(incident.id)
-              .setLatLng([pos.latitude, pos.longitude])
-              .setPopupContent(incident.type + ': ' + incident.info);
+            scope.incidents.get(incident.id).updateIncident(incident);
           } else {
             scope.incidents.set(incident.id,
-              L.marker.svgMarker.rhombusMarker([pos.latitude, pos.longitude], {
-                iconOptions: {
-                  circleRatio: 0,
-                  color: 'black',
-                  weight: 1,
-                  fillColor: incident.blue ? 'blue' : incident.priority ? 'red' : 'gray',
-                  fillOpacity: 1,
-                  iconSize: [25,25],
-                },
-                pane: 'overlayPane',
-              })
+              L.marker.incidentMarker(incident)
                 .addTo(scope.incidentLayer)
-                .bindPopup(incident.type + ': ' + incident.info)
             );
           };
         };
