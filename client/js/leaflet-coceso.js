@@ -66,8 +66,7 @@ L.Marker.IncidentMarker = L.Marker.extend({
   },
   updateIncident: function(incident) {
     this._incident = incident;
-    let latlng = L.latLng(incident.location.latitude, incident.location.longitude);
-    this._latlng = latlng;
+    this.setLatLng([incident.location.latitude, incident.location.longitude]);
     this.setIcon(cocesoIcons.get(incident.priority, incident.blue));
     this.setPopupContent(incident.type + ': ' + incident.info);
     return this;
@@ -75,5 +74,45 @@ L.Marker.IncidentMarker = L.Marker.extend({
 });
 
 L.marker.incidentMarker = function(incident, options) {
-    return new L.Marker.IncidentMarker(incident, options)
+  return new L.Marker.IncidentMarker(incident, options);
+};
+
+L.CircleMarker.UnitMarker = L.CircleMarker.extend({
+  options: {
+    color: 'black',
+    weight: 2,
+    fillColor: 'white',
+    fillOpacity: 1,
+    pane: 'markerPane',
+  },
+  initialize: function(unit, options) {
+    options = L.Util.setOptions(this, options);
+    this.setRadius(options.radius);
+    this.bindPopup('');
+    this.updateUnit(unit);
+  },
+  getColor: function(unit) {
+    if (unit.ownUnit) return 'yellow';
+    // XXX should be configurable
+    if (unit.name.indexOf('NEF') !== -1) return 'crimson';
+    if (unit.name.indexOf('RTW') !== -1) return 'coral';
+    if (unit.name.indexOf('SEW') !== -1) return 'white';
+    if (unit.name.indexOf('KTW') !== -1) return 'white';
+    if (unit.name.indexOf('VOK') !== -1) return 'fuchsia';
+    if (unit.name.indexOf('Kdo') !== -1) return 'fuchsia';
+    return 'white';
+  },
+  updateUnit: function(unit) {
+    this._unit = unit;
+    this.setLatLng([unit.currentPosition.latitude, unit.currentPosition.longitude]);
+    this.setPopupContent(unit.name);
+    this.setStyle({
+      fillColor: this.getColor(unit),
+    });
+    return this;
+  },
+});
+
+L.circleMarker.unitMarker = function(unit, options) {
+  return new L.CircleMarker.UnitMarker(unit, options);
 };

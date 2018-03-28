@@ -246,23 +246,14 @@
       // update the markers
       data.units.forEach(function (unit) {
         if (unit.currentPosition) {
+          unit.ownUnit = unit.id == myId;
           toBeRemoved.delete(unit.id);
-          let pos = unit.currentPosition;
           if (scope.units.has(unit.id)) {
-            scope.units.get(unit.id)
-              .setLatLng([pos.latitude, pos.longitude])
-              .setPopupContent(unit.name);
+            scope.units.get(unit.id).updateUnit(unit);
           } else {
             scope.units.set(unit.id,
-              L.circleMarker([pos.latitude, pos.longitude], {
-                color: 'black',
-                weight: 1,
-                fillColor: unit.id == myId ? 'yellow' : 'white',
-                fillOpacity: 1,
-                pane: 'markerPane',
-              })
+              L.circleMarker.unitMarker(unit)
                 .addTo(scope.unitLayer)
-                .bindPopup(unit.name)
             );
           };
         };
