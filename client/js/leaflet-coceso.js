@@ -83,13 +83,37 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     weight: 2,
     fillColor: 'white',
     fillOpacity: 1,
+    fadeInterval: 15000, // milliseconds
+    fadeStep: 0.1,
+    fadeMinOpacity: 0.3,
     pane: 'markerPane',
   },
   initialize: function(unit, options) {
     options = L.Util.setOptions(this, options);
+    this._defaultOpacity = options.fillOpacity;
     this.setRadius(options.radius);
     this.bindPopup('');
     this.updateUnit(unit);
+    this.on('add', function(e) {
+      this._fadeTimer = setInterval(
+        this.fadeStep,
+        this.options.fadeInterval,
+        this,
+      );
+    });
+    this.on('remove', function(e) {
+      clearInterval(this._fadeTimer);
+    });
+  },
+  fadeStep: function(self) {
+    // setInterval triggers in different context, use self instead of this
+    self = self || this;
+    let elapsed = new Date() - new Date(self._unit.currentPosition.timestamp); // milliseconds
+    let stepCount = Math.floor(elapsed/self.options.fadeInterval);
+    let value = self._defaultOpacity - stepCount * self.options.fadeStep;
+    self.setStyle({
+      fillOpacity: Math.max(value, self.options.fadeMinOpacity),
+    });
   },
   getColor: function(unit) {
     if (unit.ownUnit) return 'yellow';
@@ -104,6 +128,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
   },
   updateUnit: function(unit) {
     this._unit = unit;
+    this.fadeStep();
     this.setLatLng([unit.currentPosition.latitude, unit.currentPosition.longitude]);
     this.setPopupContent(unit.name);
     this.setStyle({
