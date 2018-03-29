@@ -10,7 +10,7 @@
 let cocesoIcons = {
   incident: L.icon({
     iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E"+
-      "%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='grey' stroke-width='2'/%3E"+
+      "%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='white' stroke-width='2'/%3E"+
       "%3C/svg%3E",
     iconSize:    [14,14],
     iconAnchor:  [7,7],
@@ -34,7 +34,7 @@ let cocesoIcons = {
   }),
   incidentBlue: L.icon({
     iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E"+
-      "%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='blue' stroke-width='2'/%3E"+
+      "%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='white' stroke-width='2'/%3E"+
       "%3C/svg%3E",
     iconSize:    [14,14],
     iconAnchor:  [7,7],
