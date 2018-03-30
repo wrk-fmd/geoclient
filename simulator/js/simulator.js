@@ -24,17 +24,33 @@ let sampleData = [
     {
         id: 'c',
         token: 'around',
-        name: 'Circle',
+        name: 'VCM VOK 1',
+        lastPoint: {
+          latitude: 48.2,
+          longitude: 16.35,
+        },
+        targetPoint: {
+          latitude: 48.15,
+          longitude: 16.4,
+        },
     },
     {
         id: 'h',
         token: 'ew',
-        name: 'East-West',
+        name: 'RTW 42',
+        targetPoint: {
+          latitude: 48.15,
+          longitude: 16.4,
+        },
     },
     {
         id: 'v',
         token: 'ns',
-        name: 'North-South',
+        name: 'NEF 1',
+        lastPoint: {
+          latitude: 48.2,
+          longitude: 16.35,
+        },
     },
 ];
 let sampleCenterX = 16.4; // longitude
@@ -103,7 +119,7 @@ $.when(
         masterUnit = master;
     }),
     // create sample units (in separate arguments to when())
-    ...sampleData.map(d => create(d.id, d.token, d.name).done(function (unit) {
+    ...sampleData.map(d => update(d.id, d).done(function (unit) {
         sampleUnits.push(unit);
     })),
 ).then(function () {

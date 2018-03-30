@@ -92,8 +92,16 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     options = L.Util.setOptions(this, options);
     this._defaultOpacity = options.fillOpacity;
     this.setRadius(options.radius);
+
+    // popup is for touch, tooltip for mouse
     this.bindPopup('');
+    this.bindTooltip('', {
+      direction: 'top',
+    });
+
+    this.initFeatureLayer();
     this.updateUnit(unit);
+
     this.on('add', function(e) {
       this._fadeTimer = setInterval(
         this.fadeStep,
@@ -104,6 +112,44 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this.on('remove', function(e) {
       clearInterval(this._fadeTimer);
     });
+  },
+  initFeatureLayer: function() {
+    this._fromLine = L.polyline([], {
+      color: 'gray',
+      interactive: false,
+    });
+    this._targetLine = L.polyline([], {
+      color: 'green',
+      interactive: false,
+    });
+    this._featureLayer = L.layerGroup([this._fromLine, this._targetLine]);
+    // event handlers are asymmetric to not hide while either is still open
+    this.on('popupopen', this.showFeatureLayer);
+    this.on('popupclose', this.hideFeatureLayerPopup);
+    this.on('tooltipopen', this.showFeatureLayer);
+    this.on('tooltipclose', this.hideFeatureLayerTooltip);
+  },
+  updateFeatureLayer: function(unit) {
+    let here = this.getLatLng();
+    let from = unit.lastPoint
+      ? [unit.lastPoint.latitude, unit.lastPoint.longitude]
+      : here;
+    let target = unit.targetPoint
+      ? [unit.targetPoint.latitude, unit.targetPoint.longitude]
+      : here;
+    this._fromLine.setLatLngs([from, here]);
+    this._targetLine.setLatLngs([here, target]);
+  },
+  showFeatureLayer: function(e) {
+    this._featureLayer.addTo(this._map);
+  },
+  hideFeatureLayerPopup: function(e) {
+    if (this.isTooltipOpen()) return;
+    this._featureLayer.remove();
+  },
+  hideFeatureLayerTooltip: function(e) {
+    if (this.isPopupOpen()) return;
+    this._featureLayer.remove();
   },
   fadeStep: function(self) {
     // setInterval triggers in different context, use self instead of this
@@ -131,9 +177,11 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this.fadeStep();
     this.setLatLng([unit.currentPosition.latitude, unit.currentPosition.longitude]);
     this.setPopupContent(unit.name);
+    this.setTooltipContent(unit.name);
     this.setStyle({
       fillColor: this.getColor(unit),
     });
+    this.updateFeatureLayer(unit);
     return this;
   },
 });
