@@ -146,7 +146,8 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this._featureLayer.addTo(this._map);
   },
   hideFeatureLayerPopup: function(e) {
-    if (this.isTooltipOpen()) return;
+    // do not show vectors for permanent tooltip
+    //if (this.isTooltipOpen()) return;
     this._featureLayer.remove();
   },
   hideFeatureLayerTooltip: function(e) {
