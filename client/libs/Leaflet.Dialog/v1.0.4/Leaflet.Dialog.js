@@ -1,3 +1,4 @@
+// modified by heinrichmartin: use free icons
 L.Control.Dialog = L.Control.extend({
   options: {
     size: [ 300, 300 ],
@@ -198,7 +199,7 @@ L.Control.Dialog = L.Control.extend({
     var innerContainer = this._innerContainer = L.DomUtil.create('div', className + '-inner');
 
     var grabberNode = this._grabberNode = L.DomUtil.create('div', className + '-grabber');
-    var grabberIcon = L.DomUtil.create('i', 'fa fa-arrows');
+    var grabberIcon = L.DomUtil.create('i', 'fa fa-arrows-alt');
     grabberNode.appendChild(grabberIcon);
 
     L.DomEvent.on(grabberNode, 'mousedown', this._handleMoveStart, this);
@@ -209,7 +210,7 @@ L.Control.Dialog = L.Control.extend({
     L.DomEvent.on(closeNode, 'click', this._handleClose, this);
 
     var resizerNode = this._resizerNode = L.DomUtil.create('div', className + '-resizer');
-    var resizeIcon = L.DomUtil.create('i', 'fa fa-arrows-h fa-rotate-45');
+    var resizeIcon = L.DomUtil.create('i', 'fa fa-expand-arrows-alt');
     resizerNode.appendChild(resizeIcon);
 
     L.DomEvent.on(resizerNode, 'mousedown', this._handleResizeStart, this);
