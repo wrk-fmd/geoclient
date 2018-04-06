@@ -232,6 +232,28 @@
     "Vorf\u00e4lle": scope.incidentLayer,
   }).addTo(map);
 
+  // help dialog
+  let help = {};
+  help.size = [map.getSize().x-150, map.getSize().y-50];
+  help.dialog = L.control.dialog({
+    anchor: [0, 50],
+    size: help.size,
+    maxSize: help.size,
+    initOpen: false,
+  })
+    .setContent($('#help').get(0))
+    .addTo(map)
+    .freeze();
+  L.easyButton({
+    position: 'topright',
+    states: [{
+      stateName: 'help',
+      icon:    'fa-question',
+      title:   'Erläuterungen',
+      onClick: help.dialog.toggle.bind(help.dialog),
+    }],
+  }).addTo(map);
+
   // scope update
   let scopeRefreshId;
   let scopeRefresh = function () {
