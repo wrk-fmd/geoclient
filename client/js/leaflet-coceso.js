@@ -96,7 +96,6 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     // popup is for touch, tooltip for mouse
     this.bindPopup('');
     this.bindTooltip('', {
-      direction: 'top',
       permanent: true,
     });
 
