@@ -122,29 +122,29 @@
   appStatus.locationButton = L.easyButton({
     position: 'bottomleft',
     states: [{
-        stateName: 'green',
-        icon:    'fa-globe green',
-        title:   'die eigene Position wurde gefunden',
-        onClick: $.noop,
-      }, {
-        stateName: 'red',
-        icon:    'fa-globe red',
-        title:   'klicken um die Seite neu zu laden',
-        onClick:  appStatus.reload,
+      stateName: 'green',
+      icon:    'fa-globe green',
+      title:   'die eigene Position wurde gefunden',
+      onClick: $.noop,
+    }, {
+      stateName: 'red',
+      icon:    'fa-globe red',
+      title:   'klicken um die Seite neu zu laden',
+      onClick:  appStatus.reload,
     }],
   }).addTo(map);
   appStatus.connectionButton = L.easyButton({
     position: 'bottomleft',
     states: [{
-        stateName: 'green',
-        icon:    'fa-plug green',
-        title:   'regelmäßige Kommunikation mit dem Server',
-        onClick: $.noop,
-      }, {
-        stateName: 'red',
-        icon:    'fa-plug red',
-        title:   'klicken um die Seite neu zu laden',
-        onClick:  appStatus.reload,
+      stateName: 'green',
+      icon:    'fa-plug green',
+      title:   'regelmäßige Kommunikation mit dem Server',
+      onClick: $.noop,
+    }, {
+      stateName: 'red',
+      icon:    'fa-plug red',
+      title:   'klicken um die Seite neu zu laden',
+      onClick:  appStatus.reload,
     }],
   }).addTo(map);
 
