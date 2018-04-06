@@ -97,6 +97,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this.bindPopup('');
     this.bindTooltip('', {
       direction: 'top',
+      permanent: true,
     });
 
     this.initFeatureLayer();
