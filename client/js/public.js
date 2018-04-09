@@ -376,6 +376,7 @@
 
   config.loadData.forEach(function (set) {
     let config = $.extend({
+      type: 'marker', // or a 'constructor' of omnivore, i.e. csv, kml, ...
       authenticate: false,
       markerFactory: L.marker,
       markerOptions: {/* must be extended per marker */},
@@ -387,27 +388,46 @@
       tooltipOptions: {},
     }, set);
     if (!config.authenticate || myPoisUrl !== undefined) {
-      $.get(config.url, function (data) {
-        let layer = pois.getLayer(config.layerName);
-        data.forEach(function (p) {
-          let options = $.extend({
-            pane: 'overlayPane',
-            title: p.text,
-            alt: p.text,
-          }, config.markerOptions);
-          let m = config.markerFactory(p.coordinates, options)
-            .addTo(layer);
-          if (config.popupFunction) {
-            m.bindPopup(config.popupFunction, config.popupOptions);
+      switch (config.type) {
+        case 'marker': {
+          let layer = pois.getLayer(config.layerName);
+          $.get(config.url, function (data) {
+            data.forEach(function (p) {
+              let options = $.extend({
+                pane: 'overlayPane',
+                title: p.text,
+                alt: p.text,
+              }, config.markerOptions);
+              let m = config.markerFactory(p.coordinates, options)
+                .addTo(layer);
+              if (config.popupFunction) {
+                m.bindPopup(config.popupFunction, config.popupOptions);
+              };
+              if (config.tooltipFunction) {
+                m.bindTooltip(config.tooltipFunction, config.tooltipOptions);
+              };
+            });
+            if (config.layerShow) {
+              layer.addTo(map);
+            };
+          });
+        } break;
+        case 'kml':
+        case 'csv':
+        case 'gpx':
+        case 'wkt':
+        case 'topojson':
+        case 'geojson':
+        case 'polyline': {
+          let layer = omnivore[config.type](config.url);
+          layersControl.addOverlay(layer, config.layerName);
+          if (config.layerShow) {
+            layer.addTo(map);
           };
-          if (config.tooltipFunction) {
-            m.bindTooltip(config.tooltipFunction, config.tooltipOptions);
-          };
-        });
-        if (config.layerShow) {
-          layer.addTo(map);
-        };
-      });
+        } break;
+        default:
+          output.warn('Ignoring unknown data type in loadData: ' + config.type);
+      };
     };
   });
 
