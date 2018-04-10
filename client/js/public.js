@@ -413,13 +413,13 @@
           });
         } break;
         case 'kml':
+        case 'geojson':
         case 'csv':
         case 'gpx':
         case 'wkt':
         case 'topojson':
-        case 'geojson':
         case 'polyline': {
-          let layer = omnivore[config.type](config.url);
+          let layer = omnivore[config.type](config.url, config.parserOptions);
           layersControl.addOverlay(layer, config.layerName);
           if (config.layerShow) {
             layer.addTo(map);
