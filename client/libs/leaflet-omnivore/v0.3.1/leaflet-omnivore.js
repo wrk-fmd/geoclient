@@ -40,7 +40,7 @@ function addData(l, d) {
  * @returns {object}
  */
 function geojsonLoad(url, options, customLayer) {
-    var layer = customLayer || L.geoJson();
+    var layer = customLayer || L.geoJson(null, options);
     xhr(url, function(err, response) {
         if (err) return layer.fire('error', { error: err });
         addData(layer, JSON.parse(response.responseText));
