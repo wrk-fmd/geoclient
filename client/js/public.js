@@ -65,8 +65,8 @@
   let map = L.map('map', {
     center: [config.initLatitude, config.initLongitude],
     zoom: config.initZoom,
-    zoomSnap: 0.25,
-    zoomDelta: 0.5,
+    zoomSnap: 0.5,
+    zoomDelta: 1,
   });
 
   L.tileLayer('https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg', {
@@ -388,9 +388,10 @@
       tooltipOptions: {},
     }, set);
     if (!config.authenticate || myPoisUrl !== undefined) {
+      let layer
       switch (config.type) {
-        case 'marker': {
-          let layer = pois.getLayer(config.layerName);
+        case 'marker':
+          layer = pois.getLayer(config.layerName);
           $.get(config.url, function (data) {
             data.forEach(function (p) {
               let options = $.extend({
@@ -407,26 +408,27 @@
                 m.bindTooltip(config.tooltipFunction, config.tooltipOptions);
               };
             });
-            if (config.layerShow) {
-              layer.addTo(map);
-            };
           });
-        } break;
+          break;
+        case 'wms':
+          layer = L.tileLayer.wms(config.url, config.parserOptions);
+          layersControl.addOverlay(layer, config.layerName);
+          break;
         case 'kml':
         case 'geojson':
         case 'csv':
         case 'gpx':
         case 'wkt':
         case 'topojson':
-        case 'polyline': {
-          let layer = omnivore[config.type](config.url, config.parserOptions);
+        case 'polyline':
+          layer = omnivore[config.type](config.url, config.parserOptions);
           layersControl.addOverlay(layer, config.layerName);
-          if (config.layerShow) {
-            layer.addTo(map);
-          };
-        } break;
+          break;
         default:
           output.warn('Ignoring unknown data type in loadData: ' + config.type);
+      };
+      if (layer && config.layerShow) {
+        layer.addTo(map);
       };
     };
   });
