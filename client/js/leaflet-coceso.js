@@ -96,7 +96,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     // popup is for touch, tooltip for mouse
     this.bindPopup('');
     this.bindTooltip('', {
-      direction: 'top',
+      permanent: true,
     });
 
     this.initFeatureLayer();
@@ -126,8 +126,9 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     // event handlers are asymmetric to not hide while either is still open
     this.on('popupopen', this.showFeatureLayer);
     this.on('popupclose', this.hideFeatureLayerPopup);
-    this.on('tooltipopen', this.showFeatureLayer);
-    this.on('tooltipclose', this.hideFeatureLayerTooltip);
+    // do not show vectors for permanent tooltip
+    //this.on('tooltipopen', this.showFeatureLayer);
+    //this.on('tooltipclose', this.hideFeatureLayerTooltip);
   },
   updateFeatureLayer: function(unit) {
     let here = this.getLatLng();
@@ -144,7 +145,8 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this._featureLayer.addTo(this._map);
   },
   hideFeatureLayerPopup: function(e) {
-    if (this.isTooltipOpen()) return;
+    // do not show vectors for permanent tooltip
+    //if (this.isTooltipOpen()) return;
     this._featureLayer.remove();
   },
   hideFeatureLayerTooltip: function(e) {
