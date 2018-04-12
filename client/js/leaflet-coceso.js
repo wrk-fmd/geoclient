@@ -68,7 +68,7 @@ L.Marker.IncidentMarker = L.Marker.extend({
     this._incident = incident;
     this.setLatLng([incident.location.latitude, incident.location.longitude]);
     this.setIcon(cocesoIcons.get(incident.priority, incident.blue));
-    this.setPopupContent(incident.info.replace(/\n/g, '<br />'));
+    this.setPopupContent(incident.info.trim().replace(/\n/g, '<br />'));
     return this;
   },
 });
