@@ -376,7 +376,7 @@
 
   config.loadData.forEach(function (set) {
     let config = $.extend({
-      type: 'marker', // or a 'constructor' of omnivore, i.e. csv, kml, ...
+      type: 'marker', // or 'wms' or a constructor of omnivore, i.e. csv, kml, ...
       authenticate: false,
       markerFactory: L.marker,
       markerOptions: {/* must be extended per marker */},
