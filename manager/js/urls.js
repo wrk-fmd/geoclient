@@ -17,6 +17,10 @@ let apiClient =
   (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.apiClient) ?
     geobroker.config.apiClient :
     (window.location.protocol + '//' + window.location.host + '/');
+let infoSheet =
+  (typeof geobroker === 'object' && typeof geobroker.config === 'object' && geobroker.config.infoSheet) ?
+    geobroker.config.infoSheet :
+    'info.html';
 
 function log(text) {
   if (text && text.responseJSON) {
@@ -48,9 +52,8 @@ function addUnitToView(unit) {
         .text(url)
       )
     )
-    .append($('<h2>Benutzungsbedingungen</h2>'))
-    .append($('<p></p>')
-      .text('Info/Warnung/Bedingungen: ... Datenschutz ... Verkehrssicherheit ... StVO ... kein Navi ... nicht darauf verlassen ...')
+    .append($('<div>Loading info sheet &#8230;</div>')
+      .addClass('info-div')
     )
     .appendTo('body');
   new QRCode(qr.get(0), {
@@ -74,7 +77,8 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
     if (unit.id.startsWith(prefix)) {
       addUnitToView(unit);
     } else {
-      console.info("Skipping unit with not-matching id.", unit)
-    }
+      console.info("Skipping unit with not-matching id.", unit);
+    };
   });
+  $('.info-div').load(infoSheet);
 });
