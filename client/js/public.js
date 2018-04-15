@@ -18,6 +18,7 @@
   // read from the query parameters
   let myId;
   let myToken;
+  let myCenterMode = false;
   let myScopeUrl;
   let myPositionsUrl;
   let myPoisUrl;
@@ -27,6 +28,7 @@
     if (params.has('debug')) {
       output = console;
     };
+    myCenterMode = params.has('centerMode');
     myId = params.get('id');
     myToken = params.get('token');
   }
@@ -231,6 +233,25 @@
     "Einheiten": scope.unitLayer,
     "Vorf\u00e4lle": scope.incidentLayer,
   }).addTo(map);
+
+  // XXX quite hacky search - activate with ?centerMode
+  if (myCenterMode) {
+    L.easyButton({
+      position: 'topright',
+      states: [{
+        stateName: 'search',
+        icon:    'fa-search',
+        title:   'Suche Einheiten',
+        onClick: function() {
+          let what = prompt();
+          if (what === null) return;
+          scope.units.forEach(function(unit) {
+            unit.highlight(what);
+          });
+        },
+      }],
+    }).addTo(map);
+  };
 
   // help dialog
   let help = {};

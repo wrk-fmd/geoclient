@@ -184,6 +184,13 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this.updateFeatureLayer(unit);
     return this;
   },
+  highlight: function(condition) {
+    let highlight = condition;
+    if (typeof condition === 'string' && condition !== "") {
+      highlight = this._unit.name.indexOf(condition) !== -1;
+    };
+    L.DomUtil[highlight ? 'addClass' : 'removeClass'](this._tooltip._container, 'highlight');
+  },
 });
 
 L.circleMarker.unitMarker = function(unit, options) {
