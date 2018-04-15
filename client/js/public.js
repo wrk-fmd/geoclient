@@ -215,8 +215,8 @@
   let scope = {};
   scope.unitLayer = L.layerGroup().addTo(map);
   scope.incidentLayer = L.layerGroup().addTo(map);
-  scope.units = new Map(); // id => L.circleMarker
-  scope.incidents = new Map(); // id => L.marker.svgMarker.rhombusMarker
+  scope.units = new Map(); // id => L.circleMarker.unitMarker
+  scope.incidents = new Map(); // id => L.marker.incidentMarker
 
   // controls
   L.control.scale({
