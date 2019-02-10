@@ -192,6 +192,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
       highlight = condition.test(this._unit.name);
     };
     L.DomUtil[highlight ? 'addClass' : 'removeClass'](this._tooltip._container, 'highlight');
+    return highlight;
   },
 });
 

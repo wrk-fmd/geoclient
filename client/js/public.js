@@ -249,9 +249,14 @@
           // escaping special characters, see js escapeRegExp in
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_special_characters
           what = RegExp(what.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+          // extend the view to include the results
+          let bounds = map.getBounds();
           scope.units.forEach(function(unit) {
-            unit.highlight(what);
+            if (unit.highlight(what)) {
+              bounds.extend(unit.getLatLng());
+            };
           });
+          map.flyToBounds(bounds);
         },
       }],
     }).addTo(map);
