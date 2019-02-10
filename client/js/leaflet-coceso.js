@@ -188,6 +188,8 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     let highlight = condition;
     if (typeof condition === 'string' && condition !== "") {
       highlight = this._unit.name.indexOf(condition) !== -1;
+    } else if (condition.test && typeof condition.test === 'function') {
+      highlight = condition.test(this._unit.name);
     };
     L.DomUtil[highlight ? 'addClass' : 'removeClass'](this._tooltip._container, 'highlight');
   },

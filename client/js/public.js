@@ -245,6 +245,10 @@
         onClick: function() {
           let what = prompt();
           if (what === null) return;
+          // case-insensitive, make it a RegExp
+          // escaping special characters, see js escapeRegExp in
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_special_characters
+          what = RegExp(what.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
           scope.units.forEach(function(unit) {
             unit.highlight(what);
           });
