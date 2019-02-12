@@ -163,6 +163,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
   },
   getColor: function(unit) {
     if (unit.ownUnit) return 'yellow';
+    if (!unit.online) return 'gray';
     // XXX should be configurable
     if (unit.name.indexOf('NEF') !== -1) return 'crimson';
     if (unit.name.indexOf('RTW') !== -1) return 'coral';

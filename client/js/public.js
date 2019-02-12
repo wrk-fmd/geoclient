@@ -38,6 +38,7 @@
   // configure / defaults
   let default_config = {
     scopeRefreshInterval: 2000, // milliseconds
+    onlineTimeout: 30*60000, // milliseconds
 
     initLatitude: 48.2089816,
     initLongitude: 16.3710193,
@@ -296,8 +297,19 @@
       // keep a copy of the existing keys and remove updated ones
       let toBeRemoved = new Set(scope.units.keys());
       // update the markers
+      let now = new Date();
       data.units.forEach(function (unit) {
-        if (unit.currentPosition) {
+        if (unit.currentPosition || unit.lastPoint) {
+          unit.online = !!unit.currentPosition &&
+            (now - new Date(unit.currentPosition.timestamp) < config.onlineTimeout);
+          if (!unit.currentPosition) {
+            unit.currentPosition = {
+              latitude: unit.lastPoint.latitude,
+              longitude: unit.lastPoint.longitude,
+              // lastPoint has no timestamp, pretend it is fresh
+              timestamp: now.toISOString(),
+            };
+          };
           unit.ownUnit = unit.id == myId;
           toBeRemoved.delete(unit.id);
           if (scope.units.has(unit.id)) {
