@@ -248,10 +248,10 @@
           let what = prompt("Suche ohne Gro\u00df-/Kleinschreibung", searchString);
           if (what === null) return;
           searchString = what;
-          // case-insensitive, make it a RegExp
+          // case-insensitive, make it a RegExp (except for the empty string that clears all search results)
           // escaping special characters, see js escapeRegExp in
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_special_characters
-          what = RegExp(what.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+          what = what === "" ? false : RegExp(what.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
           // extend the view to include the results
           let bounds = map.getBounds();
           scope.units.forEach(function(unit) {
