@@ -282,18 +282,22 @@
         return false;
       });
       Mousetrap.bind(['left'], function() {
+        ownPosition.stopFollow();
         map.panBy([-keyPanBy, 0]);
         return false;
       });
       Mousetrap.bind(['right'], function() {
+        ownPosition.stopFollow();
         map.panBy([keyPanBy, 0]);
         return false;
       });
       Mousetrap.bind(['up'], function() {
+        ownPosition.stopFollow();
         map.panBy([0, -keyPanBy]);
         return false;
       });
       Mousetrap.bind(['down'], function() {
+        ownPosition.stopFollow();
         map.panBy([0, keyPanBy]);
         return false;
       });
