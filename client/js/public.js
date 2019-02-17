@@ -235,8 +235,9 @@
     "Vorf\u00e4lle": scope.incidentLayer,
   }).addTo(map);
 
+  // center mode - activate with ?centerMode
   if (myCenterMode) {
-    // XXX quite hacky search - activate with ?centerMode
+    // XXX quite hacky search
     let searchString = "";
     let doSearch = function() {
       let what = prompt("Suche ohne Gro\u00df-/Kleinschreibung", searchString);
