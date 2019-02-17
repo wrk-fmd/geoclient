@@ -266,9 +266,35 @@
     }).addTo(map);
 
     // keyboard shortcuts in centerMode
+    let keyPanBy = 100;
     $.getScript("libs/mousetrap/v1.6.2/mousetrap.min.js", function() {
+      // wrapper functions are needed because action functions are not event functions
       Mousetrap.bind(['ctrl+f', '/'], function() {
         doSearch();
+        return false;
+      });
+      Mousetrap.bind(['pagedown', '+'], function() {
+        map.zoomIn();
+        return false;
+      });
+      Mousetrap.bind(['pageup', '-'], function() {
+        map.zoomOut();
+        return false;
+      });
+      Mousetrap.bind(['left'], function() {
+        map.panBy([-keyPanBy, 0]);
+        return false;
+      });
+      Mousetrap.bind(['right'], function() {
+        map.panBy([keyPanBy, 0]);
+        return false;
+      });
+      Mousetrap.bind(['up'], function() {
+        map.panBy([0, -keyPanBy]);
+        return false;
+      });
+      Mousetrap.bind(['down'], function() {
+        map.panBy([0, keyPanBy]);
         return false;
       });
     });
