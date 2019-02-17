@@ -235,34 +235,74 @@
     "Vorf\u00e4lle": scope.incidentLayer,
   }).addTo(map);
 
-  // XXX quite hacky search - activate with ?centerMode
+  // center mode - activate with ?centerMode
   if (myCenterMode) {
+    // XXX quite hacky search
     let searchString = "";
+    let doSearch = function() {
+      let what = prompt("Suche ohne Gro\u00df-/Kleinschreibung", searchString);
+      if (what === null) return;
+      searchString = what;
+      // case-insensitive, make it a RegExp (except for the empty string that clears all search results)
+      // escaping special characters, see js escapeRegExp in
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_special_characters
+      what = what === "" ? false : RegExp(what.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+      // extend the view to include the results
+      let bounds = map.getBounds();
+      scope.units.forEach(function(unit) {
+        if (unit.highlight(what)) {
+          bounds.extend(unit.getLatLng());
+        };
+      });
+      map.flyToBounds(bounds);
+    };
     L.easyButton({
       position: 'topright',
       states: [{
         stateName: 'search',
         icon:    'fa-search',
         title:   'Suche Einheiten',
-        onClick: function() {
-          let what = prompt("Suche ohne Gro\u00df-/Kleinschreibung", searchString);
-          if (what === null) return;
-          searchString = what;
-          // case-insensitive, make it a RegExp (except for the empty string that clears all search results)
-          // escaping special characters, see js escapeRegExp in
-          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Using_special_characters
-          what = what === "" ? false : RegExp(what.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-          // extend the view to include the results
-          let bounds = map.getBounds();
-          scope.units.forEach(function(unit) {
-            if (unit.highlight(what)) {
-              bounds.extend(unit.getLatLng());
-            };
-          });
-          map.flyToBounds(bounds);
-        },
+        onClick: doSearch,
       }],
     }).addTo(map);
+
+    // keyboard shortcuts in centerMode
+    let keyPanBy = 100;
+    $.getScript("libs/mousetrap/v1.6.2/mousetrap.min.js", function() {
+      // wrapper functions are needed because action functions are not event functions
+      Mousetrap.bind(['ctrl+f', '/'], function() {
+        doSearch();
+        return false;
+      });
+      Mousetrap.bind(['pagedown', '+'], function() {
+        map.zoomIn();
+        return false;
+      });
+      Mousetrap.bind(['pageup', '-'], function() {
+        map.zoomOut();
+        return false;
+      });
+      Mousetrap.bind(['left'], function() {
+        ownPosition.stopFollow();
+        map.panBy([-keyPanBy, 0]);
+        return false;
+      });
+      Mousetrap.bind(['right'], function() {
+        ownPosition.stopFollow();
+        map.panBy([keyPanBy, 0]);
+        return false;
+      });
+      Mousetrap.bind(['up'], function() {
+        ownPosition.stopFollow();
+        map.panBy([0, -keyPanBy]);
+        return false;
+      });
+      Mousetrap.bind(['down'], function() {
+        ownPosition.stopFollow();
+        map.panBy([0, keyPanBy]);
+        return false;
+      });
+    });
   };
 
   // help dialog
