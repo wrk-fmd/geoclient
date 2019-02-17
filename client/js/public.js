@@ -264,6 +264,14 @@
         onClick: doSearch,
       }],
     }).addTo(map);
+
+    // keyboard shortcuts in centerMode
+    $.getScript("libs/mousetrap/v1.6.2/mousetrap.min.js", function() {
+      Mousetrap.bind(['ctrl+f', '/'], function() {
+        doSearch();
+        return false;
+      });
+    });
   };
 
   // help dialog
