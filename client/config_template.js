@@ -46,6 +46,8 @@ geobroker.config = {
         return m.options.title;
       },
       popupOptions: {},
+      // bind a key (e.g. 'ctrl+t') or multiple keys (e.g. ['t', '.'])
+      keyToggle: null,
     },
   ],
 

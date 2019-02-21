@@ -279,7 +279,7 @@
 
     // keyboard shortcuts in centerMode
     let keyPanBy = 100;
-    $.getScript("libs/mousetrap/v1.6.2/mousetrap.min.js", function() {
+    scope.mousetrapLoaded = $.getScript("libs/mousetrap/v1.6.2/mousetrap.min.js", function() {
       // wrapper functions are needed because action functions are not event functions
       Mousetrap.bind(config.keySearch, function() {
         doSearch();
@@ -481,6 +481,7 @@
       popupOptions: {},
       tooltipFunction: null,
       tooltipOptions: {},
+      keyToggle: null,
     }, set);
     if (!config.authenticate || myPoisUrl !== undefined) {
       let layer
@@ -522,8 +523,22 @@
         default:
           output.warn('Ignoring unknown data type in loadData: ' + config.type);
       };
-      if (layer && config.layerShow) {
-        layer.addTo(map);
+      if (layer) {
+        if (config.layerShow) {
+          layer.addTo(map);
+        };
+
+        // keyboard shortcuts
+        if (myCenterMode) {
+          if (config.keyToggle) {
+            scope.mousetrapLoaded.done(function() {
+              Mousetrap.bind(config.keyToggle, function() {
+                layer[map.hasLayer(layer) ? 'removeFrom' : 'addTo'](map);
+                return false;
+              });
+            });
+          };
+        };
       };
     };
   });
