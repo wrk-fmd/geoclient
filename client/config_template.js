@@ -50,4 +50,15 @@ geobroker.config = {
   ],
 
   apiPublic: '/api/v1/public',
+
+  // keyboard is only available in centerMode
+  keySearch: ['ctrl+f', '/'],
+  keyZoomIn: ['pageup', '+'],
+  keyZoomOut: ['pagedown', '-'],
+  keyPanWE: 100,
+  keyPanNS: 100,
+  keyPanN: 'up',
+  keyPanE: 'right',
+  keyPanS: 'down',
+  keyPanW: 'left',
 };

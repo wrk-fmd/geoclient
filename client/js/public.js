@@ -47,6 +47,17 @@
     loadData: [],
 
     apiPublic: '/api/v1/public',
+
+    // keyboard is only available in centerMode
+    keySearch: ['ctrl+f', '/'],
+    keyZoomIn: ['pageup', '+'],
+    keyZoomOut: ['pagedown', '-'],
+    keyPanWE: 100,
+    keyPanNS: 100,
+    keyPanN: 'up',
+    keyPanE: 'right',
+    keyPanS: 'down',
+    keyPanW: 'left',
   };
 
   let config = $.extend({}, default_config, external_config);
@@ -270,36 +281,36 @@
     let keyPanBy = 100;
     $.getScript("libs/mousetrap/v1.6.2/mousetrap.min.js", function() {
       // wrapper functions are needed because action functions are not event functions
-      Mousetrap.bind(['ctrl+f', '/'], function() {
+      Mousetrap.bind(config.keySearch, function() {
         doSearch();
         return false;
       });
-      Mousetrap.bind(['pagedown', '+'], function() {
+      Mousetrap.bind(config.keyZoomIn, function() {
         map.zoomIn();
         return false;
       });
-      Mousetrap.bind(['pageup', '-'], function() {
+      Mousetrap.bind(config.keyZoomOut, function() {
         map.zoomOut();
         return false;
       });
-      Mousetrap.bind(['left'], function() {
+      Mousetrap.bind(config.keyPanW, function() {
         ownPosition.stopFollow();
-        map.panBy([-keyPanBy, 0]);
+        map.panBy([-config.keyPanWE, 0]);
         return false;
       });
-      Mousetrap.bind(['right'], function() {
+      Mousetrap.bind(config.keyPanE, function() {
         ownPosition.stopFollow();
-        map.panBy([keyPanBy, 0]);
+        map.panBy([config.keyPanWE, 0]);
         return false;
       });
-      Mousetrap.bind(['up'], function() {
+      Mousetrap.bind(config.keyPanN, function() {
         ownPosition.stopFollow();
-        map.panBy([0, -keyPanBy]);
+        map.panBy([0, -config.keyPanNS]);
         return false;
       });
-      Mousetrap.bind(['down'], function() {
+      Mousetrap.bind(config.keyPanS, function() {
         ownPosition.stopFollow();
-        map.panBy([0, keyPanBy]);
+        map.panBy([0, config.keyPanNS]);
         return false;
       });
     });
