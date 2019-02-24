@@ -19,6 +19,8 @@
   let myId;
   let myToken;
   let myCenterMode = false;
+  let mySendLocation = false;
+  let myDoLocate = true;
   let myScopeUrl;
   let myPositionsUrl;
   let myPoisUrl;
@@ -29,9 +31,11 @@
       output = console;
     };
     myCenterMode = params.has('centerMode');
+    mySendLocation = params.has('sendLocation');
+    myDoLocate = mySendLocation || !myCenterMode;
     myId = params.get('id');
     myToken = params.get('token');
-  }
+  };
 
   output.log("Starting up client with external configuration:", external_config);
 
@@ -62,7 +66,7 @@
     myPoisUrl = config.apiPublic
       + '/poi/' + encodeURIComponent(myId)
       + '?' + $.param({token: myToken});
-  }
+  };
 
   // map and base tiles
   let map = L.map('map', {
@@ -80,62 +84,67 @@
   }).addTo(map);
 
   // Own Position
-  let ownPosition = {};
-  ownPosition.marker = undefined;
-  ownPosition.circle = undefined;
-  ownPosition.event = undefined; // cache last position
-  ownPosition.layer = L.layerGroup().addTo(map);
-  ownPosition.popup = function (accuracy) {
-    return 'Ihr seid hier im Umkreis von ' + accuracy.toFixed(0) + 'm.';
-  };
-  ownPosition.follow = true;
-  ownPosition.doFollow = function () {
-    if (ownPosition.follow && ownPosition.event !== undefined) {
-      map.panTo(ownPosition.event.latlng, {animate: true});
+  let ownPosition;
+  if (myDoLocate) {
+    ownPosition = {};
+    ownPosition.marker = undefined;
+    ownPosition.circle = undefined;
+    ownPosition.event = undefined; // cache last position
+    ownPosition.layer = L.layerGroup().addTo(map);
+    ownPosition.popup = function (accuracy) {
+      return 'Ihr seid hier im Umkreis von ' + accuracy.toFixed(0) + 'm.';
     };
-  };
-  ownPosition.startFollow = function () {
     ownPosition.follow = true;
-    ownPosition.doFollow();
-    ownPosition.followButton.state('followMe');
-  };
-  ownPosition.stopFollow = function () {
-    ownPosition.follow = false;
-    ownPosition.followButton.state('dontFollowMe');
-  };
-  ownPosition.followButton = L.easyButton({
-    states: [{
-        stateName: 'followMe',
-        icon:    'fa-map-marker',
-        title:   'automatisches Verschieben ausschalten',
-        onClick:   ownPosition.stopFollow,
+    ownPosition.doFollow = function () {
+      if (ownPosition.follow && ownPosition.event !== undefined) {
+	map.panTo(ownPosition.event.latlng, {animate: true});
+      };
+    };
+    ownPosition.startFollow = function () {
+      ownPosition.follow = true;
+      ownPosition.doFollow();
+      ownPosition.followButton.state('followMe');
+    };
+    ownPosition.stopFollow = function () {
+      ownPosition.follow = false;
+      ownPosition.followButton.state('dontFollowMe');
+    };
+    ownPosition.followButton = L.easyButton({
+      states: [{
+	stateName: 'followMe',
+	icon:    'fa-map-marker',
+	title:   'automatisches Verschieben ausschalten',
+	onClick:   ownPosition.stopFollow,
       }, {
-        stateName: 'dontFollowMe',
-        icon:    'fa-crosshairs',
-        title:   'Karte mit eigener Position verschieben',
-        onClick:   ownPosition.startFollow,
-    }],
-  }).addTo(map);
+	stateName: 'dontFollowMe',
+	icon:    'fa-crosshairs',
+	title:   'Karte mit eigener Position verschieben',
+	onClick:   ownPosition.startFollow,
+      }],
+    }).addTo(map);
+  };
 
   // status
   let appStatus = {};
   appStatus.reload = function() {
     window.location.reload();
   };
-  appStatus.locationButton = L.easyButton({
-    position: 'bottomleft',
-    states: [{
-      stateName: 'green',
-      icon:    'fa-globe green',
-      title:   'die eigene Position wurde gefunden',
-      onClick: $.noop,
-    }, {
-      stateName: 'red',
-      icon:    'fa-globe red',
-      title:   'klicken um die Seite neu zu laden',
-      onClick:  appStatus.reload,
-    }],
-  }).addTo(map);
+  if (myDoLocate) {
+    appStatus.locationButton = L.easyButton({
+      position: 'bottomleft',
+      states: [{
+	stateName: 'green',
+	icon:    'fa-globe green',
+	title:   'die eigene Position wurde gefunden',
+	onClick: $.noop,
+      }, {
+	stateName: 'red',
+	icon:    'fa-globe red',
+	title:   'klicken um die Seite neu zu laden',
+	onClick:  appStatus.reload,
+      }],
+    }).addTo(map);
+  };
   appStatus.connectionButton = L.easyButton({
     position: 'bottomleft',
     states: [{
@@ -152,67 +161,69 @@
   }).addTo(map);
 
   // locate self
-  map
-    .on('dragstart', ownPosition.stopFollow)
-    .on('locationfound', function (e) {
-      appStatus.locationButton.state('green');
-      ownPosition.event = e;
+  if (myDoLocate) {
+    map
+      .on('dragstart', ownPosition.stopFollow)
+      .on('locationfound', function (e) {
+	appStatus.locationButton.state('green');
+	ownPosition.event = e;
 
-      // send to geobroker
-      if (myPositionsUrl !== undefined) {
-        $.ajax({
-          method: 'POST',
-          url: myPositionsUrl,
-          contentType: 'application/json',
-          processData: false,
-          data: JSON.stringify({
-            latitude: e.latlng.lat,
-            longitude: e.latlng.lng,
-            timestamp: (new Date(e.timestamp)).toISOString(),
-            accuracy: e.accuracy,
-            heading: e.heading,
-            speed: e.speed,
-          }),
-        }).done(function (e) {
-          appStatus.connectionButton.state('green');
-        }).fail(function (e) {
-          appStatus.connectionButton.state('red');
-          // TODO report on UI
-          output.warn(e);
-        });
-      };
+	// send to geobroker
+	if (mySendLocation && myPositionsUrl !== undefined) {
+	  $.ajax({
+	    method: 'POST',
+	    url: myPositionsUrl,
+	    contentType: 'application/json',
+	    processData: false,
+	    data: JSON.stringify({
+	      latitude: e.latlng.lat,
+	      longitude: e.latlng.lng,
+	      timestamp: (new Date(e.timestamp)).toISOString(),
+	      accuracy: e.accuracy,
+	      heading: e.heading,
+	      speed: e.speed,
+	    }),
+	  }).done(function (e) {
+	    appStatus.connectionButton.state('green');
+	  }).fail(function (e) {
+	    appStatus.connectionButton.state('red');
+	    // TODO report on UI
+	    output.warn(e);
+	  });
+	};
 
-      // update the marker
-      let radius = e.accuracy / 2;
-      if (ownPosition.marker === undefined) {
-        ownPosition.marker = L.marker(e.latlng)
-          .addTo(ownPosition.layer)
-          .bindPopup(ownPosition.popup(e.accuracy));
-        ownPosition.circle = L.circle(e.latlng, {
-          radius: radius,
-        })
-          .addTo(ownPosition.layer)
-      } else {
-        ownPosition.marker
-          .setLatLng(e.latlng)
-          .setPopupContent(ownPosition.popup(e.accuracy));
-        ownPosition.circle
-          .setLatLng(e.latlng)
-          .setRadius(radius);
-      };
+	// update the marker
+	let radius = e.accuracy / 2;
+	if (ownPosition.marker === undefined) {
+	  ownPosition.marker = L.marker(e.latlng)
+	    .addTo(ownPosition.layer)
+	    .bindPopup(ownPosition.popup(e.accuracy));
+	  ownPosition.circle = L.circle(e.latlng, {
+	    radius: radius,
+	  })
+	    .addTo(ownPosition.layer)
+	} else {
+	  ownPosition.marker
+	    .setLatLng(e.latlng)
+	    .setPopupContent(ownPosition.popup(e.accuracy));
+	  ownPosition.circle
+	    .setLatLng(e.latlng)
+	    .setRadius(radius);
+	};
 
-      // follow the new position
-      ownPosition.doFollow();
-    })
-    .on('locationerror', function (e) {
-      appStatus.locationButton.state('red');
-      // TODO report on UI
-      output.warn(e);
-    })
-    .locate({
-      watch: true,
-      enableHighAccuracy: true,
-    });
+	// follow the new position
+	ownPosition.doFollow();
+      })
+      .on('locationerror', function (e) {
+	appStatus.locationButton.state('red');
+	// TODO report on UI
+	output.warn(e);
+      })
+      .locate({
+	watch: true,
+	enableHighAccuracy: true,
+      });
+  };
 
   // empty scope
   let scope = {};
@@ -229,11 +240,16 @@
     // maxWidth: 100,
     updateWhenIdle: true,
   }).addTo(map);
-  let layersControl = L.control.layers(null, {
-    "Eigene Position": ownPosition.layer,
-    "Einheiten": scope.unitLayer,
-    "Vorf\u00e4lle": scope.incidentLayer,
-  }).addTo(map);
+  let layersControl;
+  {
+    let layers = {}; // temporary variable
+    if (myDoLocate) {
+      layers["Eigene Position"] = ownPosition.layer;
+    };
+    layers["Einheiten"] = scope.unitLayer;
+    layers["Vorf\u00e4lle"] = scope.incidentLayer;
+    layersControl = L.control.layers(null, layers).addTo(map);
+  };
 
   // center mode - activate with ?centerMode
   if (myCenterMode) {
@@ -283,22 +299,22 @@
         return false;
       });
       Mousetrap.bind(['left'], function() {
-        ownPosition.stopFollow();
+        ownPosition && ownPosition.stopFollow();
         map.panBy([-keyPanBy, 0]);
         return false;
       });
       Mousetrap.bind(['right'], function() {
-        ownPosition.stopFollow();
+        ownPosition && ownPosition.stopFollow();
         map.panBy([keyPanBy, 0]);
         return false;
       });
       Mousetrap.bind(['up'], function() {
-        ownPosition.stopFollow();
+        ownPosition && ownPosition.stopFollow();
         map.panBy([0, -keyPanBy]);
         return false;
       });
       Mousetrap.bind(['down'], function() {
-        ownPosition.stopFollow();
+        ownPosition && ownPosition.stopFollow();
         map.panBy([0, keyPanBy]);
         return false;
       });
