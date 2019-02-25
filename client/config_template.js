@@ -46,8 +46,21 @@ geobroker.config = {
         return m.options.title;
       },
       popupOptions: {},
+      // bind a key (e.g. 'ctrl+t') or multiple keys (e.g. ['t', '.'])
+      keyToggle: null,
     },
   ],
 
   apiPublic: '/api/v1/public',
+
+  // keyboard is only available in centerMode
+  keySearch: ['ctrl+f', '/'],
+  keyZoomIn: ['pageup', '+'],
+  keyZoomOut: ['pagedown', '-'],
+  keyPanWE: 100,
+  keyPanNS: 100,
+  keyPanN: 'up',
+  keyPanE: 'right',
+  keyPanS: 'down',
+  keyPanW: 'left',
 };
