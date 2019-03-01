@@ -41,8 +41,9 @@
 
   // configure / defaults
   let default_config = {
-    scopeRefreshInterval: 2000, // milliseconds
-    onlineTimeout: 30*60000, // milliseconds
+    scopeRefreshInterval: 2000, // given in milliseconds. Default 2 sec
+    onlineTimeout: 30*60000, // given in milliseconds. Default 30 min
+    showBusyUnits: true,
 
     initLatitude: 48.2089816,
     initLongitude: 16.3710193,

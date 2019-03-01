@@ -141,7 +141,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this._fromLine.setLatLngs([from, here]);
     this._targetLine.setLatLngs([here, target]);
     this._targetLine.setStyle({
-      color : unit.blue ? 'blue' : 'green',
+      color : unit.blueIncidentAssigned ? 'blue' : 'green',
     });
   },
   showFeatureLayer: function(e) {
@@ -177,9 +177,9 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     return 'white';
   },
   getOutline: function(unit) {
-    if (unit.isAvailableForDispatching && unit.blue) return 'red';
+    if (unit.isAvailableForDispatching && unit.blueIncidentAssigned) return 'red';
     if (unit.isAisAvailableForDispatching) return 'green';
-    if (unit.blue) return 'blue';
+    if (unit.blueIncidentAssigned) return 'blue';
     return 'lightgray';
   },
   updateUnit: function(unit) {
