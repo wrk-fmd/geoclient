@@ -79,7 +79,7 @@ L.marker.incidentMarker = function(incident, options) {
 
 L.CircleMarker.UnitMarker = L.CircleMarker.extend({
   options: {
-    color: 'black',
+    color: 'lightgray',
     weight: 2,
     fillColor: 'white',
     fillOpacity: 1,
@@ -140,6 +140,9 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
       : here;
     this._fromLine.setLatLngs([from, here]);
     this._targetLine.setLatLngs([here, target]);
+    this._targetLine.setStyle({
+      color : unit.blue ? 'blue' : 'green',
+    });
   },
   showFeatureLayer: function(e) {
     this._featureLayer.addTo(this._map);
@@ -173,6 +176,12 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     if (unit.name.indexOf('Kdo') !== -1) return 'fuchsia';
     return 'white';
   },
+  getOutline: function(unit) {
+    if (unit.isAvailableForDispatching && unit.blue) return 'red';
+    if (unit.isAisAvailableForDispatching) return 'green';
+    if (unit.blue) return 'blue';
+    return 'lightgray';
+  },
   updateUnit: function(unit) {
     this._unit = unit;
     this.fadeStep();
@@ -181,6 +190,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this.setTooltipContent(unit.name);
     this.setStyle({
       fillColor: this.getColor(unit),
+      color: this.getOutline(unit),
     });
     this.updateFeatureLayer(unit);
     return this;

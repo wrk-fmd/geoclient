@@ -54,6 +54,7 @@
 
     // keyboard is only available in centerMode
     keySearch: ['ctrl+f', '/'],
+    keyResetLayers: ['ctrl+x', 'home'],
     keyZoomIn: ['pageup', '+'],
     keyZoomOut: ['pagedown', '-'],
     keyPanWE: 100,
@@ -294,11 +295,20 @@
     }).addTo(map);
 
     // keyboard shortcuts in centerMode
-    let keyPanBy = 100;
     appStatus.mousetrapLoaded = $.getScript("libs/mousetrap/v1.6.2/mousetrap.min.js", function() {
       // wrapper functions are needed because action functions are not event functions
       Mousetrap.bind(config.keySearch, function() {
         doSearch();
+        return false;
+      });
+      Mousetrap.bind(config.keyResetLayers, function() {
+        // remove all layers then add the default ones
+        layersControl._layers.forEach(function(layer) {
+          map.removeLayer(layer.layer);
+        });
+        if (myDoLocate) map.addLayer(ownPosition.layer);
+        map.addLayer(scope.unitLayer);
+        map.addLayer(scope.incidentLayer);
         return false;
       });
       Mousetrap.bind(config.keyZoomIn, function() {

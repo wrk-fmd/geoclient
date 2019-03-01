@@ -53,15 +53,77 @@
 <p>Der Kartenausschnitt kann durch Ziehen verschoben werden. Standardmäßig folgt der Kartenausschnitt der eigenen Position, das wird jedoch durch verschieben des Ausschnitts deaktiviert.</p>
 <p>Die Genauigkeit der Karte (Zoom) kann entweder über die Tasten Plus und Minus, Strg+Mausrad, oder auf Touch-Geräten auch durch auseinander- oder zusammenbewegen zweier Finger verändert werden.</p>
 <h2>Funktionen</h2>
-<p><i class="fa fa-map-marker"></i>/<i class="fa fa-crosshairs"></i> aktiviert oder deaktiviert den automatischen Kartenausschnitt. Klicke auf <i class="fa fa-crosshairs"></i> um zu deiner Position zu schwenken.</p>
-<p><i class="fa fa-plug"></i>/<i class="fa fa-globe"></i> zeigen den Status der Datenverbindung zum Server bzw. der Positionsbestimmung in deinem Browser an. Grün bedeutet gut; wenn ein Status rot ist, kannst du die Seite neu laden indem du darauf klickst oder tippst.</p>
-<p><i class="fa fa-question"></i> frag-würdige Lektüre für einsame Stunden.</p>
-<p><img src="libs/leaflet/v1.3.1/images/layers.png"></img> blendet Karteninhalte ein oder aus. Die einzelnen Layer werden eingeblendet, wenn du mit der Maus über diese Funktion fährst oder darauf tippst.</p>
+<p>
+    <i class="fa fa-map-marker"></i>/<i class="fa fa-crosshairs"></i>
+    aktiviert oder deaktiviert den automatischen Kartenausschnitt. Klicke auf <i class="fa fa-crosshairs"></i> um zu deiner Position zu schwenken.
+</p>
+<p>
+    <i class="fa fa-plug"></i>/<i class="fa fa-globe"></i>
+    zeigen den Status der Datenverbindung zum Server bzw. der Positionsbestimmung in deinem Browser an.
+    Grün bedeutet gut; wenn ein Status rot ist, kannst du die Seite neu laden indem du darauf klickst oder tippst.
+</p>
+<p>
+    <i class="fa fa-search"></i>
+    (Leitstellenmodus) Textsuche nach Einheiten. Suchtext entfernen um die Markierung von den Suchergebnissen zu löschen.
+</p>
+<p>
+    <i class="fa fa-question"></i>
+    frag-würdige Lektüre für einsame Stunden.
+</p>
+<p>
+    <img src="libs/leaflet/v1.3.1/images/layers.png"></img>
+    blendet Karteninhalte ein oder aus. Die einzelnen Layer werden eingeblendet, wenn du mit der Maus über diese Funktion fährst oder darauf tippst.
+</p>
 <h2>Karteninhalte</h2>
-<p><img src="libs/leaflet/v1.3.1/images/marker-icon.png"></img> zeigt die am Browser ermittelte, eigene Position an. Der umgebende Kreis beschreibt die Genauigkeit der Positionsbestimmung. Wenn die Datenkommunikation mit dem Server aktiv ist, sollte auch der die eigene Einheit an dieser Stelle angezeigt werden.</p>
-<p><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='white' stroke-width='2'/%3E%3C/svg%3E"></img> ein Auftrag, <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='white' stroke-width='2'/%3E%3C/svg%3E"></img> ein Einsatz; wenn der Rahmen rot statt weiß ist, ist eine unverzügliche Informationsweitergabe erforderlich, z.B. Verzögerung bei der Anfahrt, Lagemeldung bei Eintraffen.<p>
-<p><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='2' stroke='black'/%3E%3C/svg%3E"></img> eine Einheit. Wenn du die Maus darüberhältst oder drauf tippst, werden weitere Details eingeblendet: eine grüne Linie führt zur nächsten zugewiesenen Position, eine graue Linie zur letzten bestätigten Position (beide Linien sind nur dann sichtbar, wenn es die bezeichnete Position gibt und sie sich von der Live-Position der Einheit unterscheidet).<p>
-<p>Generell siehst du nur Einheiten und Einsätze, die zu dem selben Einsatz alarmiert sind, wie ihr. Führungskräfte sehen alle Einheiten: <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='yellow' stroke-width='2' stroke='black'/%3E%3C/svg%3E"></img> die eigene Einheit, <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='crimson' stroke-width='2' stroke='black'/%3E%3C/svg%3E"></img> Notarzt, <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='coral' stroke-width='2' stroke='black'/%3E%3C/svg%3E"></img> RTW, <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='2' stroke='black'/%3E%3C/svg%3E"></img> SEW, <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='fuchsia' stroke-width='2' stroke='black'/%3E%3C/svg%3E"></img> Führungskraft; die Farben verblassen, wenn keine aktuellen Positionsdaten verfügbar sind.<p>
+<p>
+    <img src="libs/leaflet/v1.3.1/images/marker-icon.png"></img>
+    zeigt die am Browser ermittelte, eigene Position an. Der umgebende Kreis beschreibt die Genauigkeit der Positionsbestimmung.
+    Wenn die Datenkommunikation mit dem Server aktiv ist, sollte auch der die eigene Einheit an dieser Stelle angezeigt werden.
+</p>
+<p>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='white' stroke-width='2'/%3E%3C/svg%3E"></img>
+    ein Auftrag,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='white' stroke-width='2'/%3E%3C/svg%3E"></img>
+    ein Einsatz; wenn der Rahmen rot statt weiß ist (
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='red' stroke-width='2'/%3E%3C/svg%3E"></img>
+    /
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='red' stroke-width='2'/%3E%3C/svg%3E"></img>
+    ), ist eine unverzügliche Informationsweitergabe erforderlich, z.B. Verzögerung bei der Anfahrt, Lagemeldung bei Eintraffen.
+</p>
+<p>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='2' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    eine Einheit. Wenn du die Maus darüberhältst oder drauf tippst, werden weitere Details eingeblendet:
+    eine grüne oder blaue Linie führt zur nächsten zugewiesenen Position, eine graue Linie zur letzten bestätigten Position
+    (beide Linien sind nur dann sichtbar, wenn es die bezeichnete Position gibt und sie sich von der Live-Position der Einheit unterscheidet).
+</p>
+<p>
+    Generell siehst du nur Einheiten und Einsätze, die zu dem selben Einsatz alarmiert sind, wie ihr. Führungskräfte sehen alle Einheiten:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='yellow' stroke-width='2' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    die eigene Einheit,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='crimson' stroke-width='2' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    Notarzt,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='coral' stroke-width='2' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    RTW,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='2' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    andere (z.B. SEW),
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='fuchsia' stroke-width='2' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    Führungskraft
+</p>
+<p>
+    Die Farben verblassen mit dem Alter der Positionsdaten. Wenn keine oder zu lange keine Positionsdaten vorhanden sind, ist die Einheit offline:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='gray' stroke-width='2' stroke='lightgray'/%3E%3C/svg%3E"></img>
+</p>
+<p>
+    Der Rand der Einheiten spiegelt deren Status wider:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='2' stroke='green'/%3E%3C/svg%3E"></img>
+    kann disponiert werden,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='2' stroke='blue'/%3E%3C/svg%3E"></img>
+    Einsatz,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='2' stroke='red'/%3E%3C/svg%3E"></img>
+    Datenfehler (= kann disponiert werden <i>und</i> Einsatz),
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='2' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    anderer Status
+</p>
 </div></div>
 
 <script src="libs/jquery/jquery-3.3.1.min.js"></script>
