@@ -140,6 +140,9 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
       : here;
     this._fromLine.setLatLngs([from, here]);
     this._targetLine.setLatLngs([here, target]);
+    this._targetLine.setStyle({
+      color : unit.blue ? 'blue' : 'green',
+    });
   },
   showFeatureLayer: function(e) {
     this._featureLayer.addTo(this._map);
