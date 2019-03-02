@@ -406,7 +406,7 @@
         return false;
       };
 
-      // keep a copy of the existing keys and remove updated ones
+      // while updating units and incidents, use a Set for the diff with existing ones
       let toBeRemoved;
 
       toBeRemoved = new Set(scope.incidents.keys());
