@@ -286,7 +286,6 @@
       map.flyToBounds(bounds);
     };
     L.easyButton({
-      position: 'topright',
       states: [{
         stateName: 'search',
         icon:    'fa-search',
