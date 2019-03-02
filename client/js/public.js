@@ -56,6 +56,7 @@
     // keyboard is only available in centerMode
     keySearch: ['ctrl+f', '/'],
     keyResetLayers: ['ctrl+x', 'home'],
+    keyToggleBusyUnits: ['space'],
     keyZoomIn: ['pageup', '+'],
     keyZoomOut: ['pagedown', '-'],
     keyPanWE: 100,
@@ -244,6 +245,7 @@
   scope.incidentLayer = L.layerGroup().addTo(map);
   scope.units = new Map(); // id => L.circleMarker.unitMarker
   scope.incidents = new Map(); // id => L.marker.incidentMarker
+  scope.showBusyUnits = config.showBusyUnits;
 
   // controls
   L.control.scale({
@@ -266,6 +268,33 @@
 
   // center mode - activate with ?centerMode
   if (myCenterMode) {
+    // show busy units
+    let toggleBusyUnits = function() {
+      scope.showBusyUnits = !scope.showBusyUnits;
+      scope.toggleBusyUnitsButton.state(scope.showBusyUnits ? 'busyUnitsShown' : 'busyUnitsHidden');
+      scope.units.forEach(function (marker) {
+        marker[
+          scope.showBusyUnits || marker.isAvailableForDispatching()
+          ? 'addTo'
+          : 'removeFrom'
+        ](scope.unitLayer);
+      });
+    };
+    scope.toggleBusyUnitsButton = L.easyButton({
+      states: [{
+	stateName: 'busyUnitsShown',
+	icon:    'fa-thumbs-up',
+	title:   'nur disponierbare Einheiten zeigen',
+	onClick:   toggleBusyUnits,
+      }, {
+	stateName: 'busyUnitsHidden',
+	icon:    'fa-flag',
+	title:   'alle Einheiten zeigen',
+	onClick:   toggleBusyUnits,
+      }],
+    }).addTo(map);
+    if (!scope.showBusyUnits) toggleBusyUnits();
+
     // XXX quite hacky search
     let searchString = "";
     let doSearch = function() {
@@ -286,7 +315,6 @@
       map.flyToBounds(bounds);
     };
     L.easyButton({
-      position: 'topright',
       states: [{
         stateName: 'search',
         icon:    'fa-search',
@@ -310,6 +338,10 @@
         if (myDoLocate) map.addLayer(ownPosition.layer);
         map.addLayer(scope.unitLayer);
         map.addLayer(scope.incidentLayer);
+        return false;
+      });
+      Mousetrap.bind(config.keyToggleBusyUnits, function() {
+        toggleBusyUnits();
         return false;
       });
       Mousetrap.bind(config.keyZoomIn, function() {
