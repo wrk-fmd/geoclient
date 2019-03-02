@@ -407,7 +407,30 @@
       };
 
       // keep a copy of the existing keys and remove updated ones
-      let toBeRemoved = new Set(scope.units.keys());
+      let toBeRemoved;
+
+      toBeRemoved = new Set(scope.incidents.keys());
+      // update the markers
+      data.incidents.forEach(function (incident) {
+        if (incident.location) {
+          toBeRemoved.delete(incident.id);
+          if (scope.incidents.has(incident.id)) {
+            scope.incidents.get(incident.id).updateIncident(incident);
+          } else {
+            scope.incidents.set(incident.id,
+              L.marker.incidentMarker(incident)
+                .addTo(scope.incidentLayer)
+            );
+          };
+        };
+      });
+      // clear deprecated markers
+      toBeRemoved.forEach(function (id) {
+        scope.incidents.get(id).remove();
+        scope.incidents.delete(id);
+      });
+
+      toBeRemoved = new Set(scope.units.keys());
       // update the markers
       let now = new Date();
       data.units.forEach(function (unit) {
@@ -438,28 +461,6 @@
       toBeRemoved.forEach(function (id) {
         scope.units.get(id).remove();
         scope.units.delete(id);
-      });
-
-      // keep a copy of the existing keys and remove updated ones
-      toBeRemoved = new Set(scope.incidents.keys());
-      // update the markers
-      data.incidents.forEach(function (incident) {
-        if (incident.location) {
-          toBeRemoved.delete(incident.id);
-          if (scope.incidents.has(incident.id)) {
-            scope.incidents.get(incident.id).updateIncident(incident);
-          } else {
-            scope.incidents.set(incident.id,
-              L.marker.incidentMarker(incident)
-                .addTo(scope.incidentLayer)
-            );
-          };
-        };
-      });
-      // clear deprecated markers
-      toBeRemoved.forEach(function (id) {
-        scope.incidents.get(id).remove();
-        scope.incidents.delete(id);
       });
 
     }).done(function (e) {
