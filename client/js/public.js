@@ -408,7 +408,10 @@
 
       // while updating units and incidents, use a Set for the diff with existing ones
       let toBeRemoved;
+      // incident data containes assigned units, also track the reverse direction
+      let incidents = new Map(); // unit.id => incident
 
+      // incidents
       toBeRemoved = new Set(scope.incidents.keys());
       // update the markers
       data.incidents.forEach(function (incident) {
@@ -423,6 +426,13 @@
             );
           };
         };
+        if (incident.assignedUnits) {
+          for (let id in incident.assignedUnits) {
+            if (incident.assignedUnits.hasOwnProperty(id)) {
+              incidents.set(id, incident);
+            };
+          };
+        };
       });
       // clear deprecated markers
       toBeRemoved.forEach(function (id) {
@@ -430,6 +440,7 @@
         scope.incidents.delete(id);
       });
 
+      // units
       toBeRemoved = new Set(scope.units.keys());
       // update the markers
       let now = new Date();
@@ -446,6 +457,8 @@
             };
           };
           unit.ownUnit = unit.id == myId;
+          unit.blueIncidentAssigned = incidents.has(unit.id)
+            && incidents.get(unit.id).blue;
           toBeRemoved.delete(unit.id);
           if (scope.units.has(unit.id)) {
             scope.units.get(unit.id).updateUnit(unit);
