@@ -58,6 +58,7 @@ geobroker.config = {
   // keyboard is only available in centerMode
   keySearch: ['ctrl+f', '/'],
   keyResetLayers: ['ctrl+x', 'home'],
+  keyToggleBusyUnits: ['space'],
   keyZoomIn: ['pageup', '+'],
   keyZoomOut: ['pagedown', '-'],
   keyPanWE: 100,

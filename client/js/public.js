@@ -56,6 +56,7 @@
     // keyboard is only available in centerMode
     keySearch: ['ctrl+f', '/'],
     keyResetLayers: ['ctrl+x', 'home'],
+    keyToggleBusyUnits: ['space'],
     keyZoomIn: ['pageup', '+'],
     keyZoomOut: ['pagedown', '-'],
     keyPanWE: 100,
@@ -337,6 +338,10 @@
         if (myDoLocate) map.addLayer(ownPosition.layer);
         map.addLayer(scope.unitLayer);
         map.addLayer(scope.incidentLayer);
+        return false;
+      });
+      Mousetrap.bind(config.keyToggleBusyUnits, function() {
+        toggleBusyUnits();
         return false;
       });
       Mousetrap.bind(config.keyZoomIn, function() {
