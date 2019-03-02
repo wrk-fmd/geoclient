@@ -178,7 +178,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
   },
   getOutline: function(unit) {
     if (unit.isAvailableForDispatching && unit.blueIncidentAssigned) return 'red';
-    if (unit.isAisAvailableForDispatching) return 'green';
+    if (unit.isAvailableForDispatching) return 'green';
     if (unit.blueIncidentAssigned) return 'blue';
     return 'lightgray';
   },
@@ -204,6 +204,9 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     };
     L.DomUtil[highlight ? 'addClass' : 'removeClass'](this._tooltip._container, 'highlight');
     return highlight;
+  },
+  isAvailableForDispatching: function() {
+    return this._unit.isAvailableForDispatching;
   },
 });
 
