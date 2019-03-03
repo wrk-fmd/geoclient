@@ -408,8 +408,8 @@
 
       // while updating units and incidents, use a Set for the diff with existing ones
       let toBeRemoved;
-      // incident data containes assigned units, also track the reverse direction
-      let incidents = new Map(); // unit.id => incident
+      // while processing incidents derive blueIncidentAssigned for units
+      let blueIncidentAssigned = new Set(); // unit.id
 
       // incidents
       toBeRemoved = new Set(scope.incidents.keys());
@@ -429,7 +429,7 @@
         if (incident.assignedUnits) {
           for (let id in incident.assignedUnits) {
             if (incident.assignedUnits.hasOwnProperty(id)) {
-              incidents.set(id, incident);
+              blueIncidentAssigned.add(id);
             };
           };
         };
@@ -457,8 +457,7 @@
             };
           };
           unit.ownUnit = unit.id == myId;
-          unit.blueIncidentAssigned = incidents.has(unit.id)
-            && incidents.get(unit.id).blue;
+          unit.blueIncidentAssigned = blueIncidentAssigned.has(unit.id);
           toBeRemoved.delete(unit.id);
           if (scope.units.has(unit.id)) {
             scope.units.get(unit.id).updateUnit(unit);
