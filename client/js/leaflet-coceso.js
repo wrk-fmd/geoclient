@@ -177,7 +177,6 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     return 'white';
   },
   getOutline: function(unit) {
-    if (unit.isAvailableForDispatching && unit.blueIncidentAssigned) return 'red';
     if (unit.isAvailableForDispatching) return 'green';
     if (unit.blueIncidentAssigned) return 'blue';
     return 'lightgray';
