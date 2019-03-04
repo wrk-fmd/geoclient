@@ -80,7 +80,7 @@ L.marker.incidentMarker = function(incident, options) {
 L.CircleMarker.UnitMarker = L.CircleMarker.extend({
   options: {
     color: 'lightgray',
-    weight: 2,
+    weight: 5,
     fillColor: 'white',
     fillOpacity: 1,
     fadeInterval: 15000, // milliseconds
@@ -177,7 +177,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     return 'white';
   },
   getOutline: function(unit) {
-    if (unit.isAvailableForDispatching) return 'green';
+    if (unit.isAvailableForDispatching) return 'chartreuse';
     if (unit.blueIncidentAssigned) return 'blue';
     return 'lightgray';
   },
