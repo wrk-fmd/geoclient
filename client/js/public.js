@@ -406,8 +406,42 @@
         return false;
       };
 
-      // keep a copy of the existing keys and remove updated ones
-      let toBeRemoved = new Set(scope.units.keys());
+      // while updating units and incidents, use a Set for the diff with existing ones
+      let toBeRemoved;
+      // while processing incidents derive blueIncidentAssigned for units
+      let blueIncidentAssigned = new Set(); // unit.id
+
+      // incidents
+      toBeRemoved = new Set(scope.incidents.keys());
+      // update the markers
+      data.incidents.forEach(function (incident) {
+        if (incident.location) {
+          toBeRemoved.delete(incident.id);
+          if (scope.incidents.has(incident.id)) {
+            scope.incidents.get(incident.id).updateIncident(incident);
+          } else {
+            scope.incidents.set(incident.id,
+              L.marker.incidentMarker(incident)
+                .addTo(scope.incidentLayer)
+            );
+          };
+        };
+        if (incident.assignedUnits) {
+          for (let id in incident.assignedUnits) {
+            if (incident.assignedUnits.hasOwnProperty(id)) {
+              blueIncidentAssigned.add(id);
+            };
+          };
+        };
+      });
+      // clear deprecated markers
+      toBeRemoved.forEach(function (id) {
+        scope.incidents.get(id).remove();
+        scope.incidents.delete(id);
+      });
+
+      // units
+      toBeRemoved = new Set(scope.units.keys());
       // update the markers
       let now = new Date();
       data.units.forEach(function (unit) {
@@ -423,6 +457,7 @@
             };
           };
           unit.ownUnit = unit.id == myId;
+          unit.blueIncidentAssigned = blueIncidentAssigned.has(unit.id);
           toBeRemoved.delete(unit.id);
           if (scope.units.has(unit.id)) {
             scope.units.get(unit.id).updateUnit(unit);
@@ -438,28 +473,6 @@
       toBeRemoved.forEach(function (id) {
         scope.units.get(id).remove();
         scope.units.delete(id);
-      });
-
-      // keep a copy of the existing keys and remove updated ones
-      toBeRemoved = new Set(scope.incidents.keys());
-      // update the markers
-      data.incidents.forEach(function (incident) {
-        if (incident.location) {
-          toBeRemoved.delete(incident.id);
-          if (scope.incidents.has(incident.id)) {
-            scope.incidents.get(incident.id).updateIncident(incident);
-          } else {
-            scope.incidents.set(incident.id,
-              L.marker.incidentMarker(incident)
-                .addTo(scope.incidentLayer)
-            );
-          };
-        };
-      });
-      // clear deprecated markers
-      toBeRemoved.forEach(function (id) {
-        scope.incidents.get(id).remove();
-        scope.incidents.delete(id);
       });
 
     }).done(function (e) {
