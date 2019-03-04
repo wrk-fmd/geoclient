@@ -33,6 +33,7 @@
       </th>
       <th>Units</th>
       <th>Incidents</th>
+      <th>available</th>
       <th>
         Actions
         <a href="#" data-bind="click: postAll">Save all</a>
@@ -70,6 +71,7 @@
       ">
         </select>
       </td>
+      <td><input data-bind='checked: isAvailableForDispatching' type='checkbox' /></td>
       <td>
         <a href="#" data-bind="click: post">Save</a>
         <a href="#" data-bind="click: $parent.removeUnit">Delete</a>

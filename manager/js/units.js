@@ -67,6 +67,7 @@ let viewModel = {
         token: randomToken(),
         units: [],
         incidentes: [],
+        isAvailableForDispatching: true,
       });
       viewModel.configuredUnits.push(unit);
       unit.post();

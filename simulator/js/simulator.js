@@ -33,6 +33,7 @@ let sampleData = [
           latitude: 48.15,
           longitude: 16.4,
         },
+        isAvailableForDispatching: false,
     },
     {
         id: 'h',
@@ -42,6 +43,7 @@ let sampleData = [
           latitude: 48.15,
           longitude: 16.4,
         },
+        isAvailableForDispatching: true,
     },
     {
         id: 'v',
@@ -51,6 +53,7 @@ let sampleData = [
           latitude: 48.2,
           longitude: 16.35,
         },
+        isAvailableForDispatching: true,
     },
 ];
 let sampleCenterX = 16.4; // longitude
@@ -89,7 +92,7 @@ function update(unitId, unit) {
 }
 
 function create(unitId, token, name) {
-    return update(unitId, {id: unitId, token: token, name: name});
+    return update(unitId, {id: unitId, token: token, name: name, isAvailableForDispatching: true});
 }
 
 // update positions
