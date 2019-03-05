@@ -76,6 +76,7 @@
     {
       latlng: L.latLng(config.initLatitude, config.initLongitude),
       zoom: config.initZoom,
+      showBusyUnits: config.showBusyUnits,
     },
     session.initData,
   );
@@ -87,6 +88,7 @@
     config.initLatitude = session.data.latlng.lat;
     config.initLongitude = session.data.latlng.lng;
     config.initZoom = session.data.zoom;
+    config.showBusyUnits = session.data.showBusyUnits;
   };
 
   // calculate my URLs
@@ -309,6 +311,7 @@
           : 'removeFrom'
         ](scope.unitLayer);
       });
+      session.store({showBusyUnits: scope.showBusyUnits})
     };
     scope.toggleBusyUnitsButton = L.easyButton({
       states: [{
@@ -323,7 +326,11 @@
 	onClick:   toggleBusyUnits,
       }],
     }).addTo(map);
-    if (!scope.showBusyUnits) toggleBusyUnits();
+    if (!scope.showBusyUnits) {
+      // fake wrong state to force initialzation
+      scope.showBusyUnits = true;
+      toggleBusyUnits();
+    };
 
     // XXX quite hacky search
     let searchString = "";
@@ -492,10 +499,11 @@
           if (scope.units.has(unit.id)) {
             scope.units.get(unit.id).updateUnit(unit);
           } else {
-            scope.units.set(unit.id,
-              L.circleMarker.unitMarker(unit)
-                .addTo(scope.unitLayer)
-            );
+            let marker = L.circleMarker.unitMarker(unit);
+            scope.units.set(unit.id, marker);
+            if (scope.showBusyUnits || marker.isAvailableForDispatching()) {
+              marker.addTo(scope.unitLayer);
+            };
           };
         };
       });
