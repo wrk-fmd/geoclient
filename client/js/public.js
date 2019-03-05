@@ -69,6 +69,26 @@
 
   let config = $.extend({}, default_config, external_config);
 
+  // store and restore the session
+  let session = {};
+  session.initData = history.state;
+  session.data = $.extend(
+    {
+      latlng: L.latLng(config.initLatitude, config.initLongitude),
+      zoom: config.initZoom,
+    },
+    session.initData,
+  );
+  session.store = function(update) {
+    // empty title "should be safe against future changes to the method".
+    history.replaceState($.extend(session.data, update), '');
+  };
+  if (session.initData) {
+    config.initLatitude = session.data.latlng.lat;
+    config.initLongitude = session.data.latlng.lng;
+    config.initZoom = session.data.zoom;
+  };
+
   // calculate my URLs
   if (myId && myToken) {
     myScopeUrl = config.apiPublic
@@ -88,7 +108,17 @@
     zoom: config.initZoom,
     zoomSnap: 0.5,
     zoomDelta: 1,
-  });
+  })
+    .on('moveend', function() {
+      session.store({latlng: map.getCenter()});
+    })
+    .on('zoomend', function() {
+      session.store({zoom: map.getZoom()});
+    })
+    .on('overlayadd', function(e) {
+      alert(e);
+    })
+  ;
 
   L.tileLayer('https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg', {
     maxZoom: 19,
