@@ -117,9 +117,6 @@
     .on('zoomend', function() {
       session.store({zoom: map.getZoom()});
     })
-    .on('overlayadd', function(e) {
-      alert(e);
-    })
   ;
 
   L.tileLayer('https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg', {
