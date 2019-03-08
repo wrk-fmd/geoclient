@@ -6,51 +6,64 @@
 
 // XXX assuming leaflet is loaded, no proper plugin structure
 
+let svgConstants = {
+  svgHeader: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E",
+  svgFooter: "%3C/svg%3E",
+
+  topDownTriangle: "M1,1 L7,13 L13,1 z",
+  square: "M1,1 h12 v12 h-12 z",
+
+  incidentIconSize: [14, 14],
+  incidentIconAnchor: [7, 7],
+  incidentPopupAnchor: [0, -7],
+  incidentFillNonBlue: "grey",
+  incidentFillBlue: "blue",
+  incidentStrokePriority: "red",
+  incidentStrokeNonPriority: "white",
+};
+
+function buildSvgString(pathString, fillColor, strokeColor) {
+  return svgConstants.svgHeader
+    + "%3Cpath d='" + pathString + "' fill='" + fillColor + "' stroke='" + strokeColor + "' stroke-width='2'/%3E"
+    + svgConstants.svgFooter;
+}
+
 // icons
 let cocesoIcons = {
   incident: L.icon({
-    iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E"+
-      "%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='white' stroke-width='2'/%3E"+
-      "%3C/svg%3E",
-    iconSize:    [14,14],
-    iconAnchor:  [7,7],
-    popupAnchor: [0,-7],
+    iconUrl: buildSvgString(svgConstants.topDownTriangle, svgConstants.incidentFillNonBlue, svgConstants.incidentStrokeNonPriority),
+    iconSize: svgConstants.incidentIconSize,
+    iconAnchor: svgConstants.incidentIconAnchor,
+    popupAnchor: svgConstants.incidentPopupAnchor,
   }),
   incidentPriority: L.icon({
-    iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E"+
-      "%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='red' stroke-width='2'/%3E"+
-      "%3C/svg%3E",
-    iconSize:    [14,14],
-    iconAnchor:  [7,7],
-    popupAnchor: [0,-7],
+    iconUrl: buildSvgString(svgConstants.topDownTriangle, svgConstants.incidentFillNonBlue, svgConstants.incidentStrokePriority),
+    iconSize: svgConstants.incidentIconSize,
+    iconAnchor: svgConstants.incidentIconAnchor,
+    popupAnchor: svgConstants.incidentPopupAnchor,
   }),
   incidentPriorityBlue: L.icon({
-    iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E"+
-      "%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='red' stroke-width='2'/%3E"+
-      "%3C/svg%3E",
-    iconSize:    [14,14],
-    iconAnchor:  [7,7],
-    popupAnchor: [0,-7],
+    iconUrl: buildSvgString(svgConstants.topDownTriangle, svgConstants.incidentFillBlue, svgConstants.incidentStrokePriority),
+    iconSize: svgConstants.incidentIconSize,
+    iconAnchor: svgConstants.incidentIconAnchor,
+    popupAnchor: svgConstants.incidentPopupAnchor,
   }),
   incidentBlue: L.icon({
-    iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E"+
-      "%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='white' stroke-width='2'/%3E"+
-      "%3C/svg%3E",
-    iconSize:    [14,14],
-    iconAnchor:  [7,7],
-    popupAnchor: [0,-7],
+    iconUrl: buildSvgString(svgConstants.topDownTriangle, svgConstants.incidentFillBlue, svgConstants.incidentStrokeNonPriority),
+    iconSize: svgConstants.incidentIconSize,
+    iconAnchor: svgConstants.incidentIconAnchor,
+    popupAnchor: svgConstants.incidentPopupAnchor,
   }),
-  get: function(priority, blue) {
+  get: function (priority, blue) {
     if (priority)
       if (blue)
         return this.incidentPriorityBlue;
       else
         return this.incidentPriority;
+    else if (blue)
+      return this.incidentBlue;
     else
-      if (blue)
-        return this.incidentBlue;
-      else
-        return this.incident;
+      return this.incident;
   },
 };
 
@@ -59,12 +72,12 @@ L.Marker.IncidentMarker = L.Marker.extend({
     icon: cocesoIcons.incident,
     pane: 'overlayPane',
   },
-  initialize: function(incident, options) {
+  initialize: function (incident, options) {
     options = L.Util.setOptions(this, options);
     this.bindPopup('');
     this.updateIncident(incident);
   },
-  updateIncident: function(incident) {
+  updateIncident: function (incident) {
     this._incident = incident;
     this.setLatLng([incident.location.latitude, incident.location.longitude]);
     this.setIcon(cocesoIcons.get(incident.priority, incident.blue));
@@ -73,7 +86,7 @@ L.Marker.IncidentMarker = L.Marker.extend({
   },
 });
 
-L.marker.incidentMarker = function(incident, options) {
+L.marker.incidentMarker = function (incident, options) {
   return new L.Marker.IncidentMarker(incident, options);
 };
 
@@ -88,7 +101,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     fadeMinOpacity: 0.3,
     pane: 'markerPane',
   },
-  initialize: function(unit, options) {
+  initialize: function (unit, options) {
     options = L.Util.setOptions(this, options);
     this._defaultOpacity = options.fillOpacity;
     this.setRadius(options.radius);
@@ -102,18 +115,18 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this.initFeatureLayer();
     this.updateUnit(unit);
 
-    this.on('add', function(e) {
+    this.on('add', function (e) {
       this._fadeTimer = setInterval(
         this.fadeStep,
         this.options.fadeInterval,
         this,
       );
     });
-    this.on('remove', function(e) {
+    this.on('remove', function (e) {
       clearInterval(this._fadeTimer);
     });
   },
-  initFeatureLayer: function() {
+  initFeatureLayer: function () {
     this._fromLine = L.polyline([], {
       color: 'gray',
       interactive: false,
@@ -130,7 +143,7 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this.on('mouseover', this.showFeatureLayer);
     this.on('mouseout', this.hideFeatureLayerMouseOver);
   },
-  updateFeatureLayer: function(unit) {
+  updateFeatureLayer: function (unit) {
     let here = this.getLatLng();
     let from = unit.lastPoint
       ? [unit.lastPoint.latitude, unit.lastPoint.longitude]
@@ -141,30 +154,30 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this._fromLine.setLatLngs([from, here]);
     this._targetLine.setLatLngs([here, target]);
     this._targetLine.setStyle({
-      color : unit.blueIncidentAssigned ? 'blue' : 'green',
+      color: unit.blueIncidentAssigned ? 'blue' : 'green',
     });
   },
-  showFeatureLayer: function(e) {
+  showFeatureLayer: function (e) {
     this._featureLayer.addTo(this._map);
   },
-  hideFeatureLayerPopup: function(e) {
+  hideFeatureLayerPopup: function (e) {
     this._featureLayer.remove();
   },
-  hideFeatureLayerMouseOver: function(e) {
+  hideFeatureLayerMouseOver: function (e) {
     if (this.isPopupOpen()) return;
     this._featureLayer.remove();
   },
-  fadeStep: function(self) {
+  fadeStep: function (self) {
     // setInterval triggers in different context, use self instead of this
     self = self || this;
     let elapsed = new Date() - new Date(self._unit.currentPosition.timestamp); // milliseconds
-    let stepCount = Math.floor(elapsed/self.options.fadeInterval);
+    let stepCount = Math.floor(elapsed / self.options.fadeInterval);
     let value = self._defaultOpacity - stepCount * self.options.fadeStep;
     self.setStyle({
       fillOpacity: Math.max(value, self.options.fadeMinOpacity),
     });
   },
-  getColor: function(unit) {
+  getColor: function (unit) {
     if (unit.ownUnit) return 'yellow';
     if (!unit.online) return 'gray';
     // XXX should be configurable
@@ -176,12 +189,12 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     if (unit.name.indexOf('Kdo') !== -1) return 'fuchsia';
     return 'white';
   },
-  getOutline: function(unit) {
+  getOutline: function (unit) {
     if (unit.isAvailableForDispatching) return 'chartreuse';
     if (unit.blueIncidentAssigned) return 'blue';
     return 'lightgray';
   },
-  updateUnit: function(unit) {
+  updateUnit: function (unit) {
     this._unit = unit;
     this.fadeStep();
     this.setLatLng([unit.currentPosition.latitude, unit.currentPosition.longitude]);
@@ -194,21 +207,22 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     this.updateFeatureLayer(unit);
     return this;
   },
-  highlight: function(condition) {
+  highlight: function (condition) {
     let highlight = condition;
     if (typeof condition === 'string' && condition !== "") {
       highlight = this._unit.name.indexOf(condition) !== -1;
     } else if (condition.test && typeof condition.test === 'function') {
       highlight = condition.test(this._unit.name);
-    };
+    }
+
     L.DomUtil[highlight ? 'addClass' : 'removeClass'](this._tooltip._container, 'highlight');
     return highlight;
   },
-  isAvailableForDispatching: function() {
+  isAvailableForDispatching: function () {
     return this._unit.isAvailableForDispatching;
   },
 });
 
-L.circleMarker.unitMarker = function(unit, options) {
+L.circleMarker.unitMarker = function (unit, options) {
   return new L.CircleMarker.UnitMarker(unit, options);
 };
