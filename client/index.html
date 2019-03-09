@@ -65,7 +65,8 @@
 <p>
     <i class="fa fa-thumbs-up"></i>/<i class="fa fa-flag"></i>
     (Leitstellenmodus) aktiviert oder deaktiviert den Filter auf die disponierbaren Einheiten.
-    Der Filtermodus ist unabhängig davon, ob die Einheiten aktuell angezeigt werden, siehe <img src="libs/leaflet/v1.3.1/images/layers.png"></img>.
+    Der Filtermodus ist unabhängig davon, ob die Einheiten aktuell angezeigt werden, siehe
+    <img src="libs/leaflet/v1.3.1/images/layers.png" alt="Layer Stack Icon"/>.
     Klicke auf <i class="fa fa-thumbs-up"></i> um nur disponierbare Einheiten anzuzeigen.
 </p>
 <p>
@@ -77,55 +78,63 @@
     frag-würdige Lektüre für einsame Stunden.
 </p>
 <p>
-    <img src="libs/leaflet/v1.3.1/images/layers.png"></img>
+    <img src="libs/leaflet/v1.3.1/images/layers.png" alt="Layer Stack Icon"/>
     blendet Karteninhalte ein oder aus. Die einzelnen Layer werden eingeblendet, wenn du mit der Maus über diese Funktion fährst oder darauf tippst.
 </p>
 <h2>Karteninhalte</h2>
 <p>
-    <img src="libs/leaflet/v1.3.1/images/marker-icon.png"></img>
+    <img src="libs/leaflet/v1.3.1/images/marker-icon.png" alt="Map Marker Icon"/>
     zeigt die am Browser ermittelte, eigene Position an. Der umgebende Kreis beschreibt die Genauigkeit der Positionsbestimmung.
     Wenn die Datenkommunikation mit dem Server aktiv ist, sollte auch der die eigene Einheit an dieser Stelle angezeigt werden.
 </p>
+<h3>
+    Aufträge / Einsätze
+</h3>
 <p>
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='white' stroke-width='2'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='grey' stroke='darkorange' stroke-width='2'/%3E%3C/svg%3E"/>
     ein Auftrag,
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='white' stroke-width='2'/%3E%3C/svg%3E"></img>
-    ein Einsatz; wenn der Rahmen rot statt weiß ist (
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='grey' stroke='red' stroke-width='2'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='blue' stroke='darkorange' stroke-width='2'/%3E%3C/svg%3E"/>
+    ein Einsatz; wenn der Rahmen rot statt orange ist (
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='grey' stroke='red' stroke-width='2'/%3E%3C/svg%3E"/>
     /
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M1 1h12v12h-12z' fill='blue' stroke='red' stroke-width='2'/%3E%3C/svg%3E"></img>
-    ), ist eine unverzügliche Informationsweitergabe erforderlich, z.B. Verzögerung bei der Anfahrt, Lagemeldung bei Eintraffen.
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='blue' stroke='red' stroke-width='2'/%3E%3C/svg%3E"/>
+    ), ist eine unverzügliche Informationsweitergabe erforderlich, z.B. Verzögerung bei der Anfahrt, Lagemeldung bei Eintreffen.
 </p>
+<h3>
+    Einheiten
+</h3>
 <p>
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"></img>
-    eine Einheit. Wenn du die Maus darüberhältst oder drauf tippst, werden weitere Details eingeblendet:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+    stellt eine Einheit dar.
+    Wenn du die Maus darüberhältst oder drauf tippst, werden weitere Details eingeblendet:
     eine grüne oder blaue Linie führt zur nächsten zugewiesenen Position, eine graue Linie zur letzten bestätigten Position
     (beide Linien sind nur dann sichtbar, wenn es die bezeichnete Position gibt und sie sich von der Live-Position der Einheit unterscheidet).
 </p>
 <p>
-    Generell siehst du nur Einheiten und Einsätze, die zu dem selben Einsatz alarmiert sind, wie ihr. Führungskräfte sehen alle Einheiten:
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='yellow' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    Generell siehst du nur Einheiten und Einsätze, die zu dem selben Einsatz alarmiert sind, wie ihr.
+    Führungskräfte sehen alle Einheiten:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='yellow' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
     die eigene Einheit,
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='crimson' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='crimson' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
     Notarzt,
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='coral' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='coral' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
     RTW,
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
     andere (z.B. SEW),
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='fuchsia' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='fuchsia' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
     Führungskraft
 </p>
 <p>
     Die Farben verblassen mit dem Alter der Positionsdaten. Wenn keine oder zu lange keine Positionsdaten vorhanden sind, ist die Einheit offline:
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='gray' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='gray' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
 </p>
 <p>
     Der Rand der Einheiten spiegelt deren Status wider:
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='chartreuse'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='chartreuse'/%3E%3C/svg%3E"/>
     kann disponiert werden,
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='blue'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='blue'/%3E%3C/svg%3E"/>
     Einsatz,
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"></img>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
     anderer Status
 </p>
 </div></div>
