@@ -72,13 +72,30 @@ let prefix = '';
   }
 }
 
+function compareUnits(unitA, unitB) {
+  if (unitA.name < unitB.name)
+    return -1;
+  if (unitA.name > unitB.name)
+    return 1;
+  return 0;
+}
+
 $.get(apiPrivate + '/units').fail(log).done(function (data) {
+  let unitsToShow = [];
+
   data.configuredUnits.forEach(function (unit) {
     if (unit.id.startsWith(prefix)) {
-      addUnitToView(unit);
+      unitsToShow.push(unit);
     } else {
       console.info("Skipping unit with not-matching id.", unit);
-    };
+    }
   });
+
+  unitsToShow.sort(compareUnits);
+
+  unitsToShow.forEach(function(unit) {
+    addUnitToView(unit);
+  });
+
   $('.info-div').load(infoSheet);
 });
