@@ -7,19 +7,19 @@
 // XXX assuming leaflet is loaded, no proper plugin structure
 
 let svgConstants = {
-  svgHeader: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E",
+  svgHeader: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E",
   svgFooter: "%3C/svg%3E",
 
-  topDownTriangle: "M1,1 L7,13 L13,1 z",
-  square: "M1,1 h12 v12 h-12 z",
+  topDownTriangle: "M1,1 L8,15 L15,1 z",
+  square: "M1,1 h14 v14 h-14 z",
 
-  incidentIconSize: [14, 14],
-  incidentIconAnchor: [7, 7],
-  incidentPopupAnchor: [0, -7],
+  incidentIconSize: [16, 16],
+  incidentIconAnchor: [8, 8],
+  incidentPopupAnchor: [0, -8],
   incidentFillNonBlue: "grey",
   incidentFillBlue: "blue",
   incidentStrokePriority: "red",
-  incidentStrokeNonPriority: "white",
+  incidentStrokeNonPriority: "darkorange",
 };
 
 function buildSvgString(pathString, fillColor, strokeColor) {
