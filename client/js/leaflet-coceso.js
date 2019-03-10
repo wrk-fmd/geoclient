@@ -16,54 +16,42 @@ let svgConstants = {
   incidentIconSize: [16, 16],
   incidentIconAnchor: [8, 8],
   incidentPopupAnchor: [0, -8],
-  incidentFillNonBlue: "grey",
+  incidentFill: "grey",
   incidentFillBlue: "blue",
+  incidentStroke: "darkorange",
   incidentStrokePriority: "red",
-  incidentStrokeNonPriority: "darkorange",
 };
 
-function buildSvgString(pathString, fillColor, strokeColor) {
+function buildSvgString(pathString, fillColor, strokeColor, flash) {
   return svgConstants.svgHeader
-    + "%3Cpath d='" + pathString + "' fill='" + fillColor + "' stroke='" + strokeColor + "' stroke-width='2'/%3E"
-    + svgConstants.svgFooter;
+    + "%3Cpath d='" + pathString + "' fill='" + fillColor + "' stroke='" + strokeColor + "' stroke-width='2'%3E"
+    + (flash ? "%3Canimate attributeName='opacity' values='0;1;1;1;1;1;0' dur='1s' repeatCount='indefinite'/%3E" : "")
+    + "%3C/path%3E" + svgConstants.svgFooter;
 }
 
 // icons
 let cocesoIcons = {
-  incident: L.icon({
-    iconUrl: buildSvgString(svgConstants.topDownTriangle, svgConstants.incidentFillNonBlue, svgConstants.incidentStrokeNonPriority),
-    iconSize: svgConstants.incidentIconSize,
-    iconAnchor: svgConstants.incidentIconAnchor,
-    popupAnchor: svgConstants.incidentPopupAnchor,
-  }),
-  incidentPriority: L.icon({
-    iconUrl: buildSvgString(svgConstants.topDownTriangle, svgConstants.incidentFillNonBlue, svgConstants.incidentStrokePriority),
-    iconSize: svgConstants.incidentIconSize,
-    iconAnchor: svgConstants.incidentIconAnchor,
-    popupAnchor: svgConstants.incidentPopupAnchor,
-  }),
-  incidentPriorityBlue: L.icon({
-    iconUrl: buildSvgString(svgConstants.topDownTriangle, svgConstants.incidentFillBlue, svgConstants.incidentStrokePriority),
-    iconSize: svgConstants.incidentIconSize,
-    iconAnchor: svgConstants.incidentIconAnchor,
-    popupAnchor: svgConstants.incidentPopupAnchor,
-  }),
-  incidentBlue: L.icon({
-    iconUrl: buildSvgString(svgConstants.topDownTriangle, svgConstants.incidentFillBlue, svgConstants.incidentStrokeNonPriority),
-    iconSize: svgConstants.incidentIconSize,
-    iconAnchor: svgConstants.incidentIconAnchor,
-    popupAnchor: svgConstants.incidentPopupAnchor,
-  }),
-  get: function (priority, blue) {
-    if (priority)
-      if (blue)
-        return this.incidentPriorityBlue;
-      else
-        return this.incidentPriority;
-    else if (blue)
-      return this.incidentBlue;
-    else
-      return this.incident;
+  get: function (priority, blue, flash) {
+    // reuse icons, store them in this
+    let name = "incident"
+      + (priority ? "Priority" : "")
+      + (blue ? "Blue" : "")
+      + (flash ? "Flash" : "")
+    ;
+    // returned cached icon, if possible
+    if (this[name]) return this[name];
+    // otherwise build, cache, and return
+    return this[name] = L.icon({
+      iconUrl: buildSvgString(
+        svgConstants.topDownTriangle,
+        svgConstants["incidentFill" + (blue ? "Blue" : "")],
+        svgConstants["incidentStroke" + (priority ? "Priority" : "")],
+        flash
+      ),
+      iconSize: svgConstants.incidentIconSize,
+      iconAnchor: svgConstants.incidentIconAnchor,
+      popupAnchor: svgConstants.incidentPopupAnchor,
+    });
   },
 };
 
@@ -78,9 +66,25 @@ L.Marker.IncidentMarker = L.Marker.extend({
     this.updateIncident(incident);
   },
   updateIncident: function (incident) {
+    // process assignedUnits
+    // XXX getOwnPropertyNames() was not available while testing
+    let hasAssignedUnit = false;
+    if (incident.assignedUnits) {
+      for (const unit in incident.assignedUnits) {
+        if (object.hasOwnProperty(unit)) {
+          hasAssignedUnit = true;
+          break;
+        }
+      }
+    }
+    // store incident and set marker options
     this._incident = incident;
     this.setLatLng([incident.location.latitude, incident.location.longitude]);
-    this.setIcon(cocesoIcons.get(incident.priority, incident.blue));
+    this.setIcon(cocesoIcons.get(
+      incident.priority,
+      incident.blue,
+      !hasAssignedUnit
+    ));
     this.setPopupContent(incident.info.trim().replace(/\n/g, '<br />'));
     return this;
   },
