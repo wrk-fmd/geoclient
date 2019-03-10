@@ -465,12 +465,10 @@
             );
           }
         }
-        if (incident.assignedUnits) {
-          for (let id in incident.assignedUnits) {
-            if (incident.assignedUnits.hasOwnProperty(id)) {
-              blueIncidentAssigned.add(id);
-            }
-          }
+        if (incident.blue) {
+          incident.assignedUnits.keys().forEach(function (id) {
+            blueIncidentAssigned.add(id);
+          });
         }
       });
       // clear deprecated markers
