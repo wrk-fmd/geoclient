@@ -63,7 +63,37 @@ L.Marker.IncidentMarker = L.Marker.extend({
   initialize: function (incident, options) {
     options = L.Util.setOptions(this, options);
     this.bindPopup('');
+    this.initFeatureLayer();
     this.updateIncident(incident);
+    // XXX test data
+    this.updateUnits([
+      [48.16238359445896, 16.494767294046643],
+      [48.1980966680475, 16.421730997201916],
+      [48.2, 16.35]
+    ]);
+  },
+  initFeatureLayer: function () {
+    // this is really just one polyline that is a container for one or more lines
+    this._featureLayer = L.polyline([], {
+      color: 'gray',
+      interactive: false,
+    });
+    // event handlers are asymmetric to not hide while either is still open
+    this.on('popupopen', this.showFeatureLayer);
+    this.on('popupclose', this.hideFeatureLayerPopup);
+    // cannot bind this on permanent tooltip
+    this.on('mouseover', this.showFeatureLayer);
+    this.on('mouseout', this.hideFeatureLayerMouseOver);
+  },
+  showFeatureLayer: function (e) {
+    this._featureLayer.addTo(this._map);
+  },
+  hideFeatureLayerPopup: function (e) {
+    this._featureLayer.remove();
+  },
+  hideFeatureLayerMouseOver: function (e) {
+    if (this.isPopupOpen()) return;
+    this._featureLayer.remove();
   },
   updateIncident: function (incident) {
     let hasAssignedUnit = Object.keys(incident.assignedUnits).length > 0;
@@ -77,7 +107,14 @@ L.Marker.IncidentMarker = L.Marker.extend({
       !hasAssignedUnit
     ));
     this.setPopupContent(incident.info.trim().replace(/\n/g, '<br />'));
+    this._featureLayer.setStyle({
+      color: this._incident.blue ? 'blue' : 'gray',
+    });
     return this;
+  },
+  updateUnits: function (arrayOfLatLngs) {
+    let here = this.getLatLng();
+    this._featureLayer.setLatLngs(arrayOfLatLngs.map(ll => [here, ll]));
   },
 });
 
