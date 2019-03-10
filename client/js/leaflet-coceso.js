@@ -25,7 +25,7 @@ let svgConstants = {
 function buildSvgString(pathString, fillColor, strokeColor, flash) {
   return svgConstants.svgHeader
     + "%3Cpath d='" + pathString + "' fill='" + fillColor + "' stroke='" + strokeColor + "' stroke-width='2'%3E"
-    + (flash ? "%3Canimate attributeName='opacity' values='0;1;1;1;1;1;0' dur='1s' repeatCount='indefinite'/%3E" : "")
+    + (flash ? "%3Canimate attributeName='opacity' values='0;1;1;1;1;1;0;0' dur='1s' repeatCount='indefinite'/%3E" : "")
     + "%3C/path%3E" + svgConstants.svgFooter;
 }
 
@@ -66,17 +66,8 @@ L.Marker.IncidentMarker = L.Marker.extend({
     this.updateIncident(incident);
   },
   updateIncident: function (incident) {
-    // process assignedUnits
-    // XXX getOwnPropertyNames() was not available while testing
-    let hasAssignedUnit = false;
-    if (incident.assignedUnits) {
-      for (const unit in incident.assignedUnits) {
-        if (object.hasOwnProperty(unit)) {
-          hasAssignedUnit = true;
-          break;
-        }
-      }
-    }
+    let hasAssignedUnit = Object.keys(incident.assignedUnits).length > 0;
+
     // store incident and set marker options
     this._incident = incident;
     this.setLatLng([incident.location.latitude, incident.location.longitude]);
