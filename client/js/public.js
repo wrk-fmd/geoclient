@@ -466,7 +466,7 @@
           }
         }
         if (incident.blue) {
-          incident.assignedUnits.keys().forEach(function (id) {
+          Object.keys(incident.assignedUnits).forEach(function (id) {
             blueIncidentAssigned.add(id);
           });
         }
