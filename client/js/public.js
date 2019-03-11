@@ -516,6 +516,17 @@
         scope.units.delete(id);
       });
 
+      // back to the incidents: positions of assignedUnits
+      scope.incidents.forEach(function (incident) {
+        incident.updateUnits(incident.getAssignedUnitIds().filter(
+          // assignedUnit might not have a currentPosition, i.e. is not in scope.units
+          id => scope.units.has(id)
+        ).map(
+          // use the position of the marker, that is unit.currentPosition
+          id => scope.units.get(id).getLatLng()
+        ));
+      });
+
     }).done(function (e) {
       appStatus.connectionButton.state('green');
     }).fail(function (e) {

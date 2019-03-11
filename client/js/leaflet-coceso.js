@@ -90,21 +90,25 @@ L.Marker.IncidentMarker = L.Marker.extend({
     this._featureLayer.remove();
   },
   updateIncident: function (incident) {
-    let hasAssignedUnit = Object.keys(incident.assignedUnits).length > 0;
-
-    // store incident and set marker options
+    // store incident
     this._incident = incident;
+    incident.unassigned = 0 === this.getAssignedUnitIds().length;
+
+    // set marker options
     this.setLatLng([incident.location.latitude, incident.location.longitude]);
     this.setIcon(cocesoIcons.get(
       incident.priority,
       incident.blue,
-      !hasAssignedUnit
+      incident.unassigned
     ));
     this.setPopupContent(incident.info.trim().replace(/\n/g, '<br />'));
     this._featureLayer.setStyle({
       color: this._incident.blue ? 'blue' : 'gray',
     });
     return this;
+  },
+  getAssignedUnitIds: function () {
+    return Object.keys(this._incident.assignedUnits);
   },
   updateUnits: function (arrayOfLatLngs) {
     let here = this.getLatLng();
