@@ -65,12 +65,6 @@ L.Marker.IncidentMarker = L.Marker.extend({
     this.bindPopup('');
     this.initFeatureLayer();
     this.updateIncident(incident);
-    // XXX test data
-    this.updateUnits([
-      [48.16238359445896, 16.494767294046643],
-      [48.1980966680475, 16.421730997201916],
-      [48.2, 16.35]
-    ]);
   },
   initFeatureLayer: function () {
     // this is really just one polyline that is a container for one or more lines
