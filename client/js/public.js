@@ -105,9 +105,6 @@
       + '?' + $.param({token: myToken});
   }
 
-  // XXX test data, to be removed
-  myScopeUrl = 'data/test.json';
-
   // map and base tiles
   let map = L.map('map', {
       center: [config.initLatitude, config.initLongitude],
