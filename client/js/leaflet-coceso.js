@@ -63,21 +63,56 @@ L.Marker.IncidentMarker = L.Marker.extend({
   initialize: function (incident, options) {
     options = L.Util.setOptions(this, options);
     this.bindPopup('');
+    this.initFeatureLayer();
     this.updateIncident(incident);
   },
+  initFeatureLayer: function () {
+    // this is really just one polyline that is a container for one or more lines
+    this._featureLayer = L.polyline([], {
+      color: 'gray',
+      interactive: false,
+    });
+    // event handlers are asymmetric to not hide while either is still open
+    this.on('popupopen', this.showFeatureLayer);
+    this.on('popupclose', this.hideFeatureLayerPopup);
+    // cannot bind this on permanent tooltip
+    this.on('mouseover', this.showFeatureLayer);
+    this.on('mouseout', this.hideFeatureLayerMouseOver);
+  },
+  showFeatureLayer: function (e) {
+    this._featureLayer.addTo(this._map);
+  },
+  hideFeatureLayerPopup: function (e) {
+    this._featureLayer.remove();
+  },
+  hideFeatureLayerMouseOver: function (e) {
+    if (this.isPopupOpen()) return;
+    this._featureLayer.remove();
+  },
   updateIncident: function (incident) {
-    let hasAssignedUnit = Object.keys(incident.assignedUnits).length > 0;
-
-    // store incident and set marker options
+    // store incident
     this._incident = incident;
+    incident.unassigned = 0 === this.getAssignedUnitIds().length;
+
+    // set marker options
     this.setLatLng([incident.location.latitude, incident.location.longitude]);
     this.setIcon(cocesoIcons.get(
       incident.priority,
       incident.blue,
-      !hasAssignedUnit
+      incident.unassigned
     ));
     this.setPopupContent(incident.info.trim().replace(/\n/g, '<br />'));
+    this._featureLayer.setStyle({
+      color: this._incident.blue ? 'blue' : 'gray',
+    });
     return this;
+  },
+  getAssignedUnitIds: function () {
+    return Object.keys(this._incident.assignedUnits);
+  },
+  updateUnits: function (arrayOfLatLngs) {
+    let here = this.getLatLng();
+    this._featureLayer.setLatLngs(arrayOfLatLngs.map(ll => [here, ll]));
   },
 });
 
