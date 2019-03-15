@@ -82,11 +82,12 @@
       latlng: L.latLng(config.initLatitude, config.initLongitude),
       zoom: config.initZoom,
       showBusyUnits: config.showBusyUnits,
+      layers: {},
     },
     session.initData,
   );
   session.store = function (update) {
-    let data = $.extend(session.data, update);
+    let data = $.extend(true, session.data, update);
     myUrl.searchParams.set('session', JSON.stringify(data));
     // empty title "should be safe against future changes to the method".
     history.replaceState(data, '', myUrl.toString());
@@ -123,6 +124,12 @@
       })
       .on('zoomend', function () {
         session.store({zoom: map.getZoom()});
+      })
+      .on('overlayadd', function (e) {
+        session.store({layers: {[e.name]: true}});
+      })
+      .on('overlayremove', function (e) {
+        session.store({layers: {[e.name]: false}});
       })
   ;
 
@@ -670,6 +677,14 @@
           }
         }
       }
+    }
+  });
+
+  // restore layer status
+  // XXX using internals of Control.Layers
+  layersControl._layers.forEach(function (layer) {
+    if (session.data.layers.hasOwnProperty(layer.name)) {
+      layer.layer[session.data.layers[layer.name] ? 'addTo' : 'removeFrom'](map);
     }
   });
 
