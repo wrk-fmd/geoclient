@@ -24,9 +24,10 @@
   let myScopeUrl;
   let myPositionsUrl;
   let myPoisUrl;
+  let myUrl = new URL(location);
   /* temporary let params */
   {
-    let params = (new URL(location)).searchParams;
+    let params = myUrl.searchParams;
     if (params.has('debug')) {
       output = console;
     }
@@ -72,18 +73,24 @@
 
   // store and restore the session
   let session = {};
-  session.initData = history.state;
+  session.initData = $.extend(
+    history.state,
+    JSON.parse(myUrl.searchParams.get('session'))
+  );
   session.data = $.extend(
     {
       latlng: L.latLng(config.initLatitude, config.initLongitude),
       zoom: config.initZoom,
       showBusyUnits: config.showBusyUnits,
+      layers: {},
     },
     session.initData,
   );
   session.store = function (update) {
+    let data = $.extend(true, session.data, update);
+    myUrl.searchParams.set('session', JSON.stringify(data));
     // empty title "should be safe against future changes to the method".
-    history.replaceState($.extend(session.data, update), '');
+    history.replaceState(data, '', myUrl.toString());
   };
   if (session.initData) {
     config.initLatitude = session.data.latlng.lat;
@@ -117,6 +124,12 @@
       })
       .on('zoomend', function () {
         session.store({zoom: map.getZoom()});
+      })
+      .on('overlayadd', function (e) {
+        session.store({layers: {[e.name]: true}});
+      })
+      .on('overlayremove', function (e) {
+        session.store({layers: {[e.name]: false}});
       })
   ;
 
@@ -664,6 +677,14 @@
           }
         }
       }
+    }
+  });
+
+  // restore layer status
+  // XXX using internals of Control.Layers
+  layersControl._layers.forEach(function (layer) {
+    if (session.data.layers.hasOwnProperty(layer.name)) {
+      layer.layer[session.data.layers[layer.name] ? 'addTo' : 'removeFrom'](map);
     }
   });
 
