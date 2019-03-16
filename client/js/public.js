@@ -75,7 +75,14 @@
   let session = {};
   session.initData = $.extend(
     history.state,
-    JSON.parse(myUrl.searchParams.get('session'))
+    (function () {
+      // XXX ignore parse errors, $.extend will ignore undefined
+      try {
+        return JSON.parse(myUrl.searchParams.get('session'))
+      } catch(e) {
+        output.warn("URL session parameter is malformed. Ignoring.");
+      }
+    })()
   );
   session.data = $.extend(
     {
