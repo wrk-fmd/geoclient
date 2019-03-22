@@ -211,12 +211,13 @@ L.CircleMarker.UnitMarker = L.CircleMarker.extend({
     if (unit.ownUnit) return 'yellow';
     if (!unit.online) return 'gray';
     // XXX should be configurable
-    if (unit.name.indexOf('NEF') !== -1) return 'crimson';
-    if (unit.name.indexOf('RTW') !== -1) return 'coral';
     if (unit.name.indexOf('SEW') !== -1) return 'white';
     if (unit.name.indexOf('KTW') !== -1) return 'white';
+    if (unit.name.indexOf('RTW') !== -1) return 'coral';
+    if (unit.name.indexOf('NEF') !== -1) return 'crimson';
     if (unit.name.indexOf('VOK') !== -1) return 'fuchsia';
     if (unit.name.indexOf('Kdo') !== -1) return 'fuchsia';
+    if (unit.name.indexOf('EL')  !== -1) return 'fuchsia';
     return 'white';
   },
   getOutline: function (unit) {
