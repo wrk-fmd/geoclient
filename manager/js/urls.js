@@ -101,10 +101,10 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
   let unitsToShow = [];
 
   data.configuredUnits.forEach(function (unit) {
-    if (unit.id.startsWith(prefix)) {
+    if (unit.id.startsWith(prefix) && unit.name.indexOf(name) !== -1) {
       unitsToShow.push(unit);
     } else {
-      console.info("Skipping unit with not-matching id.", unit);
+      console.info("Skipping unit because of filters 'prefix' or 'name'.", unit);
     }
   });
 
