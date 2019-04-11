@@ -65,10 +65,21 @@ function addUnitToView(unit) {
 }
 
 let prefix = '';
+let name = '';
+let label = '';
 {
   let params = (new URL(location)).searchParams;
   if (params.has('prefix')) {
     prefix = params.get('prefix');
+    $('#prefix').val(prefix);
+  }
+  if (params.has('name')) {
+    name = params.get('name');
+    $('#name').val(name);
+  }
+  if (params.has('label')) {
+    label = params.get('label');
+    $('#label').val(label);
   }
 }
 
