@@ -42,7 +42,7 @@ function addUnitToView(unit) {
   template.clone()
     .append(qr)
     .append($('<h1></h1>')
-      .text(unit.name)
+      .text(unit.name + (label ? ' - ' + label : ''))
     )
     .append($('<p></p>')
       .addClass('link-paragraph')
