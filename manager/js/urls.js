@@ -83,6 +83,12 @@ let label = '';
   }
 }
 
+// prefix is required
+if (!prefix) {
+  alert('Prefix is required.');
+  throw 'Prefix is required.';
+}
+
 function compareUnits(unitA, unitB) {
   if (unitA.name < unitB.name)
     return -1;
