@@ -85,7 +85,7 @@ let label = '';
 
 // prefix is required
 if (!prefix) {
-  alert('Prefix is required.');
+  $('#warning').text('Prefix is required.');
   throw 'Prefix is required.';
 }
 
@@ -107,6 +107,13 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
       console.info("Skipping unit because of filters 'prefix' or 'name'.", unit);
     }
   });
+
+  if (0 === unitsToShow.length) {
+    $('#warning').text('No data to display, review the filters.');
+    throw 'No data.';
+  } else {
+    $('#info').text('Showing ' + unitsToShow.length + ' unit(s).');
+  }
 
   unitsToShow.sort(compareUnits);
 
