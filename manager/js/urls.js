@@ -42,7 +42,7 @@ function addUnitToView(unit) {
   template.clone()
     .append(qr)
     .append($('<h1></h1>')
-      .text(unit.name)
+      .text(unit.name + (label ? ' - ' + label : ''))
     )
     .append($('<p></p>')
       .addClass('link-paragraph')
@@ -65,11 +65,28 @@ function addUnitToView(unit) {
 }
 
 let prefix = '';
+let name = '';
+let label = '';
 {
   let params = (new URL(location)).searchParams;
   if (params.has('prefix')) {
     prefix = params.get('prefix');
+    $('#prefix').val(prefix);
   }
+  if (params.has('name')) {
+    name = params.get('name');
+    $('#name').val(name);
+  }
+  if (params.has('label')) {
+    label = params.get('label');
+    $('#label').val(label);
+  }
+}
+
+// prefix is required
+if (!prefix) {
+  $('#warning').text('Prefix is required.');
+  throw 'Prefix is required.';
 }
 
 function compareUnits(unitA, unitB) {
@@ -84,12 +101,19 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
   let unitsToShow = [];
 
   data.configuredUnits.forEach(function (unit) {
-    if (unit.id.startsWith(prefix)) {
+    if (unit.id.startsWith(prefix) && unit.name.indexOf(name) !== -1) {
       unitsToShow.push(unit);
     } else {
-      console.info("Skipping unit with not-matching id.", unit);
+      console.info("Skipping unit because of filters 'prefix' or 'name'.", unit);
     }
   });
+
+  if (0 === unitsToShow.length) {
+    $('#warning').text('No data to display, review the filters.');
+    throw 'No data.';
+  } else {
+    $('#info').text('Showing ' + unitsToShow.length + ' unit(s).');
+  }
 
   unitsToShow.sort(compareUnits);
 
