@@ -33,11 +33,16 @@ function log(text) {
 }
 
 let template = $('<div></div>').addClass('unit');
-function addUnitToView(unit) {
-  let url = apiClient + '?' + $.param({
+function addUnitToView(unit, isCenterMode) {
+  let urlParameters = {
     id: unit.id,
     token: unit.token,
-  });
+  };
+  if (isCenterMode === true) {
+    urlParameters.centerMode = true
+  }
+
+  let url = apiClient + '?' + $.param(urlParameters);
   let qr = $('<div></div>').addClass('qr');
   template.clone()
     .append(qr)
@@ -67,6 +72,8 @@ function addUnitToView(unit) {
 let prefix = '';
 let name = '';
 let label = '';
+let generateCenterMode = false;
+
 {
   let params = (new URL(location)).searchParams;
   if (params.has('prefix')) {
@@ -80,6 +87,11 @@ let label = '';
   if (params.has('label')) {
     label = params.get('label');
     $('#label').val(label);
+  }
+
+  if (params.has('generateCenterMode')) {
+    generateCenterMode = true;
+    $('#generateCenterMode').prop('checked', true);
   }
 }
 
@@ -118,7 +130,7 @@ $.get(apiPrivate + '/units').fail(log).done(function (data) {
   unitsToShow.sort(compareUnits);
 
   unitsToShow.forEach(function(unit) {
-    addUnitToView(unit);
+    addUnitToView(unit, generateCenterMode);
   });
 
   $('.info-div').load(infoSheet);
