@@ -296,7 +296,12 @@
 
   // empty scope
   let scope = {};
-  scope.unitLayer = L[myClusterUnits ? "markerClusterGroup" : "layerGroup"]().addTo(map);
+  scope.unitLayer = L.layerGroup();
+  if (myClusterUnits) {
+    scope.unitLayerSupport = L.markerClusterGroup.layerSupport().addTo(map);
+    scope.unitLayerSupport.checkIn(scope.unitLayer);
+  };
+  scope.unitLayer.addTo(map);
   scope.incidentLayer = L.layerGroup().addTo(map);
   scope.units = new Map(); // id => L.circleMarker.unitMarker
   scope.incidents = new Map(); // id => L.marker.incidentMarker
