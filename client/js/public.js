@@ -19,6 +19,7 @@
   let myId;
   let myToken;
   let myCenterMode = false;
+  let myClusterUnits = false; // after testing, this should become default in centerMode
   let mySendLocation = false;
   let myDoLocate = true;
   let myScopeUrl;
@@ -33,6 +34,7 @@
     }
 
     myCenterMode = params.has('centerMode');
+    myClusterUnits = params.has('clusterUnits');
     mySendLocation = params.has('sendLocation');
     myDoLocate = mySendLocation || !myCenterMode;
     myId = params.get('id');
@@ -294,7 +296,7 @@
 
   // empty scope
   let scope = {};
-  scope.unitLayer = L.layerGroup().addTo(map);
+  scope.unitLayer = L[myClusterUnits ? "markerClusterGroup" : "layerGroup"]().addTo(map);
   scope.incidentLayer = L.layerGroup().addTo(map);
   scope.units = new Map(); // id => L.circleMarker.unitMarker
   scope.incidents = new Map(); // id => L.marker.incidentMarker
