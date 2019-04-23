@@ -4,6 +4,41 @@
  * This software may be modified and distributed under the terms of the MIT license. See the LICENSE file for details.
  */
 
+function buildBaseLayersForMapAndAddDefault(leafletMap) {
+  let basemapAtAttributionString = 'Grundkarte: <a href="https://www.basemap.at" target="_blank">basemap.at</a>, <a href="https://creativecommons.org/licenses/by/4.0/deed.de" target="_blank">CC-BY 4.0</a>';
+  let basemapAtSubdomains = ['maps', 'maps1', 'maps2', 'maps3', 'maps4'];
+  let basemapAtBounds = [[46.358770, 8.782379], [49.037872, 17.5]];
+
+  let hidpiLayer = L.tileLayer('https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg', {
+    maxZoom: 19,
+    subdomains: basemapAtSubdomains,
+    bounds: basemapAtBounds,
+    attribution: basemapAtAttributionString,
+  });
+
+  let orthoLayer = L.tileLayer('https://{s}.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg', {
+    maxZoom: 19,
+    subdomains: basemapAtSubdomains,
+    bounds: basemapAtBounds,
+    attribution: basemapAtAttributionString,
+  });
+
+  let basemapOverlay = L.tileLayer("https://{s}.wien.gv.at/basemap/bmapoverlay/normal/google3857/{z}/{y}/{x}.png", {
+    maxZoom: 19,
+    subdomains: basemapAtSubdomains,
+    bounds: basemapAtBounds
+  });
+
+  let baseLayers = {
+    'Karte': hidpiLayer,
+    'Satellitenbild': orthoLayer,
+    'Satellitenbild mit Beschriftung': L.layerGroup([orthoLayer, basemapOverlay]),
+  };
+
+  hidpiLayer.addTo(leafletMap);
+  return baseLayers;
+}
+
 // external_config is global geobroker.config
 (function (external_config) {
 
@@ -79,7 +114,7 @@
       // XXX ignore parse errors, $.extend will ignore undefined
       try {
         return JSON.parse(myUrl.searchParams.get('session'))
-      } catch(e) {
+      } catch (e) {
         output.warn("URL session parameter is malformed. Ignoring.");
       }
     })()
@@ -140,13 +175,6 @@
       })
   ;
 
-  L.tileLayer('https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg', {
-    maxZoom: 19,
-    subdomains: ['maps', 'maps1', 'maps2', 'maps3', 'maps4'],
-    bounds: [[46.358770, 8.782379], [49.037872, 17.189532]],
-    attribution: 'Grundkarte: <a href="http://basemap.at" target="_blank">basemap.at</a>, <a href="http://creativecommons.org/licenses/by/3.0/at/deed.de" target="_blank">CC-BY 3.0</a>',
-  }).addTo(map);
-
   // Own Position
   let ownPosition;
   if (myDoLocate) {
@@ -187,7 +215,6 @@
       }],
     }).addTo(map);
   }
-  ;
 
   // status
   let appStatus = {};
@@ -276,7 +303,6 @@
             .setLatLng(e.latlng)
             .setRadius(radius);
         }
-        ;
 
         // follow the new position
         ownPosition.doFollow();
@@ -310,14 +336,17 @@
   }).addTo(map);
   let layersControl;
   {
-    let layers = {}; // temporary variable
+    let baseLayers = buildBaseLayersForMapAndAddDefault(map);
+
+    let overlayLayers = {}; // temporary variable
     if (myDoLocate) {
-      layers["Eigene Position"] = ownPosition.layer;
+      overlayLayers["Eigene Position"] = ownPosition.layer;
     }
 
-    layers["Einheiten"] = scope.unitLayer;
-    layers["Vorf\u00e4lle"] = scope.incidentLayer;
-    layersControl = L.control.layers(null, layers).addTo(map);
+    overlayLayers["Einheiten"] = scope.unitLayer;
+    overlayLayers["Vorf\u00e4lle"] = scope.incidentLayer;
+
+    layersControl = L.control.layers(baseLayers, overlayLayers).addTo(map);
   }
 
   // center mode - activate with ?centerMode
