@@ -23,6 +23,13 @@ function buildBaseLayersForMapAndAddDefault(leafletMap) {
     attribution: basemapAtAttributionString,
   });
 
+  let gelaendeLayer = L.tileLayer('https://{s}.wien.gv.at/basemap/bmapgelaende/normal/google3857/{z}/{y}/{x}.jpeg', {
+    maxZoom: 19,
+    subdomains: basemapAtSubdomains,
+    bounds: basemapAtBounds,
+    attribution: basemapAtAttributionString,
+  });
+
   let basemapOverlay = L.tileLayer("https://{s}.wien.gv.at/basemap/bmapoverlay/normal/google3857/{z}/{y}/{x}.png", {
     maxZoom: 19,
     subdomains: basemapAtSubdomains,
@@ -33,6 +40,8 @@ function buildBaseLayersForMapAndAddDefault(leafletMap) {
     'Karte': hidpiLayer,
     'Satellitenbild': orthoLayer,
     'Satellitenbild mit Beschriftung': L.layerGroup([orthoLayer, basemapOverlay]),
+    'Geländekarte': gelaendeLayer,
+    'Geländerkarte mit Beschriftung': L.layerGroup([gelaendeLayer, basemapOverlay]),
   };
 
   hidpiLayer.addTo(leafletMap);
