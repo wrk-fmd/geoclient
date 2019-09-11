@@ -39,8 +39,8 @@ function buildBaseLayersForMapAndAddDefault(leafletMap) {
   let baseLayers = {
     'Karte': hidpiLayer,
     'Satellitenbild': orthoLayer,
-    'Satellitenbild mit Beschriftung': L.layerGroup([orthoLayer, basemapOverlay]),
     'Geländekarte': gelaendeLayer,
+    'Satellitenbild mit Beschriftung': L.layerGroup([orthoLayer, basemapOverlay]),
     'Geländerkarte mit Beschriftung': L.layerGroup([gelaendeLayer, basemapOverlay]),
   };
 
