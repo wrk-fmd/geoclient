@@ -23,7 +23,7 @@ function buildBaseLayersForMapAndAddDefault(leafletMap) {
     attribution: basemapAtAttributionString,
   });
 
-  let gelaendeLayer = L.tileLayer('https://{s}.wien.gv.at/basemap/bmapgelaende/normal/google3857/{z}/{y}/{x}.jpeg', {
+  let gelaendeLayer = L.tileLayer('https://{s}.wien.gv.at/basemap/bmapgelaende/grau/google3857/{z}/{y}/{x}.jpeg', {
     maxZoom: 19,
     subdomains: basemapAtSubdomains,
     bounds: basemapAtBounds,
