@@ -40,8 +40,7 @@ function buildBaseLayersForMapAndAddDefault(leafletMap) {
     'Karte': hidpiLayer,
     'Satellitenbild': orthoLayer,
     'Satellitenbild mit Beschriftung': L.layerGroup([orthoLayer, basemapOverlay]),
-    'Geländekarte': gelaendeLayer,
-//    'Geländekarte mit Beschriftung': L.layerGroup([gelaendeLayer, basemapOverlay]),
+    'Gelaendekarte': gelaendeLayer,
   };
 
   hidpiLayer.addTo(leafletMap);
