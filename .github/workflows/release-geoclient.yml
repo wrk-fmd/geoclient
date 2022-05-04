@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
+          cache-dependency-path: client/package-lock.json
       - name: Obtain version information
         id: version
         run: |
@@ -42,5 +43,5 @@ jobs:
           draft: false
           body_path: CHANGELOG.md
           files: |
-            geoclient-${{ steps.version.outputs.version }}.tar.gz
-            geoclient-${{ steps.version.outputs.version }}.zip
+            client/geoclient-${{ steps.version.outputs.version }}.tar.gz
+            client/geoclient-${{ steps.version.outputs.version }}.zip
