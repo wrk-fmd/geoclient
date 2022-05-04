@@ -41,7 +41,7 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.version }}
           draft: false
-          body_path: CHANGELOG.md
+          body_path: client/CHANGELOG.md
           files: |
             client/geoclient-${{ steps.version.outputs.version }}.tar.gz
             client/geoclient-${{ steps.version.outputs.version }}.zip
