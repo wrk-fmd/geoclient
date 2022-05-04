@@ -1,0 +1,42 @@
+name: Create release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Obtain version information
+        id: version
+        run: |
+          version=$(npm run env | grep 'npm_package_version=' | cut -d= -f2)
+          echo "::set-output name=version::${version}"
+      - name: Install npm packages
+        run: npm install
+      - name: Build dist
+        run: npm run build
+      - name: Create archives
+        run: |
+          name='geoclient-${{ steps.version.outputs.version }}'
+          mkdir "$name"
+          cp -pr ./dist/* "./${name}/"
+          cp -p ./README.md "./${name}/"
+          tar -czpf "${name}.tar.gz" "$name"
+          zip -r "${name}.zip" "$name"
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          draft: false
+          files: |
+            geoclient-${{ steps.version.outputs.version }}.tar.gz
+            geoclient-${{ steps.version.outputs.version }}.zip

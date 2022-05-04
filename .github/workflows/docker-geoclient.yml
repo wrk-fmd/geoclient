@@ -1,0 +1,19 @@
+name: Build Geoclient Docker image
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+      # TODO Remove when merged
+      - rework
+
+jobs:
+  deploy:
+    uses: wrk-fmd/mls-packages/.github/workflows/docker-build.yml@main
+    with:
+      DOCKER_CONTEXT: ./client
+      DOCKER_NAME: wrkfmdit/geoclient
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
