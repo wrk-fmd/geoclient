@@ -7,6 +7,9 @@ jobs:
   release:
     name: Create release
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
 
     steps:
       - uses: actions/checkout@v2
@@ -37,6 +40,7 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.version }}
           draft: false
+          body_path: CHANGELOG.md
           files: |
             geoclient-${{ steps.version.outputs.version }}.tar.gz
             geoclient-${{ steps.version.outputs.version }}.zip
