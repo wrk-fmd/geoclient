@@ -9,8 +9,7 @@ export namespace Http {
    * @return The text content of the file
    */
   export async function getText<T>(url: string): Promise<string> {
-    const response = await fetch(url);
-    checkResponse(response);
+    const response = await getResponse(url);
     return response.text();
   }
 
@@ -20,8 +19,7 @@ export namespace Http {
    * @return The object parsed from the JSON string
    */
   export async function getJson<T>(url: string): Promise<T> {
-    const response = await fetch(url);
-    checkResponse(response);
+    const response = await getResponse(url);
     return response.json();
   }
 
@@ -31,19 +29,29 @@ export namespace Http {
    * @param body The body which will be serialized as JSON
    */
   export async function postJson<T>(url: string, body: T): Promise<void> {
-    const response = await fetch(url, {
+    await getResponse(url, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    checkResponse(response);
   }
 
-  function checkResponse(response: Response) {
+  /**
+   * Sends a request and obtains the response if the request was successful
+   * @param url The URL
+   * @param init Default request init options for {@link fetch}
+   * @return The response to the request
+   */
+  export async function getResponse(url: string, init?: RequestInit): Promise<Response> {
+    const response = await fetch(url, {
+      ...init,
+      referrer: '',
+    });
     if (!response.ok) {
       throw new Error(`HTTP request to ${response.url} failed: ${response.status} (${response.statusText})`);
     }
+    return response;
   }
 }
