@@ -1,0 +1,68 @@
+@mixin svg-marker($name, $svg-content) {
+  $start: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">';
+  $end: '</svg>';
+  .marker-#{$name}:before {
+    content: url("data:image/svg+xml;utf8, #{$start}#{$svg-content}#{$end}");
+  }
+}
+
+@function height($height) {
+  @return '<circle cx="12" cy="12" r="10" fill="white" stroke="red" stroke-width="4"/>' +
+      '<path d="M11 4h3L12 5z M11 20h3L12 19z" fill="black" stroke="black"/>' +
+      '<text x="5" y="14" font-family="Verdana" font-size="6">#{$height}m</text>';
+}
+
+@function danger() {
+  @return '<path d="M12 3L20 19L4 19z" r="10" fill="white" stroke="red" stroke-width="4" stroke-linecap="round"/>' +
+      '<text x="10" y="16" font-family="Verdana" font-size="10" font-weight="bold">!</text>';
+}
+
+@function redcross($fill, $stroke) {
+  @return '<path d="M8 0h8v8h8v8h-8v8h-8v-8h-8v-8h8z" fill="#{$fill}" stroke="#{$stroke}"/>';
+}
+
+@include svg-marker("height", height("??"));
+@include svg-marker("height-22", height("2,2"));
+@include svg-marker("height-26", height("2,6"));
+@include svg-marker("height-27", height("2,7"));
+@include svg-marker("danger", danger());
+@include svg-marker("redcross", redcross("red", "red"));
+@include svg-marker("graycross", redcross("gray", "red"));
+
+.leaflet-marker-icon > span {
+  // Make sure the marker element is at the top of the container for anchors to be correct
+  vertical-align: top;
+}
+
+.text-marker {
+  display: inline-block;
+  transform: translate(-50%, -50%);
+}
+
+.text-markers-text {
+  // Text markers style if text should be visible
+  .text-marker {
+    padding: 0 5px;
+    background: #fff;
+    color: #003063;
+    border-radius: 6px;
+
+    &:after {
+      content: attr(data-text);
+      white-space: nowrap;
+      line-height: 1.5;
+      font-size: 11px;
+    }
+  }
+}
+
+.text-markers-dots {
+  // Text markers style if only dots should be visible
+  .text-marker {
+    width: 8px;
+    height: 8px;
+    background: currentColor;
+    color: #3388ff;
+    border-radius: 50%;
+  }
+}

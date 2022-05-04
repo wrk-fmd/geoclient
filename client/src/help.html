@@ -1,0 +1,120 @@
+<h1>Erläuterungen</h1>
+<h2>Kartenausschnitt</h2>
+<p>Der Kartenausschnitt kann durch Ziehen verschoben werden. Standardmäßig folgt der Kartenausschnitt der eigenen Position, das wird jedoch durch verschieben des Ausschnitts deaktiviert.</p>
+<p>Die Genauigkeit der Karte (Zoom) kann entweder über die Tasten Plus und Minus, Strg+Mausrad, oder auf Touch-Geräten auch durch auseinander- oder zusammenbewegen zweier Finger verändert werden.</p>
+<h2>Funktionen</h2>
+<p>
+    <i class="fa fa-map-marker"></i>/<i class="fa fa-crosshairs"></i>
+    aktiviert oder deaktiviert den automatischen Kartenausschnitt. Klicke auf <i class="fa fa-crosshairs"></i> um zu deiner Position zu schwenken.
+</p>
+<p>
+    <i class="fa fa-plug"></i>/<i class="fa fa-globe"></i>
+    zeigen den Status der Datenverbindung zum Server bzw. der Positionsbestimmung in deinem Browser an.
+    Grün bedeutet gut; wenn ein Status rot ist, kannst du die Seite neu laden indem du darauf klickst oder tippst.
+</p>
+<p>
+    <i class="fa fa-thumbs-up"></i>/<i class="fa fa-flag"></i>
+    (Leitstellenmodus) aktiviert oder deaktiviert den Filter auf die disponierbaren Einheiten.
+    Der Filtermodus ist unabhängig davon, ob die Einheiten aktuell angezeigt werden, siehe
+    <img src="assets/layers.png" alt="Layer Stack Icon"/>.
+    Klicke auf <i class="fa fa-thumbs-up"></i> um nur disponierbare Einheiten anzuzeigen.
+</p>
+<p>
+    <i class="fa fa-search"></i>
+    (Leitstellenmodus) Textsuche nach Einheiten. Suchtext entfernen um die Markierung von den Suchergebnissen zu löschen.
+</p>
+<p>
+    <i class="fa fa-question"></i>
+    frag-würdige Lektüre für einsame Stunden.
+</p>
+<p>
+    <img src="assets/layers.png" alt="Layer Stack Icon"/>
+    blendet Karteninhalte ein oder aus. Die einzelnen Layer werden eingeblendet, wenn du mit der Maus über diese Funktion fährst oder darauf tippst.
+</p>
+<h2>Karteninhalte</h2>
+<h3>
+    Aufträge / Einsätze
+</h3>
+<p>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='grey' stroke='darkorange' stroke-width='2'/%3E%3C/svg%3E"/>
+    ein Auftrag,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='blue' stroke='darkorange' stroke-width='2'/%3E%3C/svg%3E"/>
+    ein Einsatz.
+    Wenn der Rahmen rot statt orange ist (
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='grey' stroke='red' stroke-width='2'/%3E%3C/svg%3E"/>
+    /
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='blue' stroke='red' stroke-width='2'/%3E%3C/svg%3E"/>
+    ), ist eine unverzügliche Informationsweitergabe erforderlich, z.B. Verzögerung bei der Anfahrt, Lagemeldung bei Eintreffen.
+</p>
+<p>
+    Wenn ein Vorfall noch keine Einheit zugewiesen hat, blinkt das Symbol auf der Karte:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M1,1 L8,15 L15,1 z' fill='blue' stroke='red' stroke-width='2'/%3E%3Canimate attributeName='opacity' values='0;1;1;1;1;1;0;0' dur='1s' repeatCount='indefinite'/%3E%3C/svg%3E"/>
+</p>
+<p>
+    Wenn du die Maus darüberhältst oder drauf tippst, werden weitere Details eingeblendet:
+    eine graue oder blaue Linie führt jeweils zu den zugewiesenen Einheiten.
+</p>
+<h3>
+    Einheiten
+</h3>
+<p>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+    stellt eine Einheit dar.
+    Wenn du die Maus darüberhältst oder drauf tippst, werden weitere Details eingeblendet:
+    eine grüne oder blaue Linie führt zur nächsten zugewiesenen Position, eine graue Linie zur letzten bestätigten Position
+    (beide Linien sind nur dann sichtbar, wenn es die bezeichnete Position gibt und sie sich von der Live-Position der Einheit unterscheidet).
+</p>
+<p>
+    Generell siehst du nur Einheiten und Einsätze, die zu dem selben Einsatz alarmiert sind, wie ihr.
+    Führungskräfte sehen alle Einheiten:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='yellow' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+    die eigene Einheit,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='crimson' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+    Notarzt,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='coral' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+    RTW,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+    andere (z.B. SEW),
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='fuchsia' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+    Führungskraft
+</p>
+<p>
+    Die Farben verblassen mit dem Alter der Positionsdaten. Wenn keine oder zu lange keine Positionsdaten vorhanden sind, ist die Einheit offline:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='gray' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+</p>
+<p>
+    Der Rand der Einheiten spiegelt deren Status wider:
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='chartreuse'/%3E%3C/svg%3E"/>
+    kann disponiert werden,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='blue'/%3E%3C/svg%3E"/>
+    Einsatz,
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='10' fill='white' stroke-width='5' stroke='lightgray'/%3E%3C/svg%3E"/>
+    anderer Status
+</p>
+<h3>
+    Position
+</h3>
+<p>
+    <img src="assets/marker-icon.png" alt="Map Marker Icon"/>
+    zeigt die am Browser ermittelte, eigene Position an. Der umgebende Kreis beschreibt die Genauigkeit der Positionsbestimmung.
+</p>
+<p>
+    <b>Hinweis:</b> Die Positionsübermittlung ist standardmäßig deaktiviert. Diese Karte ist für die Ansicht, die GeoClient App ist für die Positionsübermittlung.
+    <a href="https://play.google.com/store/apps/details?id=at.wrk.fmd.cocemocl&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" target="_blank">
+        <img alt="Get it on Google Play" height="64px" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"/>
+    </a>
+</p>
+<h2>
+    Copyright
+</h2>
+<p>
+    Copyright (c) 2018 Red Cross Vienna and contributors. All rights reserved.
+</p>
+<p>
+    This software may be modified and distributed under the terms of the MIT license. See the
+    <a href="LICENSE" target="_blank">LICENSE</a>
+    file for details.
+</p>
+<p>
+    Google Play and the Google Play logo are trademarks of Google LLC.
+</p>

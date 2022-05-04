@@ -1,0 +1,121 @@
+/**
+ * This SCSS file combines all the required CSS
+ */
+// Import the (precompiled) CSS for Leaflet
+@import "~leaflet/dist/leaflet.css";
+
+// Import required Fontawesome styles
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/functions";
+@import "~@fortawesome/fontawesome-free/scss/variables";
+@import "~@fortawesome/fontawesome-free/scss/mixins";
+@import "~@fortawesome/fontawesome-free/scss/core";
+@import "~@fortawesome/fontawesome-free/scss/sizing";
+@import "~@fortawesome/fontawesome-free/scss/icons";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+
+// Import custom markers
+@import "markers";
+
+// Make the view full height (required to automatically grow the map)
+html, body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  height: 100%;
+}
+
+.modal {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  outline: 0;
+  font-family: sans-serif;
+
+  &.show {
+    display: block;
+  }
+
+  @media (min-width: 560px) {
+    & {
+      padding: 2rem 4rem;
+    }
+  }
+
+  .modal-content {
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    max-height: 100%;
+    padding: 1rem 0 1rem 1rem;
+
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 0.3rem;
+    outline: 0;
+
+    .modal-body {
+      overflow: auto;
+      flex-grow: 1;
+    }
+
+    .close {
+      position: absolute;
+      top: 1rem;
+      right: 2rem;
+      padding: 0;
+      border: 0;
+      cursor: pointer;
+      background: transparent;
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+  }
+}
+
+.state-success {
+  color: green;
+}
+
+.state-error {
+  color: red;
+}
+
+$highlight-color: yellow;
+
+.highlight {
+  background: $highlight-color;
+  border-color: $highlight-color;
+
+  &.leaflet-tooltip-left:before {
+    border-left-color: $highlight-color;
+  }
+
+  &.leaflet-tooltip-right:before {
+    border-right-color: $highlight-color;
+  }
+
+  &.leaflet-tooltip-top:before {
+    border-top-color: $highlight-color;
+  }
+
+  &.leaflet-tooltip-bottom:before {
+    border-bottom-color: $highlight-color;
+  }
+}
+
+.leaflet-popup-content {
+  white-space: pre;
+}

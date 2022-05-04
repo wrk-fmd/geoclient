@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  geoclient:
+    image: wrkfmdit/geoclient:${GEOCLIENT_TAG:-latest}
+    build:
+      context: .
+    volumes:
+      - type: bind
+        source: ${MLS_GEOCLIENT_CONFIG:-./config}
+        target: /app/config/
+        read_only: true
+
+    ports:
+      - "8070:80"
+  geobroker:
+    # This needs to be prebuilt for now
+    image: geobroker-app
+    ports:
+      - "8071:8080"
+
+networks:
+  default:
+    name: mls-network
