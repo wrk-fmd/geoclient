@@ -1,6 +1,6 @@
 {
   "name": "geoclient",
-  "version": "2.0.0beta1",
+  "version": "2.0.0beta2",
   "description": "This is the frontend for geo data from Geobroker",
   "main": "index.js",
   "scripts": {

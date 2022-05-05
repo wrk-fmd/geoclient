@@ -1,3 +1,5 @@
+## 2.0.0beta2
+
 ## 2.0.0beta1
 
 Completely rewritten in Typescript.
