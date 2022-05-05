@@ -2,6 +2,7 @@
 
 - Use `100%` for height instead of `100vh`, because Chrome on Android considers the address bar as part of the viewport.
 - Add favicon
+- Set `no-referrer` in HTML and Docker Nginx config to further restrict sending of referrer
 
 ## 2.0.0beta1
 
