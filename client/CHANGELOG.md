@@ -1,5 +1,7 @@
 ## 2.0.0beta2
 
+- Use `100%` for height instead of `100vh`, because Chrome on Android considers the address bar as part of the viewport.
+
 ## 2.0.0beta1
 
 Completely rewritten in Typescript.
