@@ -31,6 +31,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       hash: true,
       template: "./src/index.html",
+      favicon: "./src/favicon.ico",
     }),
     new MiniCssExtractPlugin({}),
     new CopyPlugin({
