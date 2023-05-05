@@ -31,14 +31,18 @@ export abstract class DynamicLayer<T extends LocatedEntity, M extends DynamicMar
    * @param item An entity instance
    */
   update(item: T) {
-    if (this.markers.has(item.id)) {
-      this.markers.get(item.id)?.setData(item);
+    let marker = this.markers.get(item.id);
+    if (marker) {
+      marker.setData(item);
     } else {
-      const marker = this.createMarker(item);
+      marker = this.createMarker(item);
       this.markers.set(item.id, marker);
-      if (this.isVisible(item)) {
-        this.addLayer(marker);
-      }
+    }
+
+    if (this.isVisible(item)) {
+      this.addLayer(marker);
+    } else {
+      this.removeLayer(marker);
     }
   }
 
