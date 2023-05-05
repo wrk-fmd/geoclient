@@ -14,10 +14,10 @@ name: "CodeQL"
 on:
   push:
     # TODO Remove again when rework branch is moved
-    branches: [ develop, master, rework ]
+    branches: [ main ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ develop ]
+    branches: [ main ]
   schedule:
     - cron: '27 18 * * 5'
 

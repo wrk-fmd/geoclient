@@ -3,10 +3,7 @@ name: Build Geoclient Docker image
 on:
   push:
     branches:
-      - master
-      - dev
-      # TODO Remove when merged
-      - rework
+      - main
 
 jobs:
   deploy:
