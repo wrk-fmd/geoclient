@@ -119,3 +119,11 @@ $highlight-color: yellow;
 .leaflet-popup-content {
   white-space: pre;
 }
+
+.leaflet-units-pane {
+  z-index: 601;
+}
+
+.leaflet-incidents-pane {
+  z-index: 602;
+}

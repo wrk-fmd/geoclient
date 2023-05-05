@@ -66,6 +66,9 @@ export class GeoclientMap extends Map {
     }
 
     if (state.session.authenticated) {
+      this.createPane('incidents');
+      this.createPane('units');
+
       // Show incidents and units
       const incidentLayer = new IncidentLayer();
       this.addLayer(incidentLayer);

@@ -17,7 +17,7 @@ export class IncidentMarker extends Marker implements DynamicMarker<ExtendedInci
     // At this point, latlng should never be null, but make sure anyway
     super(incident.latlng || [0, 0], {
       icon: getIncidentIcon(false, false, false),
-      pane: 'overlayPane',
+      pane: 'incidents',
     });
 
     // Initialize the popup

@@ -31,7 +31,7 @@ export class UnitMarker extends CircleMarker implements DynamicMarker<ExtendedUn
       weight: 5,
       fillColor: 'white',
       fillOpacity: fadeOptions.defaultOpacity,
-      pane: 'markerPane',
+      pane: 'units',
     });
 
     // Initialize the popup and tooltip
