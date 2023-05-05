@@ -2,7 +2,6 @@
 # Base on slim node image, nothing more is needed
 FROM node:lts-alpine AS build
 WORKDIR /app
-RUN npm set unsafe-perm true
 
 # Add only configuration and run npm install to download dependencies
 # This causes Docker to use the cached dependencies instead of downloading them every time
