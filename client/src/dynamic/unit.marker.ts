@@ -1,4 +1,4 @@
-import {CircleMarker, LatLngExpression, layerGroup, LayerGroup, polyline, Polyline} from 'leaflet';
+import {CircleMarker, LatLng, LatLngExpression, layerGroup, LayerGroup, polyline, Polyline} from 'leaflet';
 
 import {ExtendedUnit} from '../model';
 import {TextUtils, timestampAge} from '../util';
@@ -17,6 +17,7 @@ const fadeOptions = {
 export class UnitMarker extends CircleMarker implements DynamicMarker<ExtendedUnit> {
 
   private unit: ExtendedUnit;
+  private latlng: LatLng;
 
   private readonly fromLine: Polyline;
   private readonly targetLine: Polyline;
@@ -33,6 +34,7 @@ export class UnitMarker extends CircleMarker implements DynamicMarker<ExtendedUn
       fillOpacity: fadeOptions.defaultOpacity,
       pane: 'units',
     });
+    this.latlng = this.getLatLng();
 
     // Initialize the popup and tooltip
     this.bindPopup('');
@@ -108,8 +110,12 @@ export class UnitMarker extends CircleMarker implements DynamicMarker<ExtendedUn
   }
 
   private updateMarker() {
-    // latlng should never be null, make sure anyway
-    this.setLatLng(this.unit.latlng || [0, 0]);
+    if (this.unit.latlng && !this.latlng?.equals(this.unit.latlng, 1E-4)) {
+      // Only update if the current marker is off by at least 10 meters, everything below that is not relevant
+      this.setLatLng(this.unit.latlng);
+      // Store the marker's current position
+      this.latlng = this.getLatLng();
+    }
 
     // Set formatted popup and tooltip text
     this.setPopupContent(TextUtils.forPopup(this.unit.name));

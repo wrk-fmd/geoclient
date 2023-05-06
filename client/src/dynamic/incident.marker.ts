@@ -1,4 +1,4 @@
-import {Marker, polyline, Polyline} from 'leaflet';
+import {LatLng, Marker, polyline, Polyline} from 'leaflet';
 
 import {ExtendedIncident} from '../model';
 import {TextUtils} from '../util';
@@ -11,6 +11,7 @@ import {getIncidentIcon} from './icons';
 export class IncidentMarker extends Marker implements DynamicMarker<ExtendedIncident> {
 
   private incident: ExtendedIncident;
+  private latlng: LatLng;
   private readonly unitsLayer: Polyline;
 
   constructor(incident: ExtendedIncident) {
@@ -19,6 +20,7 @@ export class IncidentMarker extends Marker implements DynamicMarker<ExtendedInci
       icon: getIncidentIcon(false, false, false),
       pane: 'incidents',
     });
+    this.latlng = this.getLatLng();
 
     // Initialize the popup
     this.bindPopup('');
@@ -65,8 +67,12 @@ export class IncidentMarker extends Marker implements DynamicMarker<ExtendedInci
   }
 
   private updateMarker() {
-    // latlng should never be null, make sure anyway
-    this.setLatLng(this.incident.latlng || [0, 0]);
+    if (this.incident.latlng && !this.latlng?.equals(this.incident.latlng, 1E-4)) {
+      // Only update if the current marker is off by about 10 meters, everything below that is not relevant
+      this.setLatLng(this.incident.latlng);
+      // Store the marker's current position
+      this.latlng = this.getLatLng();
+    }
 
     // Update icon based on properties
     this.setIcon(getIncidentIcon(

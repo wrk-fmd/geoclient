@@ -3,6 +3,7 @@
 - Update dependency versions
 - Show units and incidents on separate pane in front of other markers
 - Bugfix: Add/remove unit markers on availability changes when only available units should be shown  
+- Only update marker positions when moved by at least ~10 meters to improve performance
 
 ## 2.0.0beta2
 
