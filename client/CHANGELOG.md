@@ -1,3 +1,9 @@
+## 2.0.0
+
+- Update dependency versions
+- Show units and incidents on separate pane in front of other markers
+- Bugfix: Add/remove unit markers on availability changes when only available units should be shown  
+
 ## 2.0.0beta2
 
 - Use `100%` for height instead of `100vh`, because Chrome on Android considers the address bar as part of the viewport.
