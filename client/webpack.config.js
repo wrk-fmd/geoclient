@@ -40,6 +40,8 @@ module.exports = {
         {from: "src/manifest.json"},
         {from: "src/help.html"},
         {from: "LICENSE"},
+        // Use config files from additional non-tracked directory for local development
+        {from: "config", to: "config", priority: 1, force: true, noErrorOnMissing: true},
       ],
     }),
   ],
