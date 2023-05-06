@@ -9,6 +9,7 @@ import {DynamicMarker} from './dynamic.marker';
 export abstract class DynamicLayer<T extends LocatedEntity, M extends DynamicMarker<T>> extends LayerGroup {
 
   protected readonly markers = new Map<string, M>();
+  protected markerGroup: LayerGroup = this;
 
   /**
    * Creates a new marker instance for the given item
@@ -39,11 +40,7 @@ export abstract class DynamicLayer<T extends LocatedEntity, M extends DynamicMar
       this.markers.set(item.id, marker);
     }
 
-    if (this.isVisible(item)) {
-      this.addLayer(marker);
-    } else {
-      this.removeLayer(marker);
-    }
+    this.handleMarkerVisibility(item, marker);
   }
 
   /**
@@ -67,5 +64,32 @@ export abstract class DynamicLayer<T extends LocatedEntity, M extends DynamicMar
       this.markers.get(id)?.remove();
       this.markers.delete(id);
     });
+  }
+
+  protected setMarkerGroup(markerGroup: LayerGroup) {
+    if (markerGroup === this.markerGroup) {
+      return;
+    }
+
+    // Remove all currently existing layers
+    this.clearLayers();
+    this.markerGroup.clearLayers();
+
+    // Set the new marker group
+    this.markerGroup = markerGroup;
+    if (this.markerGroup !== this) {
+      this.addLayer(this.markerGroup);
+    }
+
+    // Add visible markers to the new marker group
+    this.markers.forEach(marker => this.handleMarkerVisibility(marker.getData(), marker));
+  }
+
+  protected handleMarkerVisibility(data: T, marker: M) {
+    if (this.isVisible(data)) {
+      this.markerGroup.addLayer(marker);
+    } else {
+      this.markerGroup.removeLayer(marker);
+    }
   }
 }

@@ -20,6 +20,8 @@ export interface LocalizedStrings {
   'units.busy.hide': string;
   'units.search.button': string;
   'units.search.prompt': string;
+  'units.cluster.activate': string;
+  'units.cluster.deactivate': string;
   'text.mode.dots': string;
   'text.mode.text': string;
   'help.title': string;

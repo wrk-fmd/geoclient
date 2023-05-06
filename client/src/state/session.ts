@@ -100,6 +100,14 @@ export class Session {
   }
 
   /**
+   * Checks whether unit markers should be clustered
+   * @return True iff the clusterUnitMarkers flag is given
+   */
+  get clusterUnits(): boolean {
+    return this.url.searchParams.has('clusterUnits');
+  }
+
+  /**
    * Checks whether text markers should be shown as text
    * @return True iff the showMarkerText flag is given
    */
@@ -153,6 +161,17 @@ export class Session {
     hideBusyUnits
       ? this.url.searchParams.set('hideBusyUnits', '')
       : this.url.searchParams.delete('hideBusyUnits');
+    this.store();
+  }
+
+  /**
+   * Stores whether unit markers are clustered
+   * @param clusterUnits True iff unit markers are clustered
+   */
+  setClusterUnits(clusterUnits: boolean) {
+    clusterUnits
+      ? this.url.searchParams.set('clusterUnits', '')
+      : this.url.searchParams.delete('clusterUnits');
     this.store();
   }
 

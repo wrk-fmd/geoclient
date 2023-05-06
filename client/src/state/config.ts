@@ -20,6 +20,7 @@ const defaultConfig: ConfigInterface = {
     search: ['ctrl+f', '/'],
     resetLayers: ['ctrl+x', 'Home'],
     toggleBusyUnits: [' '],
+    toggleClusterUnits: ['c'],
     toggleLocationOverlay: ['l'],
     toggleIncidentsOverlay: ['i'],
     toggleUnitsOverlay: ['u'],
@@ -78,6 +79,7 @@ export interface KeyboardShortcuts {
   search?: string[];
   resetLayers?: string[];
   toggleBusyUnits?: string[];
+  toggleClusterUnits?: string[];
   toggleLocationOverlay?: string[];
   toggleIncidentsOverlay?: string[];
   toggleUnitsOverlay?: string[];

@@ -86,6 +86,7 @@ export class GeoclientMap extends Map {
 
       // Add unit based buttons
       unitLayer.toggleBusyUnitsButton?.addTo(this);
+      unitLayer.toggleClusterUnitsButton?.addTo(this);
       unitLayer.searchButton?.addTo(this);
     }
 

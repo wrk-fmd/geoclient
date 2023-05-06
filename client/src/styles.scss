@@ -4,6 +4,10 @@
 // Import the (precompiled) CSS for Leaflet
 @import "~leaflet/dist/leaflet.css";
 
+// Import the MarkerCluster plugin CSS
+@import "~leaflet.markercluster/dist/MarkerCluster.css";
+@import "~leaflet.markercluster/dist/MarkerCluster.Default.css";
+
 // Import required Fontawesome styles
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/functions";

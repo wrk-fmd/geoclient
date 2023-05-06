@@ -1,10 +1,14 @@
-import {Control, easyButton} from 'leaflet';
+import {Control, easyButton, MarkerClusterGroup, MarkerClusterGroupOptions} from 'leaflet';
 
 import {i18n} from '../i18n';
 import {ExtendedUnit} from '../model';
 import {AppState} from '../state';
 import {DynamicLayer} from './dynamic.layer';
 import {UnitMarker} from './unit.marker';
+
+const clusterOptions: MarkerClusterGroupOptions = {
+  spiderfyDistanceMultiplier: 5,
+};
 
 /**
  * A dynamic layer for units
@@ -13,6 +17,9 @@ export class UnitLayer extends DynamicLayer<ExtendedUnit, UnitMarker> {
 
   private hideBusyUnits: boolean = false;
   readonly toggleBusyUnitsButton?: Control.EasyButton;
+
+  private clusterUnits: boolean = false;
+  readonly toggleClusterUnitsButton?: Control.EasyButton;
 
   private searchTerm?: string;
   readonly searchButton?: Control.EasyButton;
@@ -39,6 +46,24 @@ export class UnitLayer extends DynamicLayer<ExtendedUnit, UnitMarker> {
       });
       this.setHideBusyUnits(state.session.hideBusyUnits);
 
+      this.toggleClusterUnitsButton = easyButton({
+        tagName: 'a',
+        states: [
+          {
+            stateName: 'clusterUnitsActive',
+            icon: 'fa-circle-nodes',
+            title: i18n('units.cluster.deactivate'),
+            onClick: () => this.setClusterUnits(false),
+          }, {
+            stateName: 'clusterUnitsInactive',
+            icon: 'fa-circle-dot',
+            title: i18n('units.cluster.activate'),
+            onClick: () => this.setClusterUnits(true),
+          }
+        ],
+      });
+      this.setClusterUnits(state.session.clusterUnits);
+
       this.searchButton = easyButton({
         tagName: 'a',
         states: [
@@ -52,6 +77,7 @@ export class UnitLayer extends DynamicLayer<ExtendedUnit, UnitMarker> {
       });
 
       state.keyboardService.registerCallback(state.config.shortcuts.toggleBusyUnits, () => this.setHideBusyUnits(!this.hideBusyUnits));
+      state.keyboardService.registerCallback(state.config.shortcuts.toggleClusterUnits, () => this.setClusterUnits(!this.clusterUnits));
       state.keyboardService.registerCallback(state.config.shortcuts.search, () => this.search());
     }
   }
@@ -70,9 +96,19 @@ export class UnitLayer extends DynamicLayer<ExtendedUnit, UnitMarker> {
     // Update button state
     this.toggleBusyUnitsButton?.state(hideBusyUnits ? 'busyUnitsHidden' : 'busyUnitsShown');
     // Update existing markers
-    this.markers.forEach(marker => this.isVisible(marker.getData()) ? this.addLayer(marker) : this.removeLayer(marker));
+    this.markers.forEach(marker => this.handleMarkerVisibility(marker.getData(), marker));
     // Store in session
     this.state.session.setHideBusyUnits(hideBusyUnits);
+  }
+
+  public setClusterUnits(clusterUnits: boolean) {
+    this.clusterUnits = clusterUnits;
+    // Update button state
+    this.toggleClusterUnitsButton?.state(clusterUnits ? 'clusterUnitsActive' : 'clusterUnitsInactive');
+    // Update the marker layer group
+    this.setMarkerGroup(clusterUnits ? new MarkerClusterGroup(clusterOptions) : this);
+    // Store in session
+    this.state.session.setClusterUnits(clusterUnits);
   }
 
   public search() {

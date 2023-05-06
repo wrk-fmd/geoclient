@@ -5,6 +5,9 @@ import {GeoclientMap} from './map';
 // Make sure the EasyButton extension for Leaflet is loaded
 import 'leaflet-easybutton';
 
+// Make sure the MarkerCluster extension for Leaflet is loaded
+import 'leaflet.markercluster';
+
 // Make sure that the marker icons are included in the build
 require('leaflet/dist/images/marker-icon-2x.png');
 require('leaflet/dist/images/marker-icon.png');

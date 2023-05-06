@@ -22,6 +22,8 @@ const strings: LocalizedStrings = {
   'units.busy.hide': 'Only show available units',
   'units.search.button': 'Search units',
   'units.search.prompt': 'Search units (case insensitive)',
+  'units.cluster.activate': 'Cluster units with similar location',
+  'units.cluster.deactivate': 'Always show individual units',
   'text.mode.dots': 'Hide POI text',
   'text.mode.text': 'Permanently show POI text',
   'help.title': 'Help',
