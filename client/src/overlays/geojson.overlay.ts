@@ -71,7 +71,7 @@ export class GeoJsonOverlay extends FeatureCollectionLayer {
 
     if (markerProperties.icon === 'text-marker') {
       iconHtml.className = 'text-marker';
-      iconHtml.dataset.text = title || '';
+      iconHtml.dataset.text = title?.split('\n')[0] || '';
     } else {
       iconHtml.className = `fas fa-2x ${markerProperties.icon || 'fa-map-marker-alt'}`;
 
