@@ -155,7 +155,7 @@ export class FeatureCollectionLayer extends GeoJSON {
    * @return A layer containing the line
    */
   protected lineToLayer(feature: Feature<LineString>, latlngs: LatLng[]): Layer | null {
-    return new Polyline(latlngs, this.options);
+    return new Polyline(latlngs, {...this.options, ...feature.properties});
   }
 
   /**
@@ -165,7 +165,7 @@ export class FeatureCollectionLayer extends GeoJSON {
    * @return A layer containing the line
    */
   protected multiLineToLayer(feature: Feature<MultiLineString>, latlngs: LatLng[][]): Layer | null {
-    return new Polyline(latlngs, this.options);
+    return new Polyline(latlngs, {...this.options, ...feature.properties});
   }
 
   /**
@@ -175,7 +175,7 @@ export class FeatureCollectionLayer extends GeoJSON {
    * @return A layer containing the polygon
    */
   protected polygonToLayer(feature: Feature<Polygon>, latlngs: LatLng[][]): Layer | null {
-    return new LPolygon(latlngs, this.options);
+    return new LPolygon(latlngs, {...this.options, ...feature.properties});
   }
 
   /**
@@ -185,6 +185,6 @@ export class FeatureCollectionLayer extends GeoJSON {
    * @return A layer containing the polygons
    */
   protected multiPolygonToLayer(feature: Feature<MultiPolygon>, latlngs: LatLng[][][]): Layer | null {
-    return new LPolygon(latlngs, this.options);
+    return new LPolygon(latlngs, {...this.options, ...feature.properties});
   }
 }
