@@ -6,7 +6,7 @@ export namespace Baselayers {
   const basemapAttribution = i18n('baselayer.attribution') + ':'
     + ' <a href="https://www.basemap.at" target="_blank">basemap.at</a>,'
     + ' <a href="https://creativecommons.org/licenses/by/4.0/deed.de" target="_blank">CC-BY 4.0</a>';
-  const basemapSubdomains = ['maps', 'maps1', 'maps2', 'maps3', 'maps4'];
+  const basemapSubdomains = ['maps'];
   const basemapBounds = latLngBounds([46.358770, 8.782379], [49.037872, 17.5]);
 
   export const hidpi = tileLayer('https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg', {

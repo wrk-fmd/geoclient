@@ -115,6 +115,9 @@ export class Config implements ConfigInterface {
   }
 
   static async loadRemoteConfig(url: string): Promise<Config> {
-    return Http.getJson<Partial<ConfigInterface>>(url).then(c => new Config(c));
+    return Http.getJson<Partial<ConfigInterface>>(url).then(c => new Config(c)).catch(() => {
+      console.log('Failed to load config file, using defaults.');
+      return new Config();
+    });
   }
 }

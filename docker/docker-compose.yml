@@ -14,8 +14,9 @@ services:
 
   geobroker:
     image: wrkfmdit/geobroker:${GEOBROKER_TAG:-latest}
-    ports:
-      - "8071:8080"
+    # Add for debugging purposes only
+    #ports:
+    #  - "8071:8080"
 
 networks:
   default:
