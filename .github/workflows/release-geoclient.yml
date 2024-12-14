@@ -36,6 +36,7 @@ jobs:
           cp -p ./README.md "./${name}/"
           tar -czpf "${name}.tar.gz" "$name"
           zip -r "${name}.zip" "$name"
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:

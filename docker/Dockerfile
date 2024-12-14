@@ -5,18 +5,18 @@ WORKDIR /app
 
 # Add only configuration and run npm install to download dependencies
 # This causes Docker to use the cached dependencies instead of downloading them every time
-COPY ./package.json ./package-lock.json ./tsconfig.json ./webpack.config.js ./
+COPY ../client/package.json ../client/package-lock.json ../client/tsconfig.json ../client/webpack.config.js ./
 RUN npm install
 
 # Copy the sourcecode and build it
-COPY ./src/ ./src/
-COPY ./LICENSE ./LICENSE
+COPY ../client/src ./src/
+COPY ../client/LICENSE ./LICENSE
 RUN npm run build
 
 # Second stage: Configure nginx
 FROM nginx:alpine AS runtime
 
-COPY ./LICENSE /app/
+COPY ../client/LICENSE /app/
 COPY --from=build /app/dist/ /app/
 RUN chmod 644 /app/assets/*
 
