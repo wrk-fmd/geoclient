@@ -7,6 +7,6 @@
 let geobroker = {};
 
 geobroker.config = {
-    apiPublic: '/api/v1/public',
-    apiPrivate: '/api/v1/private',
+  apiPublic: '/api/v1/public',
+  apiPrivate: '/api/v1/private',
 };

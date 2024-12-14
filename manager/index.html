@@ -10,44 +10,53 @@
   <title>GeoBroker manager - units</title>
 </head>
 <body>
-  <p>The main design goals for this module are simple code and less effort - data errors are <em>not</em> handled in general!</p>
+<p>The main design goals for this module are simple code and less effort - data errors are <em>not</em> handled in
+  general!</p>
 
-  <p>Manage incidents <a href="incidents.html">here</a>.<p>
-  <p>Manage POIs <a href="pois.html">here</a>.<p>
-  <p>Edit POIs in Coceso JSON format <a href="json.html">here</a>.<p>
-  <p>Print unit URLs <a href="urls.html">here</a>.<p>
+<p>Manage incidents <a href="incidents.html">here</a>.
+<p>
+<p>Manage POIs <a href="pois.html">here</a>.
+<p>
+<p>Edit POIs in Coceso JSON format <a href="json.html">here</a>.
+<p>
+<p>Print unit URLs <a href="urls.html">here</a>.
+<p>
 
-  <h1>Units</h1>
-  <form data-bind="submit: addUnit">
+<h1>Units</h1>
+<form data-bind="submit: addUnit">
     <textarea
-      placeholder="one unit name per line"
-      data-bind="value: newUnitName"
-    ></textarea><button type="submit">Add</button>
-  </form>
-  <table>
-    <thead><tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Token
-        <a href="#" data-bind="click: randomAll">Random all</a>
-      </th>
-      <th>Units</th>
-      <th>Incidents</th>
-      <th>available</th>
-      <th>
-        Actions
-        <a href="#" data-bind="click: postAll">Save all</a>
-      </th>
-    </tr></thead>
-    <tbody data-bind="foreach: configuredUnits"><tr>
-      <td data-bind="text: id"></td>
-      <td><input data-bind="value: name" /></td>
-      <td>
-        <input data-bind="value: token"/>
-        <a href="#" data-bind="click: random">Random</a>
-      </td>
-      <td>
-        <select multiple="multiple" data-bind="
+        placeholder="one unit name per line"
+        data-bind="value: newUnitName"
+    ></textarea>
+  <button type="submit">Add</button>
+</form>
+<table>
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Token
+      <a href="#" data-bind="click: randomAll">Random all</a>
+    </th>
+    <th>Units</th>
+    <th>Incidents</th>
+    <th>available</th>
+    <th>
+      Actions
+      <a href="#" data-bind="click: postAll">Save all</a>
+    </th>
+  </tr>
+  </thead>
+  <tbody data-bind="foreach: configuredUnits">
+  <tr>
+    <td data-bind="text: id"></td>
+    <td><input data-bind="value: name"/></td>
+    <td>
+      <input data-bind="value: token"/>
+      <a href="#" data-bind="click: random">Random</a>
+    </td>
+    <td>
+      <select multiple="multiple" data-bind="
         options: $root.configuredUnits,
         optionsText: function (item) {
           return item.name();
@@ -57,9 +66,9 @@
         },
         selectedOptions: units,
       "></select>
-      </td>
-      <td>
-        <select multiple="multiple" data-bind="
+    </td>
+    <td>
+      <select multiple="multiple" data-bind="
         options: $root.configuredIncidents,
         optionsText: function (item) {
           return item.type() + ': ' + item.info();
@@ -69,21 +78,22 @@
         },
         selectedOptions: incidents,
       ">
-        </select>
-      </td>
-      <td><input data-bind='checked: isAvailableForDispatching' type='checkbox' /></td>
-      <td>
-        <a href="#" data-bind="click: post">Save</a>
-        <a href="#" data-bind="click: $parent.removeUnit">Delete</a>
-      </td>
-    </tr></tbody>
-  </table>
+      </select>
+    </td>
+    <td><input data-bind='checked: isAvailableForDispatching' type='checkbox'/></td>
+    <td>
+      <a href="#" data-bind="click: post">Save</a>
+      <a href="#" data-bind="click: $parent.removeUnit">Delete</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
 
-  <script src="libs/jquery/jquery-3.3.1.min.js"></script>
-  <script src="libs/knockout/v3.4.2/knockout.js"></script>
-  <script src="libs/knockout/v3.4.2/knockout.mapping-2.4.1.js"></script>
+<script src="libs/jquery/jquery-3.7.1.min.js"></script>
+<script src="libs/knockout/v3.4.2/knockout.js"></script>
+<script src="libs/knockout/v3.4.2/knockout.mapping-2.4.1.js"></script>
 
-  <script src="config.js"></script>
-  <script src="js/units.js"></script>
+<script src="config.js"></script>
+<script src="js/units.js"></script>
 </body>
 </html>
