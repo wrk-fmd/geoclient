@@ -9,7 +9,7 @@ jobs:
   deploy:
     uses: wrk-fmd/mls-packages/.github/workflows/docker-build.yml@main
     with:
-      DOCKER_CONTEXT: ./docker
+      DOCKER_CONTEXT: ./client
       DOCKER_NAME: wrkfmdit/geoclient
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
