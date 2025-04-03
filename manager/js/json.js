@@ -36,7 +36,7 @@
 
   L.tileLayer('https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg', {
     maxZoom: 19,
-    subdomains: ['maps', 'maps1', 'maps2', 'maps3', 'maps4'],
+    subdomains: ['maps'],
     bounds: [[46.358770, 8.782379], [49.037872, 17.189532]],
     attribution: 'Grundkarte: <a href="http://basemap.at" target="_blank">basemap.at</a>, <a href="http://creativecommons.org/licenses/by/3.0/at/deed.de" target="_blank">CC-BY 3.0</a>',
   }).addTo(map);
