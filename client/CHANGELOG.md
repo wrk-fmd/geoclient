@@ -1,3 +1,18 @@
+## 2.0.3
+
+- Fix `wien.gv.at` URLs in map layers
+- fix default config and map layers
+- cleanup docker structure
+- update jquery libraries
+
+## 2.0.2
+
+- Pass feature properties as path options for lines and polygons in GeoJson
+
+## 2.0.1
+
+- Only show first line of text-markers
+
 ## 2.0.0
 
 - Update dependency versions
